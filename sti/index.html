@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(roomcode) - Survive The Neffinet</title>
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://kit.fontawesome.com/d250854114.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="sorry">
+        sorry this does not support mobile
+    </div>
+    <span onclick="leaveGame()" class="leavebtn"><i class="fa-solid fa-right-to-bracket"></i></span>
+    <main>
+        <div class="roomLayout">
+            <div class="roomItem hidemobile">
+                <h3>- LOBBY -</h3>
+                <div class="lobbyList">
+                    <!--10 character max username-->
+                    <div class="host"><div class="state"><i class="fa-solid fa-hourglass-half"></i></div>MMMMMMMMMM (HOST)<br><span class="points">100</span></div>
+                    <div class="you"><div class="state"><i class="fa-solid fa-circle-check"></i></div>oswald<br><span class="points">100</span></div>
+                    <div><div class="state"><i class="fa-solid fa-hourglass-half"></i></div>patrick<br><span class="points">100</span></div>
+                </div>
+            </div>
+            <div class="roomItem gameItem">
+                <h3>- GAME -</h3>
+                <div class="game">
+                    <div id="game-round-wrap"></div>
+                    <!--
+                    FIRST ROUND PROMPT BOX
+                    <div class="promptBox">
+                        <p class="prompt">Tell me your opinion about JOSHUA ROWBOTTOM!?!?!</p>
+                        <input placeholder="Write here..." type="text" name="" id=""><br><br>
+                        <button>SUBMIT</button>
+                        <div style="display: none;">something went wrong for whatever reason!</div>
+                    </div>
+                    -->
+                    <!--
+                        SECOND ROUND
+                    <div class="promptBox">
+                        <div class="message">
+                            <span class="username">Jeremiah</span><br>
+                            <span class="contents">I DO NOT HATE JEREMIAH ROWBOTTOM! I DO NOTTTT!!</span>
+                        </div>
+                        <p class="prompt">would be a HORRIBLE caption for something titled...</p>
+                        <input placeholder="Write something funny..." type="text" name="" id=""><br><br>
+                        <button>SUBMIT</button>
+                        <div style="display: none;">something went wrong for whatever reason!</div>
+                    </div>
+                -->
+                    <!--
+                        WAITING FOR OTHER PLAYERSI
+                    <div class="promptBox">
+                        <h3>Waiting for other players...</h3>
+                        <div class="waitingFor">
+                            <span>jeremiah</span>
+                            <span>oswald</span>
+                            <span>patrick</span>
+                        </div>
+                    </div>
+                -->
+                <!--
+                    IMAGE ROUND
+                <div class="promptBox">
+                    <p class="prompt">Now, provide a funny image that you have!</p>
+                    <input type="file" id="photo"  name="photo" accept="image/*"><br><br>
+                    <div style="display: none;">something went wrong for whatever reason!</div>
+                    <div class="inputImage">
+                        <span>Preview</span><br>
+                        <img src="https://cdn.discordapp.com/attachments/1203658754055208991/1217259521425146056/IMG_2534.jpg?ex=66036045&is=65f0eb45&hm=10a66ff8190df37f53508cb83ab6c0dfd2d170ec3c46cbb23843034d25f7582d&" alt="">
+                    </div><br><br>
+                    <button>SUBMIT</button>
+                </div>
+            -->
+            <div class="promptBox">
+                <div class="result news">
+                    <span class="header">TOP NEWS TODAY</span><br>
+                    <div class="title">
+                        <span>JEREMIAH ROWBOTTOM DIES IN HORRIFIC CAR CRASH, EXPLODES! IT WAS ABSOLUTELY HORRIFIC! ABSOLUTELY HORRIFIC!</span>
+                    </div>
+                    <div class="message">
+                        <span class="username">Jeremiah</span><br>
+                        <span class="contents">I DO NOT HATE JEREMIAH ROWBOTTOM! I DO NOTTTT!!</span>
+                    </div>
+                </div>
+            </div>
+                </div>
+                <span class="timer"><i class="fa-solid fa-clock"></i> 10s left</span>
+            </div>
+            <div class="roomItem chatItem hidemobile">
+                <h3>- CHAT -</h3>
+                <div class="chat">
+                    <div class="chat-list">
+                        <div class="chat-message">
+                            <span class="username">patrick</span>
+                            <span>: How are you my dear friend Oswald?</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="username you">oswald</span>
+                            <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
+                        </div>
+                    </div>
+                    <div class="chatbox">
+                        <input placeholder="Type a message here..." type="text">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+
+        function leaveGame() {
+
+            window.location.href = `../index.html`
+
+        }
+
+    </script>
+</body>
+</html>
