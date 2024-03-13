@@ -55,7 +55,7 @@ input:focus-visible {
     background-color: white;
     border-radius: 5px;
     margin: 10px;
-    height: 400px;
+    height: 500px;
     border: grey 1px solid;
     box-shadow: 0px 2px 2px black;
 }
@@ -104,7 +104,7 @@ input:focus-visible {
     background-size: 200px;
     
     animation-name: example;
-    animation-duration: 5s;
+    animation-duration: 10s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     overflow: hidden;
@@ -258,6 +258,66 @@ img {
 .timer {
     padding: 5px;
     display: block;
+}
+
+.finals .tick {
+    position: absolute;
+    transform: translate(-40%, -35%);
+    display: none;
+}
+.finals .tick i {
+    font-size: 35px;
+    transform:rotate(-20deg);
+    background-color: white;
+    border-radius: 100%;
+    color: var(--accent);
+    -webkit-text-stroke: 1.5px black;
+}
+.finals-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    text-align: center;
+}
+.finals .result {
+    display: inline;
+    width: 180px;
+    height: fit-content;
+}
+.finals .result:hover {
+    filter: brightness(110%);
+    cursor: pointer;
+}
+.finals .result:hover * {
+    filter: opacity(100%);
+}
+.selected {
+    filter: opacity(100%);
+}
+.selected .tick {
+    display: unset;
+    z-index: 999;
+}
+.finals-wrap *:not(.selected) {
+    filter: opacity(85%);
+} 
+.finals-wrap .selected * {
+    filter: opacity(100%);
+}
+.finals .result .message .contents {
+    font-size: 9px !important;
+}
+.finals .result * {
+    font-size: 8px;
+}
+.finals .result .header {
+    font-size: 11px;
+}
+.finals .result {
+    margin: 5px;
 }
 
 button {
