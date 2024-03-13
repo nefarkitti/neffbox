@@ -194,6 +194,8 @@ input:focus-visible {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: reverse;
+    width: 500px;
+    margin: 20px;
 }
 
 .result .message {
@@ -234,6 +236,23 @@ input:focus-visible {
     margin: 0;
     font-weight: bold;
     text-align: left;
+    width: 97%;
+}
+.news .opinion {
+    font-weight: 400;
+}
+.news span {
+    width: 97%;
+}
+.news .place {
+    font-weight: 900;
+    font-size: 35px;
+}
+.news .recommendation {
+    font-size: 20px;
+}
+.news .place i {
+    margin-right: 5px;
 }
 .reply-thing {
     padding-left: 5px;
