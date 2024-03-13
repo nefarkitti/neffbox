@@ -212,6 +212,9 @@ input:focus-visible {
 .news {
     max-width: 60%;
 }
+.header i {
+    margin-right: 5px;
+}
 .news .header {
     background-color: var(--accent);
     color: white;
