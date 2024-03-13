@@ -239,6 +239,10 @@ input:focus-visible {
     padding-left: 5px;
 }
 
+.location {
+
+}
+
 img {
     object-fit:contain;
 }
@@ -358,7 +362,7 @@ button:hover {
     font-weight: 900;
 }
 .chat input {
-    width: -moz-available;
+    width: 150px;
     padding: 4px;
     margin-top: 5px;
     border: grey 1px solid;
