@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>(roomcode) - Survive The Neffinet</title>
-    <link rel="stylesheet" href="../style.css">
+    <title>...</title>
+    <link rel="stylesheet" href="/style.css">
     <script src="https://kit.fontawesome.com/d250854114.js" crossorigin="anonymous"></script>
-    <link rel="shortcut icon" href="../assets/favicon.png" type="image/x-icon">
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <link rel="shortcut icon" href="/assets/favicon.png" type="image/x-icon">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script type="text/javascript" src="js/config.js"></script>
-    <script defer type="text/javascript" src="js/room.js"></script>
+    <script type="text/javascript" src="/js/config.js"></script>
+    <script defer type="text/javascript" src="/js/room.js"></script>
 </head>
 
 <body>
@@ -22,8 +23,9 @@
         <div class="roomLayout">
             <div class="roomItem hidemobile">
                 <h3>- LOBBY -</h3>
-                <div class="lobbyList">
+                <div class="lobbyList" id="lobbyList">
                     <!--10 character max username-->
+                    <!--
                     <div class="host">
                         <div class="state"><i class="fa-solid fa-hourglass-half"></i></div>MMMMMMMMMM (HOST)<br><span
                             class="points">100</span>
@@ -36,6 +38,7 @@
                         <div class="state"><i class="fa-solid fa-hourglass-half"></i></div>Patrick<br><span
                             class="points">100</span>
                     </div>
+                    -->
                 </div>
             </div>
             <div class="roomItem gameItem">
@@ -227,7 +230,8 @@
             <div class="roomItem chatItem hidemobile">
                 <h3>- CHAT -</h3>
                 <div class="chat">
-                    <div class="chat-list">
+                    <div class="chat-list" id="messages">
+                        <!--
                         <div class="chat-message">
                             <span class="username">patrick</span>
                             <span>: How are you my dear friend Oswald?</span>
@@ -336,9 +340,12 @@
                             <span class="username you">oswald</span>
                             <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
                         </div>
+                        -->
                     </div>
                     <div class="chatbox">
-                        <input placeholder="Type a message here..." type="text">
+                        <form id="message-form">
+                            <input id="message-input" placeholder="Type a message here..." type="text">
+                        </form>
                     </div>
                 </div>
             </div>

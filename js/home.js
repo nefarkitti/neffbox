@@ -24,6 +24,7 @@ async function onJoinRoom() {
             roomID: roomID.value,
             username: localStorage.getItem("username")
         })
+        localStorage.setItem("secret", response.data.token);
         localStorage.setItem("tempData", JSON.stringify(response.data))
         window.location.href = `/sti/${roomID.value}`
     } catch (e) {
@@ -48,6 +49,8 @@ async function onCreateRoom() {
         const response = await axios.post(`${URL}/create`, {
             username: localStorage.getItem("username")
         })
+        localStorage.setItem("host", 1)
+        localStorage.setItem("secret", response.data.token);
         window.location.href = `/sti/${response.data.id}`
     } catch (e) {
         console.error(e)
