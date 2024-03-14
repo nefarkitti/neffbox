@@ -25,6 +25,10 @@ main {
     transform: translate(-50%, -50%);
     text-align: center;
 }
+main h3 {
+    margin: 0;
+    margin-bottom: 40px;
+}
 
 .menu {
     background-color: rgb(246, 246, 246);
@@ -347,6 +351,9 @@ img {
     margin: 5px;
 }
 
+.logo {
+    filter: drop-shadow(2px 2px 1px #000000);
+}
 button {
     background-color: var(--accent);
     border: none;
@@ -354,6 +361,8 @@ button {
     border-radius: 5px;
     font-weight: bold;
     color: white;
+    border: solid black 2px;
+    box-shadow: 4px 4px 0px black;
 }
 button:hover {
     cursor: pointer;
