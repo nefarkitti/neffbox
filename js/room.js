@@ -390,6 +390,7 @@ travelling "Rate the last place you've been to."
                             break;
                         }
                         case "RATINGS": {
+                            resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-star-half-stroke"></i>RATINGS</span>`
                             const titleDiv = document.createElement("div");
                             titleDiv.classList.add("title");
                             const usernameSpan = document.createElement("span");
