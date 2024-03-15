@@ -300,12 +300,23 @@ input:focus-visible {
     padding-left: 5px;
 }
 
-.location {
-
-}
-
 img {
     object-fit:contain;
+}
+.result img {
+    float: left;
+    width: 140px;
+    height: 140px;
+    margin-right: 10px;
+    border: 3px solid black;
+    box-shadow: 3px 3px 0px black;
+    border-radius: 5px;
+    background-color: white;
+}
+.finals-wrap .result img {
+    width: 60px;
+    height: 60px;
+    float: left;
 }
 .inputImage img {
     width: 200px;
@@ -353,11 +364,13 @@ img {
 }
 .finals .result {
     display: inline;
-    width: 180px;
+    width: 200px;
     height: fit-content;
     margin: 5px;
     display: flex;
-    font-size: larger;
+}
+.finals .result * {
+    font-size: smaller !important;
 }
 .finals .result:hover {
     filter: brightness(110%);
