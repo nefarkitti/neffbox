@@ -96,6 +96,16 @@ input:focus-visible {
 .gameItem {
     width: 700px;
 }
+.round-number {
+    margin: 0;
+}
+.round-topic {
+    color: white;
+    font-weight: 900;
+    -webkit-text-stroke: 3px black;
+    margin: 0;
+    font-size: 60px;
+}
 .game {
     width: 100%;
     height: 90%;
@@ -117,14 +127,20 @@ input:focus-visible {
 .promptBox {
     transform: translate(0, 100%);
 
-    animation-name: showBox;
-    animation-duration: 0.7s;
-    animation-timing-function:cubic-bezier();
-    animation-fill-mode: forwards;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+.promptBox button {
+    margin: 10px;
+}
+.show {
+    animation-name: showBox;
+    animation-duration: 0.7s;
+    animation-timing-function:cubic-bezier();
+    animation-fill-mode: forwards;
+    filter: opacity(0%);
 }
 .promptBox.hide {
     animation-name: showBox;
@@ -132,6 +148,19 @@ input:focus-visible {
     animation-timing-function:cubic-bezier(0.175, 0.885, 0.32, 1.275);
     animation-fill-mode: backwards;
     animation-direction: reverse;
+}
+.response-animate {
+    animation-name: showResponse;
+    animation-duration: 3s;
+    animation-timing-function:cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation-fill-mode: forwards;
+    filter: opacity(0%);
+    transform:scale(130%, 130%);
+}
+@keyframes showResponse {
+    0% {filter: opacity(0%);transform:scale(130%, 130%);}
+    20% {filter: opacity(0%);transform:scale(130%, 130%);}
+    100% {filter: opacity(100%);transform:scale(100%, 100%);}
 }
 .noanim {
     animation: none !important;
@@ -214,6 +243,15 @@ input:focus-visible {
     font-size: 15px;
     margin: 0px auto;
 }
+.contents {
+    word-break: break-all;
+}
+.finals-wrap .result * {
+    font-size: medium !important;
+}
+.finals-wrap .result .contents {
+    font-size: small !important;
+}
 
 .news {
     max-width: 60%;
@@ -291,12 +329,12 @@ img {
     display: block;
 }
 
-.finals .tick {
+.tick {
     position: absolute;
     transform: translate(-40%, -35%);
     display: none;
 }
-.finals .tick i {
+.tick i {
     font-size: 35px;
     transform:rotate(-20deg);
     background-color: white;
@@ -317,6 +355,9 @@ img {
     display: inline;
     width: 180px;
     height: fit-content;
+    margin: 5px;
+    display: flex;
+    font-size: larger;
 }
 .finals .result:hover {
     filter: brightness(110%);
@@ -338,17 +379,11 @@ img {
 .finals-wrap .selected * {
     filter: opacity(100%);
 }
-.finals .result .message .contents {
-    font-size: 9px !important;
-}
 .finals .result * {
     font-size: 8px;
 }
 .finals .result .header {
     font-size: 11px;
-}
-.finals .result {
-    margin: 5px;
 }
 
 .logo {
@@ -377,6 +412,7 @@ button:hover {
     flex-direction: column;
     justify-content: flex-end;
     height: 100%;
+    overflow-x: hidden;
 }
 .chat-list {
     text-align: left;
@@ -385,6 +421,8 @@ button:hover {
 .chat-message {
     width: 99% !important;
     font-size: 12px;
+    word-break: break-all;
+    overflow: hidden;
 }
 .chat-message .username {
     font-weight: 900;
@@ -431,8 +469,8 @@ button:hover {
 }
 
 @keyframes showBox {
-    from { transform: translate(0, 100%);}
-    to { transform: translate(0, 0%);}
+    from { transform: translate(0, 100%);filter: opacity(0%);}
+    to { transform: translate(0, 0%);filter: opacity(100%);}
 }
 @keyframes example {
     from {background-position: 0px 0px;}

@@ -44,10 +44,15 @@
             <div class="roomItem gameItem">
                 <h3>- GAME -</h3>
                 <div class="game">
-                    <div id="game-round-wrap"></div>
-                    <div class="promptBox">
+                    <!--<div class="promptBox" id="promptBox">
                         <p class="prompt">You're the host!</p><br><br>
                         <button>Start the game</button>
+                    </div>-->
+                    <div class="promptBox show" id="promptBox"> <!--dont comment the id part thingy ok thank you!-->
+                        <h3>Please wait.</h3>
+                        <!--<h3>5.. 4... 3.. 2... 1..</h3>-->
+                        <!--<h1 class="round-number">Round (numbre)</h1>
+                        <h2 class="round-topic">NEWS</h2>-->
                     </div>
                     <!--
                     FIRST ROUND PROMPT BOX
@@ -155,77 +160,13 @@
                                             <span class="contents">I DO NOT HATE JEREMIAH ROWBOTTOM! I DO NOTTTT!!</span>
                                         </div>
                                     </div>
-                                    <div class="result news">
-                                        <div class="tick">
-                                            <i class="fa-solid fa-circle-check"></i>
-                                        </div>
-                                        <span class="header">TOP NEWS TODAY</span><br>
-                                        <div class="title">
-                                            <span>JEREMIAH ROWBOTTOM DIES IN HORRIFIC CAR CRASH, EXPLODES! IT WAS ABSOLUTELY HORRIFIC! ABSOLUTELY HORRIFIC!</span>
-                                        </div>
-                                        <div class="message">
-                                            <span class="username">Jeremiah</span><br>
-                                            <span class="contents">I DO NOT HATE JEREMIAH ROWBOTTOM! I DO NOTTTT!!</span>
-                                        </div>
-                                    </div>
-                                    <div class="result news">
-                                        <div class="tick">
-                                            <i class="fa-solid fa-circle-check"></i>
-                                        </div>
-                                        <span class="header">TOP NEWS TODAY</span><br>
-                                        <div class="title">
-                                            <span>JEREMIAH ROWBOTTOM DIES IN HORRIFIC CAR CRASH, EXPLODES! IT WAS ABSOLUTELY HORRIFIC! ABSOLUTELY HORRIFIC!</span>
-                                        </div>
-                                        <div class="message">
-                                            <span class="username">Jeremiah</span><br>
-                                            <span class="contents">I DO NOT HATE JEREMIAH ROWBOTTOM! I DO NOTTTT!!</span>
-                                        </div>
-                                    </div>
-                                    <div class="result news">
-                                        <div class="tick">
-                                            <i class="fa-solid fa-circle-check"></i>
-                                        </div>
-                                        <span class="header">TOP NEWS TODAY</span><br>
-                                        <div class="title">
-                                            <span>JEREMIAH ROWBOTTOM DIES IN HORRIFIC CAR CRASH, EXPLODES! IT WAS ABSOLUTELY HORRIFIC! ABSOLUTELY HORRIFIC!</span>
-                                        </div>
-                                        <div class="message">
-                                            <span class="username">Jeremiah</span><br>
-                                            <span class="contents">I DO NOT HATE JEREMIAH ROWBOTTOM! I DO NOTTTT!!</span>
-                                        </div>
-                                    </div>
-                                    <div class="result news">
-                                        <div class="tick">
-                                            <i class="fa-solid fa-circle-check"></i>
-                                        </div>
-                                        <span class="header">TOP NEWS TODAY</span><br>
-                                        <div class="title">
-                                            <span>JEREMIAH ROWBOTTOM DIES IN HORRIFIC CAR CRASH, EXPLODES! IT WAS ABSOLUTELY HORRIFIC! ABSOLUTELY HORRIFIC!</span>
-                                        </div>
-                                        <div class="message">
-                                            <span class="username">Jeremiah</span><br>
-                                            <span class="contents">I DO NOT HATE JEREMIAH ROWBOTTOM! I DO NOTTTT!!</span>
-                                        </div>
-                                    </div>
-                                    <div class="result news">
-                                        <div class="tick">
-                                            <i class="fa-solid fa-circle-check"></i>
-                                        </div>
-                                        <span class="header">TOP NEWS TODAY</span><br>
-                                        <div class="title">
-                                            <span>JEREMIAH ROWBOTTOM DIES IN HORRIFIC CAR CRASH, EXPLODES! IT WAS ABSOLUTELY HORRIFIC! ABSOLUTELY HORRIFIC!</span>
-                                        </div>
-                                        <div class="message">
-                                            <span class="username">Jeremiah</span><br>
-                                            <span class="contents">I DO NOT HATE JEREMIAH ROWBOTTOM! I DO NOTTTT!!</span>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     -->
                 </div>
-                <span class="timer"><i class="fa-solid fa-clock"></i> 10s left</span>
+                <!--<span class="timer"><i class="fa-solid fa-clock"></i> <span id="timer">10s left</span></span>-->
+                <span class="timer"><i class="fa-solid fa-clock"></i> <span id="timer">Waiting...</span></span>
             </div>
             <div class="roomItem chatItem hidemobile">
                 <h3>- CHAT -</h3>
@@ -351,15 +292,5 @@
             </div>
         </div>
     </main>
-    <script>
-
-        function leaveGame() {
-
-            window.location.href = `../index.html`
-
-        }
-
-    </script>
 </body>
-
 </html>

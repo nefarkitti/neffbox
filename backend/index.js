@@ -54,6 +54,33 @@ const sha512 = (str) => crypto.createHash('sha512').update(str).digest('hex');
 const base64_encode = (str) => Buffer.from(str, 'utf-8').toString('base64');
 const base64_decode = (str) => Buffer.from(str, 'base64').toString('utf-8');
 
+function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+  
+    // While there remain elements to shuffle.
+    while (currentIndex > 0) {
+  
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+}
+
+function shuffleNoCollide(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * i); // no +1 here!
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
 
 // TODO: give each user a "token" when joining a room, that they keep
 
@@ -70,6 +97,7 @@ function randomID(length = 16) {
 let rooms = [];
 
 function getRoom(id) {
+    if (!id) return null;
     return rooms.find(room => room.id.toString() == id.toString());
 }
 
@@ -122,7 +150,7 @@ function getValidUser(roomData, username, token, ip) {
 app.get("/myhash", (req, res) => {
     if (!req.query.username) return res.sendStatus(400);
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    res.send(calculateUserHash(req.query.username, 0))
+    res.send(calculateUserHash(req.query.username, '00000', ip))
 })
 
 app.post('/create', (req, res) => {
@@ -140,8 +168,11 @@ app.post('/create', (req, res) => {
         id: roomID,
         host: username,
         round: 0,
+        topicRound: 1,
         started: false,
+        voting: false,
         users: [{id: null, name: username, token: userToken, points: 0}],
+        rounds: shuffle(["NEWS", "RATINGS", "TRAVELLING"]),
         imgs: new Map()
     })
     return res.send({
@@ -149,6 +180,14 @@ app.post('/create', (req, res) => {
         token: userToken
     });
 })
+
+const maxPlayers = 6;
+
+const systemName = "SERVER"
+
+const roomTimeouts = {};
+const submitTimeouts = {};
+const submitTimer = 60;
 
 app.post('/join', (req, res) => {
     const roomID = req.body.roomID;
@@ -159,7 +198,8 @@ app.post('/join', (req, res) => {
     if (username.length < 0) return res.status(400).send("whar");
     const roomData = getRoom(roomID)
     if (!roomData) return res.status(404).send("could not find room");
-    if (roomData.started) return res.status(403).send("the room has already started a round")
+    if (roomData.users.length >= maxPlayers) return res.status(403).send(`there are too many players (${maxPlayers}) in the room`)
+    if (roomData.started) return res.status(403).send("the room has already started a round");
     const userExists = roomData.users.find(user => user.name == username);
     if (userExists) return res.status(403).send("someone has the same username in that room!");
     const userInRoom = rooms.find(room => room.users.find(user => user.token == calculateUserHash(ip, username, room.id)))
@@ -209,9 +249,37 @@ app.get('/imgs/:room/:hash', (req, res) => {
     res.send(buffer);
 });
 
-const systemName = "SERVER"
 
-const roomTimeouts = {};
+
+function getTopics(topic) {
+    return [
+        "Tell me your opinion about JOSHUA ROWBOTTOM!?!?!",
+        "AAAA",
+        "BBBB",
+        "CCCC",
+        "DDDD",
+        "EEEE",
+        "FFFF"
+    ]
+    // minimum of 6 because 6 players
+    switch (topic) {
+        // yes but itll be confusing!
+        // can i do these later i wanna see it actually play teehee
+        // these are the questions itll show anyways you wanna make a room or oka!
+        // how so
+        // ill make a room
+        case "NEWS":
+            return ["Queen lizzy has returned from the dead! What do you make of this??", ""]
+        case "RATINGS":
+            return ["What do you think of the latest iPhone?"]
+        case "TRAVELLING":
+            return ["Rate the last place you've been to.", ""]
+        case "IMAGE":
+            return []
+    }
+}
+
+const EmojiConvertor = require('emoji-js');
 
 // socket server stuff!
 sio.on('connection', socket => {
@@ -233,6 +301,106 @@ sio.on('connection', socket => {
         });
     }
     sendMsg("Connected!");
+    socket.on('updateRoomData', () => {
+        if (!roomData || !userData) return socket.emit('error', "Invalid Session.");
+        roomData = getRoom(callback.id);
+        if (!roomData) return socket.emit('error', "Room doesn't exist.");
+        userData = getValidUser(roomData, null, callback.token, ipAddr);
+    })
+
+    function finishRound(updatedRoomData) {
+        updatedRoomData.topicRound++;
+        const shuffledUsers = shuffleNoCollide(updatedRoomData.users.map(x=>updatedRoomData.users.indexOf(x)))
+        if (updatedRoomData.topicRound > 2) {
+            updatedRoomData.voting = true;
+            updatedRoomData.users = updatedRoomData.users.map(user => {
+                user.finished = false;
+                return user;
+            })
+            const submissions = updatedRoomData.users.map(user => {
+                return {
+                    username: user.topic2user,
+                    title: user.topic2,
+                    desc: user.response2
+                }
+            })
+            sio.to(roomData.id).emit('roomEvent', { event: "results", submissions });
+        } else {
+            updatedRoomData.users = updatedRoomData.users.map(user => {
+                const shuffledUser = updatedRoomData.users[shuffledUsers[updatedRoomData.users.indexOf(user)]]; // insanity
+                user.topic2 = shuffledUser.response1
+                user.topic2user = shuffledUser.name
+                user.finished = false;
+                return user;
+            })
+            submitTimeouts[roomData.id] = setTimeout(notEveryoneDid, submitTimer * 1000)
+            updatedRoomData.users.forEach(user => {
+                sio.to(user.id).emit('roomEvent', { event: "nextround", user: user.topic2user, prompt: user.topic2 });
+            })
+        }
+    }
+
+    function notEveryoneDid() {
+        const updatedRoomData = getRoom(roomData.id);
+        if (!updatedRoomData) return;
+        const usersThatDidnt = updatedRoomData.users.filter(user => !user.finished)
+        console.log(`[${updatedRoomData.id}] some people (${usersThatDidnt.length}) didnt finish`)
+        updatedRoomData.users = updatedRoomData.users.map(user => {
+            if (user.finished) return user;
+            user[`response${updatedRoomData.topicRound}`] = "[No response given]";
+            user.finished = true;
+            sio.to(roomData.id).emit('roomEvent', { event: "waiting", users: [] });
+            return user;
+        })
+        finishRound(updatedRoomData)
+    }
+
+    socket.on('roomEvent', (data) => {
+        if (roomData.host != userData.name) return socket.emit('error', "you really thought.") //todo: remove this since i might allow other playres to do events
+        const updatedRoomData = getRoom(roomData.id);
+        if (!updatedRoomData) return socket.emit('error', "couldnt find room")
+        switch (data.event) {
+            case "start":
+                updatedRoomData.started = true;
+                sio.to(roomData.id).emit('roomEvent', { event: "start" });
+                break;
+            case "nexttopic":
+                clearTimeout(submitTimeouts[roomData.id]);
+                updatedRoomData.round++;
+                //const roundName = updatedRoomData.rounds[updatedRoomData.round]
+                const roundName = "RATINGS"
+                const topics = shuffle(getTopics(roundName))
+                updatedRoomData.users = updatedRoomData.users.map(user => {
+                    user.finished = false;
+                    user.topic1 = topics[updatedRoomData.users.indexOf(user)]; // shuffle it! do a func or something
+                    sio.to(user.id).emit('roomEvent', { event: "yourtopic", topic: user.topic1 })
+                    return user;
+                })
+                submitTimeouts[roomData.id] = setTimeout(notEveryoneDid, submitTimer * 1000)
+                sio.to(roomData.id).emit('roomEvent', { event: "nexttopic", round: updatedRoomData.round, roundName });
+                break;
+        }
+    })
+
+    socket.on("topicFinish", (content) => {
+        if (content.length > 50) return socket.emit("error", "response too long");
+        const updatedRoomData = getRoom(roomData.id);
+        if (!updatedRoomData) return socket.emit('error', "couldnt find room")
+        if (updatedRoomData.voting) return socket.emit('error', "how")
+        
+        const updatedUserData = updatedRoomData.users.find(user => user.name == userData.name);
+        updatedUserData[`response${updatedRoomData.topicRound}`] = content;
+        updatedUserData.finished = true;
+        userData = updatedUserData;
+        roomData = updatedRoomData;
+        sio.to(roomData.id).emit('roomEvent', { event: "waiting", users: updatedRoomData.users.filter(user => !user.finished).map(user => {
+            return { username: user.name, hash: sha512(user.name) }
+        }) });
+        if (!updatedRoomData.users.filter(user => !user.finished).length) {
+            clearTimeout(submitTimeouts[roomData.id]);
+            finishRound(updatedRoomData);
+        }
+    })
     socket.on('join', async (callback) => {
         roomData = getRoom(callback.id);
         if (!roomData) return socket.emit('error', "Room doesn't exist.");
@@ -246,7 +414,16 @@ sio.on('connection', socket => {
             broadcast(roomData.id, "someone did something sus");
         }
         userData.id = socket.id;
+        socket.emit("roomState", {
+            started: roomData.started,
+            round: roomData.round
+        })
         socket.join(roomData.id);
+        socket.emit("addme", {
+            name: userData.name,
+            points: userData.points,
+            idHash: sha512(userData.name)
+        });
         if (!userData.joined) {
             userData.joined = true;
             sio.to(roomData.id).emit('join', {
@@ -270,9 +447,15 @@ sio.on('connection', socket => {
     socket.on('user_message', async (content) => {
         if (!roomData || !userData) return socket.emit('error', "Invalid Session.");
         if (content.length > 256) return socket.emit('error', "Message too long!");
+        
+        const emoji = new EmojiConvertor();
+        emoji.replace_mode = "unified"
+        content = emoji.replace_colons(content);
         content = content.replaceAll("/shrug", "¯\\_(ツ)_/¯")
         console.log(`[${roomData.id}] ${userData.name} > ${content}`);
-        content = content.replaceAll("/fumo", `⠀⢀⣒⠒⠆⠤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+        switch (content.split(" ")[0]) {
+            case "/fumo":
+                content = `⠀⢀⣒⠒⠆⠤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⢠⡛⠛⠻⣷⣶⣦⣬⣕⡒⠤⢀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⡿⢿⣿⣿⣿⣿⣿⡿⠿⠿⣿⣳⠖⢋⣩⣭⣿⣶⡤⠶⠶⢶⣒⣲⢶⣉⣐⣒⣒⣒⢤⡀⠀⠀⠀⠀⠀⠀⠀
 ⣿⠀⠉⣩⣭⣽⣶⣾⣿⢿⡏⢁⣴⠿⠛⠉⠁⠀⠀⠀⠀⠀⠀⠉⠙⠲⢭⣯⣟⡿⣷⣘⠢⡀⠀⠀⠀⠀⠀
@@ -297,8 +480,9 @@ sio.on('connection', socket => {
 ⠀⠀⠀⠀⠀⠀⠀⢠⣎⡀⢀⣾⠇⢀⣠⡶⢶⠞⠋⠉⠉⠒⢄⡀⠉⠈⠉⠀⠀⠀⣠⣾⠀⠀⠀⠀⠀⢸⡀
 ⠀⠀⠀⠀⠀⠀⠀⠘⣦⡀⠘⢁⡴⢟⣯⣞⢉⠀⠀⠀⠀⠀⠀⢹⠶⠤⠤⡤⢖⣿⡋⢇⠀⠀⠀⠀⠀⢸⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠵⠗⠺⠟⠖⢈⡣⡄⠀⠀⠀⠀⢀⣼⡤⣬⣽⠾⠋⠉⠑⠺⠧⣀⣤⣤⡠⠟⠃
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠷⠶⠦⠶⠞⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`)
-        content = content.replaceAll("/padoru", `PADORU PADORU!!!
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠷⠶⠦⠶⠞⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`
+                break;
+            case "/padoru": content = `PADORU PADORU!!!
 ⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⣀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠄⠄⠄⠄
 ⠄⠄⠄⠄⠄⢀⣀⣀⡀⠄⠄⠄⡠⢲⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠄⠄
 ⠄⠄⠄⠔⣈⣀⠄⢔⡒⠳⡴⠊⠄⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⣿⣧⠄⠄
@@ -315,7 +499,11 @@ sio.on('connection', socket => {
 ⠄⠄⠄⠄⠄⠿⠿⠟⠛⡹⠉⠛⠛⠿⠿⣿⣿⣿⣿⣿⡿⠂⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄
 ⠠⠤⠤⠄⠄⣀⠄⠄⠄⠑⠠⣤⣀⣀⣀⡘⣿⠿⠙⠻⡍⢀⡈⠂⠄⠄⠄⠄⠄⠄⠄⠄⠄
 ⠄⠄⠄⠄⠄⠄⠑⠠⣠⣴⣾⣿⣿⣿⣿⣿⣿⣇⠉⠄⠻⣿⣷⣄⡀⠄⠄⠄⠄⠄⠄⠄⠄
-`)
+`
+                break;
+        }
+        content = content.replaceAll("/joinkers")
+
         sio.to(roomData.id).emit('message', {
             username: userData.name,
             content
@@ -327,21 +515,31 @@ sio.on('connection', socket => {
         broadcast(roomData.id, `${userData.name} has left.`);
         roomData.users.splice(roomData.users.indexOf(userData), 1);
         socket.emit("leave", sha512(userData.name));
+        if (roomData.host == userData.name) {
+            console.log(`Destroy room ${roomData.id}`);
+            sio.to(roomData.id).emit("forceDisconnect", "The host has left.");
+            rooms.splice(rooms.indexOf(roomData), 1);
+        }
         roomData = {};
         userData = {};
-        socket.disconnect();
     })
     socket.on('disconnect', () => {
         if (!roomData || !userData) return;
+        let username = userData.name;
+        let roomID = roomData.id
+        roomData = {};
+        userData = {};
+        if (!getRoom(roomID)) return;
         // Set a timeout to delete the room if no reconnection occurs
-        roomTimeouts[`${roomData.id}-${userData.name}`] = setTimeout(() => {
-            if (roomData.host == userData.name) {
+        roomTimeouts[`${roomID}-${username}`] = setTimeout(() => {
+            let roomData = getRoom(roomID);
+            if (roomData.host == username) {
                 sio.to(roomData.id).emit("forceDisconnect", "The host has left.");
                 rooms.splice(rooms.indexOf(roomData), 1);
             } else {
-                broadcast(roomData.id, `${userData.name} has left.`);
-                roomData.users.splice(roomData.users.indexOf(userData), 1);
-                socket.emit("leave", sha512(userData.name));
+                broadcast(roomData.id, `${username} has left.`);
+                roomData.users.splice(roomData.users.indexOf(roomData.users.find(user => user.name == username)), 1);
+                socket.emit("leave", sha512(username));
             }
         }, 5000); // Adjust this time as per your requirements
     });
