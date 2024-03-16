@@ -346,7 +346,7 @@ img {
     display: none;
 }
 .tick i {
-    font-size: 35px;
+    font-size: 35px !important;
     transform:rotate(-20deg);
     background-color: white;
     border-radius: 100%;

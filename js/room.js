@@ -70,7 +70,8 @@ const roomData = {
     round: 0,
     waiting: false,
     topic: "Unknown.",
-    selected: null
+    selected: null,
+    twistUser: null
 }
 if (roomID) {
     document.title = `${roomID} - Survive The Neffinet`
@@ -86,7 +87,7 @@ if (roomID) {
             })
         } else {
             if (localStorage.getItem("host") != null) {
-                userList.appendChild(createUser(localStorage.getItem("username"), 0, true, "me"))
+                //userList.appendChild(createUser(localStorage.getItem("username"), 0, true, "me"))
             }
         }
     }
@@ -135,7 +136,6 @@ if (roomID) {
     })
     socket.on('roomState', (data) => {
         roomData.started = data.started;
-        console.log("what")
         if (!roomData.started) {
             if (roomData.isHost) {
                 promptBox.innerHTML = `<p class="prompt">You're the host!</p><br><br>`
@@ -195,7 +195,7 @@ travelling "Rate the last place you've been to."
             prompt.classList.add("prompt");
             prompt.innerText = roomData.topic // random based on topic, look above
             const input = document.createElement("input");
-            input.placeholder = "Write here...";
+            input.placeholder = "Write your response here...";
             input.type = "text";
             input.maxLength = 50;
             const submitBtn = document.createElement("button");
@@ -241,7 +241,7 @@ travelling "Rate the last place you've been to."
             prompt.classList.add("prompt");
             prompt.innerText = topic;
             const input = document.createElement("input");
-            input.placeholder = "Write something funny...";
+            input.placeholder = "Write something funny here...";
             input.type = "text";
             input.maxLength = 50;
             const submitBtn = document.createElement("button");
@@ -340,6 +340,8 @@ travelling "Rate the last place you've been to."
                 break;
             case "nextround":
                 roomData.waiting = false;
+                roomData.twistUser = data.user
+                //const adjectives = ["HORRIBLE", "ACCURATE"]
                 switch (roomData.roundName) {
                     case "NEWS":
                         handleRound("would be a HORRIBLE comment for a news article titled...", 2, data.user, data.prompt)
@@ -351,7 +353,7 @@ travelling "Rate the last place you've been to."
                         handleRound("would be an ACCURATE description for...", 2, data.user, data.prompt)
                         break;
                     case "IMAGE":
-                        handleRound("the perfect ACCOMPANYING caption would be...", 2, data.user, data.prompt)
+                        handleRound("The perfect accompanying caption would be...", 2, data.user, data.prompt)
                         break;
                 }
                 break;
@@ -453,6 +455,14 @@ travelling "Rate the last place you've been to."
                         // submission forEach
                         for (let i = 0; i < submissions.length; i++) {
                             setTimeout(function() {
+                                clearTimeout(timers)
+                                countdown = 10;
+                                timer.innerText = "10s left"
+                                timers = setInterval(() => {
+                                    countdown--;
+                                    timer.innerText = `${countdown}s left`
+                                    if (countdown < 0) clearTimeout(timers);
+                                }, 1000)
                                 const submission = submissions[i];
                                 promptBox.classList.remove("show")
                                 promptBox.innerHTML = "";
@@ -463,6 +473,7 @@ travelling "Rate the last place you've been to."
                             }, i * 10000)
                         }
                         setTimeout(function() {
+                            clearTimeout(timers)
                             promptBox.innerHTML = ""
                             const finalsWrapDiv = document.createElement("div");
                             finalsWrapDiv.classList.add("finals-wrap");
@@ -473,8 +484,10 @@ travelling "Rate the last place you've been to."
                                 resultDiv.id = `result-${i}`;
                                 resultDiv.onclick = function() {
                                     if (previouslySelected == i) return;
+                                    if (submissions[i].username == roomData.twistUser) return;
                                     roomData.selected = submissions[i];
                                     resultDiv.classList.add("selected");
+                                    socket.emit("vote", submissions[i]);
                                     if (previouslySelected != -1) {
                                         const findPrev = document.getElementById(`result-${previouslySelected}`)
                                         if (findPrev) {
@@ -497,6 +510,22 @@ travelling "Rate the last place you've been to."
                             finalsDiv.innerHTML = `<p>CAST YOUR VOTES!</p>`;
                             finalsDiv.appendChild(finalsWrapDiv)
                             promptBox.appendChild(finalsDiv);
+                            countdown = 30;
+                            timer.innerText = "30s left"
+                            timers = setInterval(() => {
+                                countdown--;
+                                timer.innerText = `${countdown}s left`
+                                if (countdown < 0) clearTimeout(timers);
+                            }, 1000)
+                            if (roomData.isHost) {
+                                socket.emit("roomEvent", {
+                                    event: "votingtime"
+                                })
+                            }
+                            setTimeout(function() {
+                                timer.innerText = "Waiting..."
+                                promptBox.innerHTML = ""
+                            }, 30000)
                         }, submissions.length * 10000)
                     }
                 }, 2000)
@@ -531,6 +560,46 @@ travelling "Rate the last place you've been to."
                 })
                 promptBox.appendChild(waitingForDiv);
                 break;
+            case "winneris":
+                setTimeout(function() {
+                    clearTimeout(timers)
+                    timer.innerText = "Waiting..."
+                    promptBox.classList.remove("show")
+                    promptBox.innerHTML = "<h3>The winner is...</h3>";
+                    setTimeout(() => {
+                        promptBox.classList.add("show")
+                    }, 50)
+                    setTimeout(function() {
+                        console.debug("winneris", data)
+                        if (data.noone) {
+                            promptBox.innerHTML = "<h3>Nobody won, what.</h3>";
+                        } else {
+                            const resultDiv = createTopic(data.submission, false);
+                            promptBox.innerHTML = "";
+                            const h3Win = document.createElement("h3");
+                            const h3Sac = document.createElement("h3");
+                            h3Win.innerText = `Winner - ${data.winner} (+${data.winPoints.points})`;
+                            h3Sac.innerText = `Sacrifice - ${data.submission.username} (+${data.sacPoints.points})`;
+                            promptBox.appendChild(h3Win)
+                            promptBox.appendChild(h3Sac)
+                            promptBox.appendChild(resultDiv)
+                            const winnerPoints = document.getElementById(`user-points-${data.winPoints.hash}`)
+                            const sacPoints = document.getElementById(`user-points-${data.sacPoints.hash}`)
+                            if (winnerPoints && sacPoints) {
+                                winnerPoints.innerText = data.winPoints.points
+                                sacPoints.innerText = data.sacPoints.points
+                            }
+                            setTimeout(function() {
+                                if (roomData.isHost) {
+                                    socket.emit("roomEvent", {
+                                        event: "nexttopic"
+                                    })
+                                }
+                            }, 4000)
+                        }
+                    }, 1500)
+                }, 1000)
+                break;
         }
     })
     socket.on('join', (data) => {
@@ -547,11 +616,15 @@ travelling "Rate the last place you've been to."
     })
     socket.on('addme', (data) => {
         console.debug("add me", data)
+        if (data.name == localStorage.getItem("username") && roomData.isHost) {
+            userList.appendChild(createUser(localStorage.getItem("username"), data.points, true, data.idHash))
+        }
         if (!roomData.users.find(user => user.name == data.name)) {
             roomData.users.push({ name: data.name, points: data.points, idHash: data.idHash })
         } else if (roomData.users.length == 1) {
             roomData.users = [{ name: data.name, points: data.points, idHash: data.idHash }]
         }
+        
     })
     socket.on('leave', (data) => {
         console.debug(`leave ${data}`)

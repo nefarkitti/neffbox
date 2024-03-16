@@ -54,8 +54,22 @@ const sha512 = (str) => crypto.createHash('sha512').update(str).digest('hex');
 const base64_encode = (str) => Buffer.from(str, 'utf-8').toString('base64');
 const base64_decode = (str) => Buffer.from(str, 'base64').toString('utf-8');
 
+
+
+function shuffleNoCollide(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * i); // no +1 here!
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
 function shuffle(array) {
-    let currentIndex = array.length,  randomIndex;
+    return shuffleNoCollide(array);
+    //let currentIndex = array.length-1,  randomIndex;
+    let currentIndex = array.length, randomIndex;
   
     // While there remain elements to shuffle.
     while (currentIndex > 0) {
@@ -72,14 +86,19 @@ function shuffle(array) {
     return array;
 }
 
-function shuffleNoCollide(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * i); // no +1 here!
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
+function genUser(username, userToken) {
+    return {
+        id: null,
+        name: username,
+        token: userToken,
+        points: 0,
+        finished: false,
+        topic2: null,
+        topic2user: null,
+        response1: null,
+        response2: null,
+        votedFor: null
     }
-    return array;
 }
 
 // TODO: give each user a "token" when joining a room, that they keep
@@ -101,8 +120,6 @@ function getRoom(id) {
     return rooms.find(room => room.id.toString() == id.toString());
 }
 
-
-
 function generateUniqueRoomID() {
     let roomId;
     let attempts = 0;
@@ -121,7 +138,6 @@ function generateUniqueRoomID() {
 
         attempts++;
     }
-
     return -1;
 }
 function uploadFileRoom(id, hash) {
@@ -171,7 +187,7 @@ app.post('/create', (req, res) => {
         topicRound: 1,
         started: false,
         voting: false,
-        users: [{id: null, name: username, token: userToken, points: 0}],
+        users: [genUser(username, userToken)],
         rounds: shuffle(["NEWS", "RATINGS", "TRAVELLING"]),
         imgs: new Map()
     })
@@ -205,7 +221,7 @@ app.post('/join', (req, res) => {
     const userInRoom = rooms.find(room => room.users.find(user => user.token == calculateUserHash(ip, username, room.id)))
     if (userInRoom) return res.status(400).send("you are already in a room!");
     const userToken = calculateUserHash(ip, username, roomID);
-    roomData.users.push({ id: null, name: username, token: userToken, points: 0 });
+    roomData.users.push(genUser(username, userToken));
     return res.json({
         users: roomData.users.map(user => { 
             return { name: user.name, points: user.points, idHash: sha512(user.name) }
@@ -249,33 +265,18 @@ app.get('/imgs/:room/:hash', (req, res) => {
     res.send(buffer);
 });
 
-
-
 function getTopics(topic) {
-    return [
-        "Tell me your opinion about JOSHUA ROWBOTTOM!?!?!",
-        "AAAA",
-        "BBBB",
-        "CCCC",
-        "DDDD",
-        "EEEE",
-        "FFFF"
-    ]
     // minimum of 6 because 6 players
     switch (topic) {
-        // yes but itll be confusing!
-        // can i do these later i wanna see it actually play teehee
-        // these are the questions itll show anyways you wanna make a room or oka!
-        // how so
-        // ill make a room
+        // yesssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
         case "NEWS":
-            return ["Queen lizzy has returned from the dead! What do you make of this??", ""]
+            return ["Queen lizzy has returned from the dead! What do you make of this??", "What's your opinion on the recent inflation rises??", "King Charles dethroned! Your reaction to this is..."]
         case "RATINGS":
-            return ["What do you think of the latest iPhone?"]
+            return ["What do you think of the latest iPhone?", "Review the last meal that you had.", "How was the last country you visited?", "Give an honest review of someone you know."]
         case "TRAVELLING":
-            return ["Rate the last place you've been to.", ""]
-        case "IMAGE":
-            return []
+            return ["Review the last place you've been to.", "Describe your country in a few words!", "What kind of place is your local area?", "Where do you live? 👁️", "How's the weather over there?"]
+        case "IMAGE": // image would have a single one because there's no point in having multiple prompts
+            return ["Provide us with a funny image and describe it for the next player!"]
     }
 }
 
@@ -288,7 +289,7 @@ sio.on('connection', socket => {
     let userData = {};
     let roomData = {};
     function broadcast(roomID, content) {
-        console.log(`[${roomData.id}] SERVER > ${content}`);
+        console.log(`[${roomID}] SERVER > ${content}`);
         sio.to(roomID).emit('message', {
             username: systemName,
             content
@@ -326,6 +327,7 @@ sio.on('connection', socket => {
             })
             sio.to(roomData.id).emit('roomEvent', { event: "results", submissions });
         } else {
+            updatedRoomData.voting = false;
             updatedRoomData.users = updatedRoomData.users.map(user => {
                 const shuffledUser = updatedRoomData.users[shuffledUsers[updatedRoomData.users.indexOf(user)]]; // insanity
                 user.topic2 = shuffledUser.response1
@@ -349,6 +351,8 @@ sio.on('connection', socket => {
             if (user.finished) return user;
             user[`response${updatedRoomData.topicRound}`] = "[No response given]";
             user.finished = true;
+            user.voting = false;
+            
             sio.to(roomData.id).emit('roomEvent', { event: "waiting", users: [] });
             return user;
         })
@@ -367,11 +371,15 @@ sio.on('connection', socket => {
             case "nexttopic":
                 clearTimeout(submitTimeouts[roomData.id]);
                 updatedRoomData.round++;
-                //const roundName = updatedRoomData.rounds[updatedRoomData.round]
-                const roundName = "RATINGS"
+                updatedRoomData.topicRound = 1;
+                const roundName = updatedRoomData.rounds[updatedRoomData.round]
                 const topics = shuffle(getTopics(roundName))
                 updatedRoomData.users = updatedRoomData.users.map(user => {
                     user.finished = false;
+                    delete user.votedFor;
+                    user.voting = false;
+                    user.topic2 = null
+                    user.topic2response = null
                     user.topic1 = topics[updatedRoomData.users.indexOf(user)]; // shuffle it! do a func or something
                     sio.to(user.id).emit('roomEvent', { event: "yourtopic", topic: user.topic1 })
                     return user;
@@ -379,13 +387,81 @@ sio.on('connection', socket => {
                 submitTimeouts[roomData.id] = setTimeout(notEveryoneDid, submitTimer * 1000)
                 sio.to(roomData.id).emit('roomEvent', { event: "nexttopic", round: updatedRoomData.round, roundName });
                 break;
+            case "votingtime":
+                setTimeout(function() {
+                    const updatedRoomData = getRoom(roomData.id);
+                    if (!updatedRoomData) return socket.emit('error', "couldnt find room");
+                    /*
+return {
+                    username: user.topic2user,
+                    title: user.topic2,
+                    desc: user.response2
+                }
+                    */
+                    const unvoters = updatedRoomData.users.filter(user => !user.votedFor);
+                    for (let i = 0; i < unvoters.length; i++) {
+                        const randomUser = shuffle(updatedRoomData.users);
+                        const findUser = updatedRoomData.users.find(user => {
+                            return user.topic2user == randomUser.name
+                        });
+                        // yeah no im not going to add a check, im too lazy!
+                        unvoters[i].votedFor = {
+                            username: user.topic2user,
+                            title: user.topic2,
+                            desc: user.response2,
+                            actual: findUser.name
+                        }
+                    }
+                    const allVoters = updatedRoomData.users.filter(user => user.votedFor).map(user => user.votedFor);
+                    
+                    if (!allVoters.length) return sio.to(roomData.id).emit('roomEvent', {
+                        event: "winneris",
+                        noone: true
+                    })
+                    const submitterCounts = {};
+                    allVoters.forEach(vote => {
+                        const submitter = vote.actual;
+                        submitterCounts[submitter] = (submitterCounts[submitter] || 0) + 1;
+                    });
+
+                    // Find the submitter with the highest count
+                    let winner;
+                    let maxVotes = -1;
+                    for (const submitter in submitterCounts) {
+                        if (submitterCounts[submitter] > maxVotes) {
+                            maxVotes = submitterCounts[submitter];
+                            winner = submitter;
+                        }
+                    }
+                    const winnerObj = allVoters.find(vote => vote.actual === winner);
+
+                    const winnerUser = updatedRoomData.users.find(user => user.name == winnerObj.actual)
+                    const sacUser = updatedRoomData.users.find(user => user.name == winnerObj.username)
+                    winnerUser.points += maxVotes * 100;
+                    sacUser.points += (maxVotes * 100) * (1/5);
+                    sio.to(roomData.id).emit('roomEvent', {
+                        event: "winneris",
+                        submission: winnerObj,
+                        winner: winnerObj.actual,
+                        voteCount: maxVotes,
+                        winPoints: {
+                            hash: sha512(winnerUser.name),
+                            points: winnerUser.points
+                        },
+                        sacPoints: {
+                            hash: sha512(sacUser.name),
+                            points: sacUser.points
+                        },
+                    })
+                }, 30000)
+                break;
         }
     })
 
     socket.on("topicFinish", (content) => {
         if (content.length > 50) return socket.emit("error", "response too long");
         const updatedRoomData = getRoom(roomData.id);
-        if (!updatedRoomData) return socket.emit('error', "couldnt find room")
+        if (!updatedRoomData) return socket.emit('error', "couldnt find room");
         if (updatedRoomData.voting) return socket.emit('error', "how")
         
         const updatedUserData = updatedRoomData.users.find(user => user.name == userData.name);
@@ -400,6 +476,26 @@ sio.on('connection', socket => {
             clearTimeout(submitTimeouts[roomData.id]);
             finishRound(updatedRoomData);
         }
+    })
+    socket.on("vote", (data) => {
+        const updatedRoomData = getRoom(roomData.id);
+        if (!updatedRoomData) return socket.emit('error', "couldnt find room");
+        if (!updatedRoomData.voting) return socket.emit('error', "HOW.");
+        const updatedUserData = updatedRoomData.users.find(user => user.name == userData.name);
+        if (!updatedUserData) return socket.emit('error', "couldnt find user");
+        /*
+return {
+                    username: user.topic2user,
+                    title: user.topic2,
+                    desc: user.response2
+                }
+        */
+        const findUser = updatedRoomData.users.find(user => {
+            return user.topic2user == data.username
+        });
+        if (!findUser) return socket.emit('error', "couldnt find who made that");
+        updatedUserData.votedFor = { ...data, actual: findUser.name };
+
     })
     socket.on('join', async (callback) => {
         roomData = getRoom(callback.id);
@@ -454,6 +550,9 @@ sio.on('connection', socket => {
         content = content.replaceAll("/shrug", "¯\\_(ツ)_/¯")
         console.log(`[${roomData.id}] ${userData.name} > ${content}`);
         switch (content.split(" ")[0]) {
+            case "/fumomote":
+                content = (content + " ᗜˬᗜ").trim();
+                break;
             case "/fumo":
                 content = `⠀⢀⣒⠒⠆⠤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⢠⡛⠛⠻⣷⣶⣦⣬⣕⡒⠤⢀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -514,7 +613,7 @@ sio.on('connection', socket => {
         if (!roomData || !userData) return;
         broadcast(roomData.id, `${userData.name} has left.`);
         roomData.users.splice(roomData.users.indexOf(userData), 1);
-        socket.emit("leave", sha512(userData.name));
+        sio.to(roomData.id).emit("leave", sha512(userData.name));
         if (roomData.host == userData.name) {
             console.log(`Destroy room ${roomData.id}`);
             sio.to(roomData.id).emit("forceDisconnect", "The host has left.");
@@ -539,7 +638,7 @@ sio.on('connection', socket => {
             } else {
                 broadcast(roomData.id, `${username} has left.`);
                 roomData.users.splice(roomData.users.indexOf(roomData.users.find(user => user.name == username)), 1);
-                socket.emit("leave", sha512(username));
+                sio.to(roomData.id).emit("leave", sha512(username));
             }
         }, 5000); // Adjust this time as per your requirements
     });
