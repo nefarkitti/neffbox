@@ -550,7 +550,7 @@ travelling "Rate the last place you've been to."
                             <span>patrick</span>
                         </div>
                 */
-                promptBox.innerHTML = "<h3>Waiting for other players...</h3>";
+                promptBox.innerHTML = "<img class='loading-img' src='../assets/loop.gif'><h3>Waiting for other players...</h3>";
                 const waitingForDiv = document.createElement("div");
                 waitingForDiv.classList.add("waitingFor");
                 data.users.forEach(user => {

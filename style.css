@@ -345,6 +345,10 @@ img {
     transform: translate(-40%, -35%);
     display: none;
 }
+.loading-img {
+    margin-bottom: 10px;
+    image-rendering: pixelated;
+}
 .tick i {
     font-size: 35px !important;
     transform:rotate(-20deg);
