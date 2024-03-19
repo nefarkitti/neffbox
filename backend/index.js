@@ -368,10 +368,10 @@ function getTopics(topic) {
     }
 }
 
-//navigator.product = "ReactNative"
+navigator.product = "ReactNative"
 import EmojiConvertor from 'emoji-js';
 const emoji = new EmojiConvertor();
-emoji.replace_mode = "unified" //
+//emoji.replace_mode = "unified" //
 
 function addPoints(roomID, username, points) {
     const roomData = getRoom(roomID);
