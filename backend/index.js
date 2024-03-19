@@ -50,6 +50,7 @@ const sio = new Server(server, {
         origin: "*"
     }
 });
+app.set("trust proxy", true); 
 
 app.use(rateLimit({
 	windowMs: 5 * 60 * 1000, // 5 minutes
@@ -807,7 +808,8 @@ if (DEVELOPMENT) {
         res.sendStatus(200)
     });
 }
+const PORT = process.env.PORT || 10080;
 
-server.listen(10080, async () => {
-    console.log(`Server Listening on port @10080`)
+server.listen(PORT, async () => {
+    console.log(`Server Listening on port @${PORT}`)
 })
