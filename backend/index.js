@@ -367,10 +367,10 @@ function getTopics(topic) {
     }
 }
 
-navigator.product = "ReactNative"
+//navigator.product = "ReactNative"
 import EmojiConvertor from 'emoji-js';
 const emoji = new EmojiConvertor();
-//emoji.replace_mode = "unified"
+emoji.replace_mode = "unified" //
 
 function addPoints(roomID, username, points) {
     const roomData = getRoom(roomID);
@@ -478,6 +478,30 @@ sio.on('connection', socket => {
                 updatedRoomData.round++;
                 updatedRoomData.topicRound = 1;
                 const roundName = updatedRoomData.rounds[updatedRoomData.round - 1]
+                if (!roundName) {
+                    // assume that rounds ended
+                    updatedRoomData.voting = false;
+                    updatedRoomData.started = false;
+                    const winner = updatedRoomData.users.reduce((prevUser, currentUser) => {
+                        return (prevUser.points > currentUser.points) ? prevUser : currentUser;
+                    });
+                    sio.to(roomData.id).emit('roomEvent', { event: "gameend", username: winner.name, points: winner.points })
+                    updatedRoomData.users = updatedRoomData.users.map(user => {
+                        return {
+                            id: user.id,
+                            name: user.name,
+                            token: user.token,
+                            points: 0,
+                            finished: false,
+                            topic2: null,
+                            topic2user: null,
+                            response1: null,
+                            response2: null,
+                            votedFor: null
+                        }
+                    })
+                    return;
+                }
                 if (roundName == "IMAGE") {
                     updatedRoomData.doubleTime = true;
                 } else {

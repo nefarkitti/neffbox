@@ -1,6 +1,5 @@
-//let URL = "https://neffi.firee.dev/neffbox"
-URL = "https://gentle-snakes-marry.loca.lt/"
-//URL = "https://dry-seals-help.loca.lt/"
-if (window.location.host == "localhost:3000") {
+let URL = "https://neffi.firee.dev/neffbox"
+console.log(window.location.host)
+if (window.location.host.startsWith("localhost")) {
     URL = "http://localhost:3000"
 }

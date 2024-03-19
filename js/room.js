@@ -31,6 +31,16 @@ function loadMessage(username, content) {
     messages.scrollTop = messages.scrollHeight;
 }
 
+function setIcon(hash, className) {
+    const getIcon = document.getElementById(`user-icon-${hash}`);
+    if (getIcon) {
+        getIcon.classList.remove("fa-user");
+        getIcon.classList.remove("fa-circle-check")
+        getIcon.classList.remove("fa-hourglass-half");
+        getIcon.classList.add(className);
+    }
+}
+
 function createUser(username, points, isHost, hash) {
     /*
 <div class="host">
@@ -160,12 +170,7 @@ if (roomID) {
     let countdown = 60;
     function handleRound(topic, round, player, resp) { // last 2 are for round 2
         roomData.users.forEach(user => {
-            const getIcon = document.getElementById(`user-icon-${user.idHash}`);
-            if (getIcon) {
-                getIcon.classList.remove("fa-user");
-                getIcon.classList.remove("fa-circle-check")
-                getIcon.classList.add("fa-hourglass-half");
-            }
+            setIcon(user.idHash, "fa-hourglass-half");
         })
         clearTimeout(timers)
         countdown = 60;
@@ -217,7 +222,7 @@ if (roomID) {
                                 file: imageData,
                                 ext: input.files[0].type,
                                 username: localStorage.getItem("username")
-                            }).then(response => {
+                            }).then(() => {
                                 hiddenUploading.innerText = "Uploaded!"
                                 roomData.waiting = true;
                                 socket.emit("topicFinish", inputDesc.value);
@@ -339,6 +344,13 @@ if (roomID) {
     socket.on('roomEvent', (data) => {
         switch (data.event) {
             case "start":
+                roomData.waiting = false;
+                roomData.users.forEach(user => {
+                    const points = document.getElementById(`user-points-${user.idHash}`)
+                    if (points) {
+                        points.innerText = "0"
+                    }
+                })
                 roomData.started = true;
                 timer.innerText = "Starting...";
                 promptBox.innerHTML = "<h3>5</h3>"
@@ -387,6 +399,7 @@ if (roomID) {
                 <h1 class="round-number">Round ${roomData.round}</h1>
                 <h2 class="round-topic">${roomData.roundName}</h2>
                 `
+                document.getElementById("roundnameth").innerText = `- GAME (${roomData.roundName}) -`
                 setTimeout(() => {
                     promptBox.classList.add("show")
                 }, 50)
@@ -430,6 +443,9 @@ if (roomID) {
                 break;
             case "results":
                 clearTimeout(timers)
+                roomData.users.forEach(user => {
+                    setIcon(user.idHash, "fa-user");
+                })
                 promptBox.innerHTML = "<h3>Now for the results!</h3>";
                 timer.innerText = "Waiting...";
                 function createTopic(submission, animate) {
@@ -639,12 +655,7 @@ if (roomID) {
                 //id="user-icon-${hash}"
                 const usersNotWaiting = roomData.users.filter(user => data.users.find(use => use.username != user.name))
                 usersNotWaiting.forEach(user => {
-                    const getIcon = document.getElementById(`user-icon-${user.idHash}`);
-                    if (getIcon) {
-                        getIcon.classList.remove("fa-user");
-                        getIcon.classList.remove("fa-hourglass-half");
-                        getIcon.classList.add("fa-circle-check")
-                    }
+                    setIcon(user.idHash, "fa-circle-check")
                 })
                 if (!roomData.waiting) return;
                 /*
@@ -703,6 +714,45 @@ if (roomID) {
                                     })
                                 }
                             }, 4000)
+                        }
+                    }, 1500)
+                }, 1000)
+                break;
+            case "gameend":
+                setTimeout(function() {
+                    document.getElementById("roundnameth").innerText = `- GAME -`
+                    roomData.users.forEach(user => {
+                        setIcon(user.idHash, "fa-user");
+                    })
+                    clearTimeout(timers)
+                    timer.innerText = "Waiting..."
+                    promptBox.classList.remove("show")
+                    promptBox.innerHTML = "<h3>ROUND END!</h3>";
+                    setTimeout(() => {
+                        promptBox.classList.add("show")
+                    }, 50)
+                    setTimeout(function() {
+                        console.debug("gameend", data)
+                        promptBox.innerHTML = "";
+                        const h3Win = document.createElement("h3");
+                        const h3Sac = document.createElement("h3");
+                        h3Win.innerText = `Winner - ${data.username}`;
+                        h3Sac.innerText = `Won with ${data.points} points.`;
+                        promptBox.appendChild(h3Win)
+                        promptBox.appendChild(h3Sac)
+                        roomData.started = false;
+                        if (roomData.isHost) {
+                            const startBtn = document.createElement("button");
+                            startBtn.innerText = "Restart";
+                            startBtn.onclick = function() {
+                                //if (roomData.users.length < 3) return alert("You need 3 players to start the game!")
+                                socket.emit("roomEvent", {
+                                    event: "start"
+                                })
+                                roomData.started = true;
+                            }
+                            promptBox.appendChild(startBtn);
+                            // do some "restart" button here
                         }
                     }, 1500)
                 }, 1000)
