@@ -470,6 +470,7 @@ sio.on('connection', socket => {
         if (!updatedRoomData) return socket.emit('error', "couldnt find room")
         switch (data.event) {
             case "start":
+                if (updatedRoomData.users.length < 3) return sio.to(roomData.id).emit('error', "You need to have at least 3 players to start.");
                 updatedRoomData.started = true;
                 updatedRoomData.round = 0;
                 updatedRoomData.topicRound = 1;
