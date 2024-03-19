@@ -142,6 +142,7 @@ if (roomID) {
                 const startBtn = document.createElement("button");
                 startBtn.innerText = "Start the game";
                 startBtn.onclick = function() {
+                    //if (roomData.users.length < 3) return alert("You need 3 players to start the game!")
                     socket.emit("roomEvent", {
                         event: "start"
                     })
@@ -169,52 +170,120 @@ if (roomID) {
         clearTimeout(timers)
         countdown = 60;
         timer.innerText = "60s left"
+        if (topic == "IMAGE") {
+            countdown = 120
+            timer.innerText = "120s left"
+        }
         timers = setInterval(() => {
             countdown--;
             timer.innerText = `${countdown}s left`
             if (countdown < 0) clearTimeout(timers);
         }, 1000)
         promptBox.classList.remove("show")
-        /*
-news "Queen lizzy has returned from the dead! What do you make of this??"
-rating "What do you think of the latest iPhone?"
-travelling "Rate the last place you've been to."
-        */
-        // ratings as an example
-        /*
-<div class="promptBox">
-                        <p class="prompt">Tell me your opinion about JOSHUA ROWBOTTOM!?!?!</p>
-                        <input placeholder="Write here..." type="text" name="" id=""><br><br>
-                        <button>SUBMIT</button>
-                        <div style="display: none;">something went wrong for whatever reason!</div>
-                    </div>
-
-        */
         if (round == 1) {
-            const prompt = document.createElement("p");
-            prompt.classList.add("prompt");
-            prompt.innerText = roomData.topic // random based on topic, look above
-            const input = document.createElement("input");
-            input.placeholder = "Write your response here...";
-            input.type = "text";
-            input.maxLength = 50;
-            const submitBtn = document.createElement("button");
-            submitBtn.innerText = "SUBMIT";
-            submitBtn.onclick = function() {
-                if (!input.value.length) return;
-                // something with input yada yada
-                roomData.waiting = true;
-                socket.emit("topicFinish", input.value);
+            if (roomData.roundName == "IMAGE") {
+                const prompt = document.createElement("p");
+                prompt.classList.add("prompt");
+                prompt.innerText = roomData.topic;
+                const input = document.createElement("input");
+                input.accept = "image/*"
+                input.name = "photo"
+                input.id = "photo";
+                input.type = "file";
+
+                const previewDiv = document.createElement("div");
+                previewDiv.classList.add("inputImage");
+                previewDiv.innerHTML = `<span>Preview</span><br>`;
+                const imgPreview = document.createElement("img");
+                imgPreview.id = "imagePreview";
+                previewDiv.appendChild(imgPreview);
+                const inputDesc = document.createElement("input");
+                inputDesc.placeholder = "This is an image of...";
+                inputDesc.type = "text";
+                inputDesc.maxLength = 50;
+                const submitBtn = document.createElement("button");
+                submitBtn.innerText = "SUBMIT";
+                const hiddenUploading = document.createElement("div");
+                submitBtn.onclick = function() {
+                    if (!inputDesc.value.length) return;
+                    hiddenUploading.innerText = "Uploading..."
+                    // something with input yada yada
+                    const input = document.getElementById("photo");
+                    if (input.files && input.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const imageData = event.target.result;
+                            axios.post(`${URL}/upload?roomID=${roomData.id}`, {
+                                file: imageData,
+                                ext: input.files[0].type,
+                                username: localStorage.getItem("username")
+                            }).then(response => {
+                                hiddenUploading.innerText = "Uploaded!"
+                                roomData.waiting = true;
+                                socket.emit("topicFinish", inputDesc.value);
+                            }).catch(error => {
+                                hiddenUploading.innerText = "Error, please check console for info."
+                                console.error('There was a problem with the upload:', error);
+                                // Handle error
+                            });
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+                promptBox.innerHTML = "";
+                promptBox.appendChild(prompt);
+                promptBox.appendChild(input);
+                promptBox.appendChild(previewDiv);
+                promptBox.appendChild(document.createElement("br"))
+                promptBox.appendChild(document.createElement("br"));
+                promptBox.innerHTML += "<p>Now describe the image for the others!</p>"
+                promptBox.appendChild(inputDesc)
+                promptBox.appendChild(submitBtn)
+                promptBox.appendChild(hiddenUploading);
+                setTimeout(() => {
+                    promptBox.classList.add("show")
+                }, 50)
+                document.getElementById("photo").onchange = function(e) {
+                    const input = e.target;
+                    if (input.files && input.files[0]) {
+                        if (input.files[0].size > 100 * 1024 * 1024) {
+                            input.value = '';
+                            hiddenUploading.innerText = "You cannot upload a file that's larger than 100 MB."
+                        } else {
+                            const reader = new FileReader();
+                            reader.onload = function(ef) {
+                                document.getElementById("imagePreview").src = ef.target.result;
+                            };
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                    }
+                }
+            } else {
+                const prompt = document.createElement("p");
+                prompt.classList.add("prompt");
+                prompt.innerText = roomData.topic // random based on topic, look above
+                const input = document.createElement("input");
+                input.placeholder = "Write your response here...";
+                input.type = "text";
+                input.maxLength = 50;
+                const submitBtn = document.createElement("button");
+                submitBtn.innerText = "SUBMIT";
+                submitBtn.onclick = function() {
+                    if (!input.value.length) return;
+                    // something with input yada yada
+                    roomData.waiting = true;
+                    socket.emit("topicFinish", input.value);
+                }
+                promptBox.innerHTML = "";
+                promptBox.appendChild(prompt);
+                promptBox.appendChild(input);
+                promptBox.appendChild(document.createElement("br"))
+                promptBox.appendChild(document.createElement("br"))
+                promptBox.appendChild(submitBtn)
+                setTimeout(() => {
+                    promptBox.classList.add("show")
+                }, 50)
             }
-            promptBox.innerHTML = "";
-            promptBox.appendChild(prompt);
-            promptBox.appendChild(input);
-            promptBox.appendChild(document.createElement("br"))
-            promptBox.appendChild(document.createElement("br"))
-            promptBox.appendChild(submitBtn)
-            setTimeout(() => {
-                promptBox.classList.add("show")
-            }, 50)
         } else if (round == 2) {
             /*
                     <div class="message">
@@ -310,6 +379,8 @@ travelling "Rate the last place you've been to."
                         */
                 roomData.round = data.round;
                 roomData.roundName = data.roundName;
+                roomData.waiting = false;
+                delete roomData.selected
                 // definitely not vulnerable to xss
                 promptBox.classList.remove("show")
                 promptBox.innerHTML = `
@@ -446,6 +517,39 @@ travelling "Rate the last place you've been to."
                             resultDiv.appendChild(messageDiv);
                             break;
                         }
+                        case "IMAGE": {
+                            /*
+                       <div class="result news">
+                            <span class="header"><i class="fa-solid fa-image"></i>IMAGE SHOWCASE</span>
+                            <div class="title">
+                                <img src="../assets/RED SNAPO.jpeg" alt="">
+                                <span class="username">Jeremiah</span><br>
+                                <span class="opinion">It sucked there. Never again.</span>
+                            </div>
+                      </div>
+                            */
+                            resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-image"></i>IMAGE SHOWCASE</span>`
+                            const titleDiv = document.createElement("div");
+                            titleDiv.classList.add("title");
+                            const img = document.createElement("img");
+                            img.alt = "Image Loading...";
+                            img.src = `${URL}/imgs/${roomData.id}/${submission.file}`
+                            const usernameSpan = document.createElement("span");
+                            usernameSpan.classList.add("username");
+                            usernameSpan.innerText = submission.username
+                            titleDiv.appendChild(img);
+                            titleDiv.appendChild(usernameSpan);
+                            titleDiv.appendChild(document.createElement("br"));
+                            const opinionSpan = document.createElement("span");
+                            opinionSpan.classList.add("opinion");
+                            opinionSpan.innerText = submission.desc
+                            titleDiv.appendChild(opinionSpan);
+                            setTimeout(() => {
+                                if (animate) opinionSpan.classList.add("response-animate");
+                            }, 51)
+                            resultDiv.appendChild(titleDiv);
+                            break;
+                        }
                     }
                     return resultDiv;
                 }
@@ -480,6 +584,7 @@ travelling "Rate the last place you've been to."
                             let previouslySelected = -1;
                             let previousHTML = ""
                             for (let i = 0; i < submissions.length; i++) {
+                                if (submissions[i].username == roomData.twistUser) continue;
                                 const resultDiv = createTopic(submissions[i], false);
                                 resultDiv.id = `result-${i}`;
                                 resultDiv.onclick = function() {
@@ -575,6 +680,8 @@ travelling "Rate the last place you've been to."
                             promptBox.innerHTML = "<h3>Nobody won, what.</h3>";
                         } else {
                             const resultDiv = createTopic(data.submission, false);
+                            // probably wont be xss, hahaha!
+                            resultDiv.innerHTML += `<div class="finals-results"><span>${data.voteCount} votes</span></div>`
                             promptBox.innerHTML = "";
                             const h3Win = document.createElement("h3");
                             const h3Sac = document.createElement("h3");
@@ -586,8 +693,8 @@ travelling "Rate the last place you've been to."
                             const winnerPoints = document.getElementById(`user-points-${data.winPoints.hash}`)
                             const sacPoints = document.getElementById(`user-points-${data.sacPoints.hash}`)
                             if (winnerPoints && sacPoints) {
-                                winnerPoints.innerText = data.winPoints.points
-                                sacPoints.innerText = data.sacPoints.points
+                                winnerPoints.innerText = parseInt(winnerPoints.innerText) + data.winPoints.points
+                                sacPoints.innerText = parseInt(sacPoints.innerText) + data.sacPoints.points
                             }
                             setTimeout(function() {
                                 if (roomData.isHost) {

@@ -46,15 +46,13 @@ app.use(cors({
 app.use(express.urlencoded({
     extended: false
 }))
-app.use(express.json())
+app.use(express.json({ limit: '100mb' }))
 
-app.use(express.raw({ limit: '100mb' })); // , type: 'image/*'
+//app.use(express.raw({ limit: '100mb' })); // , type: 'image/*'
 
 const sha512 = (str) => crypto.createHash('sha512').update(str).digest('hex');
 const base64_encode = (str) => Buffer.from(str, 'utf-8').toString('base64');
 const base64_decode = (str) => Buffer.from(str, 'base64').toString('utf-8');
-
-
 
 function shuffleNoCollide(array) {
     for (var i = array.length - 1; i > 0; i--) {
@@ -140,12 +138,6 @@ function generateUniqueRoomID() {
     }
     return -1;
 }
-function uploadFileRoom(id, hash) {
-    const room = getRoom(id);
-    if (!room) return false;
-    room.imgs.push(hash);
-    return true;
-}
 
 const uniqueKey = crypto.randomBytes(16).toString('hex');
 
@@ -188,7 +180,7 @@ app.post('/create', (req, res) => {
         started: false,
         voting: false,
         users: [genUser(username, userToken)],
-        rounds: shuffle(["NEWS", "RATINGS", "TRAVELLING"]),
+        rounds: [...shuffle(["NEWS", "RATINGS", "TRAVELLING"]), "IMAGE"],
         imgs: new Map()
     })
     return res.send({
@@ -236,15 +228,23 @@ app.post('/upload', (req, res) => {
     // but who cares [as]
     const roomID = req.query.roomID;
     const roomData = getRoom(roomID);
+    if (!roomData) return res.sendStatus(404);
     const file = req.body.file;
+    const extension = req.body.ext;
+    const username = req.body.username
     if (!file || file.length === 0) return res.status(400).send('Invalid file');
-    if (!roomID || !file) return res.sendStatus(400);
+    if (!roomID || !file || !extension || !username) return res.sendStatus(400);
     const hash = sha512(file)
+    console.debug(`/upload - ${roomID} - ${hash}`);
+    const findUser = roomData.users.find(user => {
+        return user.name == username
+    })
+    if (!findUser) return res.status(403).send("you tried uploading a file, but you dont have access to the room")
     roomData.imgs.set(hash, {
         buffer: file,
-        extension: req.get('Content-Type')
+        extension
     });
-    uploadFileRoom(roomID, hash);
+    findUser.file = hash;
     res.send(hash);
 })
 
@@ -259,14 +259,16 @@ app.get('/imgs/:room/:hash', (req, res) => {
 
     // Retrieve the image buffer from storage
     const { buffer, extension } = roomData.imgs.get(hash);
+    const base64ImageData = buffer.replace(/^data:image\/\w+;base64,/, '')
 
     // Set the appropriate content type and send the image buffer
     res.set('Content-Type', extension); // Change the content type according to your image type
-    res.send(buffer);
+    res.send(Buffer.from(base64ImageData, 'base64'));
 });
 
 function getTopics(topic) {
     // minimum of 6 because 6 players
+    console.log(`getTopics(${topic})`)
     switch (topic) {
         // yesssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
         case "NEWS":
@@ -277,10 +279,23 @@ function getTopics(topic) {
             return ["Review the last place you've been to.", "Describe your country in a few words!", "What kind of place is your local area?", "Where do you live? 👁️", "How's the weather over there?"]
         case "IMAGE": // image would have a single one because there's no point in having multiple prompts
             return ["Provide us with a funny image and describe it for the next player!"]
+        default:
+            return ["Uhh! Something went wrong!"]
     }
 }
 
 const EmojiConvertor = require('emoji-js');
+
+function addPoints(roomID, username, points) {
+    const roomData = getRoom(roomID);
+    if (!roomData) return;
+    const findUser = roomData.users.find(user => {
+        user.name == username;
+    })
+    if (!findUser) return;
+    findUser.points = findUser.points + points;
+
+}
 
 // socket server stuff!
 sio.on('connection', socket => {
@@ -322,7 +337,8 @@ sio.on('connection', socket => {
                 return {
                     username: user.topic2user,
                     title: user.topic2,
-                    desc: user.response2
+                    desc: user.response2,
+                    file: user.file2user
                 }
             })
             sio.to(roomData.id).emit('roomEvent', { event: "results", submissions });
@@ -332,10 +348,11 @@ sio.on('connection', socket => {
                 const shuffledUser = updatedRoomData.users[shuffledUsers[updatedRoomData.users.indexOf(user)]]; // insanity
                 user.topic2 = shuffledUser.response1
                 user.topic2user = shuffledUser.name
+                user.file2user = shuffledUser.file
                 user.finished = false;
                 return user;
             })
-            submitTimeouts[roomData.id] = setTimeout(notEveryoneDid, submitTimer * 1000)
+            submitTimeouts[roomData.id] = setTimeout(notEveryoneDid, ((updatedRoomData.round >= 4) ? submitTimer * 2 : submitTimer) * 1000)
             updatedRoomData.users.forEach(user => {
                 sio.to(user.id).emit('roomEvent', { event: "nextround", user: user.topic2user, prompt: user.topic2 });
             })
@@ -351,11 +368,11 @@ sio.on('connection', socket => {
             if (user.finished) return user;
             user[`response${updatedRoomData.topicRound}`] = "[No response given]";
             user.finished = true;
-            user.voting = false;
             
             sio.to(roomData.id).emit('roomEvent', { event: "waiting", users: [] });
             return user;
         })
+        updatedRoomData.voting = false;
         finishRound(updatedRoomData)
     }
 
@@ -366,24 +383,30 @@ sio.on('connection', socket => {
         switch (data.event) {
             case "start":
                 updatedRoomData.started = true;
+                updatedRoomData.round = 0;
+                updatedRoomData.topicRound = 1;
                 sio.to(roomData.id).emit('roomEvent', { event: "start" });
                 break;
             case "nexttopic":
                 clearTimeout(submitTimeouts[roomData.id]);
                 updatedRoomData.round++;
                 updatedRoomData.topicRound = 1;
-                const roundName = updatedRoomData.rounds[updatedRoomData.round]
+                const roundName = updatedRoomData.rounds[updatedRoomData.round - 1]
                 const topics = shuffle(getTopics(roundName))
                 updatedRoomData.users = updatedRoomData.users.map(user => {
                     user.finished = false;
                     delete user.votedFor;
-                    user.voting = false;
                     user.topic2 = null
                     user.topic2response = null
-                    user.topic1 = topics[updatedRoomData.users.indexOf(user)]; // shuffle it! do a func or something
+                    if (topics.length == 1) {
+                        user.topic1 = topics[0];
+                    } else {
+                        user.topic1 = topics[updatedRoomData.users.indexOf(user)];
+                    }
                     sio.to(user.id).emit('roomEvent', { event: "yourtopic", topic: user.topic1 })
                     return user;
                 })
+                updatedRoomData.voting = false;
                 submitTimeouts[roomData.id] = setTimeout(notEveryoneDid, submitTimer * 1000)
                 sio.to(roomData.id).emit('roomEvent', { event: "nexttopic", round: updatedRoomData.round, roundName });
                 break;
@@ -391,24 +414,25 @@ sio.on('connection', socket => {
                 setTimeout(function() {
                     const updatedRoomData = getRoom(roomData.id);
                     if (!updatedRoomData) return socket.emit('error', "couldnt find room");
-                    /*
-return {
-                    username: user.topic2user,
-                    title: user.topic2,
-                    desc: user.response2
-                }
-                    */
                     const unvoters = updatedRoomData.users.filter(user => !user.votedFor);
                     for (let i = 0; i < unvoters.length; i++) {
-                        const randomUser = shuffle(updatedRoomData.users);
-                        const findUser = updatedRoomData.users.find(user => {
+                        const randomUsers = shuffle(updatedRoomData.users);
+                        const randomUser = randomUsers[0];
+                        let findUser = updatedRoomData.users.find(user => {
                             return user.topic2user == randomUser.name
                         });
+                        if (findUser.name == unvoters[i].name) {
+                            findUser = updatedRoomData.users.find(user => {
+                                return user.topic2user == randomUsers[1].name
+                            });
+                            if (!findUser) break;
+                        }
                         // yeah no im not going to add a check, im too lazy!
                         unvoters[i].votedFor = {
-                            username: user.topic2user,
-                            title: user.topic2,
-                            desc: user.response2,
+                            username: randomUser.topic2user,
+                            title: randomUser.topic2,
+                            desc: randomUser.response2,
+                            file: randomUser.file,
                             actual: findUser.name
                         }
                     }
@@ -437,8 +461,16 @@ return {
 
                     const winnerUser = updatedRoomData.users.find(user => user.name == winnerObj.actual)
                     const sacUser = updatedRoomData.users.find(user => user.name == winnerObj.username)
-                    winnerUser.points += maxVotes * 100;
-                    sacUser.points += (maxVotes * 100) * (1/5);
+                    let winnerPoints = maxVotes * 100;
+                    let sacPoints = (maxVotes * 100) * (1/5);
+                    if (updatedRoomData.round >= 4) {
+                        winnerPoints *= 2
+                        sacPoints *= 2
+                    }
+                    /*addPoints(updatedRoomData.id, winnerUser.name, winnerPoints)
+                    addPoints(updatedRoomData.id, sacUser.name, sacPoints)*/
+                    winnerUser.points = winnerUser.points + winnerPoints
+                    sacUser.points = sacUser.points + sacPoints
                     sio.to(roomData.id).emit('roomEvent', {
                         event: "winneris",
                         submission: winnerObj,
@@ -446,11 +478,11 @@ return {
                         voteCount: maxVotes,
                         winPoints: {
                             hash: sha512(winnerUser.name),
-                            points: winnerUser.points
+                            points: winnerPoints
                         },
                         sacPoints: {
                             hash: sha512(sacUser.name),
-                            points: sacUser.points
+                            points: sacPoints
                         },
                     })
                 }, 30000)
@@ -459,12 +491,16 @@ return {
     })
 
     socket.on("topicFinish", (content) => {
+        if (!content || typeof content != "string") return socket.emit("error", "nice try")
         if (content.length > 50) return socket.emit("error", "response too long");
         const updatedRoomData = getRoom(roomData.id);
         if (!updatedRoomData) return socket.emit('error', "couldnt find room");
         if (updatedRoomData.voting) return socket.emit('error', "how")
         
         const updatedUserData = updatedRoomData.users.find(user => user.name == userData.name);
+        const emoji = new EmojiConvertor();
+        emoji.replace_mode = "unified"
+        content = emoji.replace_colons(content);
         updatedUserData[`response${updatedRoomData.topicRound}`] = content;
         updatedUserData.finished = true;
         userData = updatedUserData;
@@ -542,6 +578,7 @@ return {
     // i just realized i didnt even need to do any authentication after first authenticating, why didnt i realize this back then
     socket.on('user_message', async (content) => {
         if (!roomData || !userData) return socket.emit('error', "Invalid Session.");
+        if (!content || typeof content != "string") return socket.emit("error", "nice try")
         if (content.length > 256) return socket.emit('error', "Message too long!");
         
         const emoji = new EmojiConvertor();

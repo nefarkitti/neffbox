@@ -376,6 +376,9 @@ img {
 .finals .result * {
     font-size: smaller !important;
 }
+div.finals-results span {
+    font-weight: bolder;
+}
 .finals .result:hover {
     filter: brightness(110%);
     cursor: pointer;
