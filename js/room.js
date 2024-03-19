@@ -134,11 +134,12 @@ if (roomID) {
             }
         }
     }
-    socket = io.connect(URL, {
+    socket = io.connect(URL.replace("neffbox", ""), {
         reconnection: true,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 5000,
-        reconnectionAttempts: Infinity
+        reconnectionAttempts: Infinity,
+        path: "/neffbox/"
     });
     socket.emit("join", {
         id: roomData.id,
