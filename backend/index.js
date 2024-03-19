@@ -165,7 +165,7 @@ app.post('/create', (req, res) => {
     const username = req.body.username;
     if (!username) res.sendStatus(400);
     if (username.length > usernameLimit) return res.sendStatus(413);
-    if (username.length < 0) return res.status(400).send("whar");
+    if (!username.length) return res.status(400).send("whar");
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const userExists = rooms.find(room => room.users.find(user => user.token == calculateUserHash(ip, username, room.id)))
     if (userExists) return res.status(400).send("you are already in a room!");
@@ -203,7 +203,7 @@ app.post('/join', (req, res) => {
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     if (!roomID || !username) res.sendStatus(400);
     if (username.length > usernameLimit) return res.sendStatus(413);
-    if (username.length < 0) return res.status(400).send("whar");
+    if (!username.length) return res.status(400).send("whar");
     const roomData = getRoom(roomID)
     if (!roomData) return res.status(404).send("could not find room");
     if (roomData.users.length >= maxPlayers) return res.status(403).send(`there are too many players (${maxPlayers}) in the room`)
