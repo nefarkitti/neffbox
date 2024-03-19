@@ -18,7 +18,7 @@
 PADORU PADORU!!!!
 */
 
-const DEVELOPMENT = true;
+const DEVELOPMENT = false;
 
 import path from 'path';
 import express from 'express';
@@ -30,15 +30,16 @@ import validator from 'express-validator';
 import cors from 'cors';
 import crypto from 'crypto';
 import imageType from 'image-type';
-
-
-// simple fix 
 import url from 'url';
 
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// simple fix 
+if (DEVELOPMENT) {
 
-app.use(express.static(__dirname + "/../"))
+    const __filename = url.fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+
+    app.use(express.static(__dirname + "/../"))
+}
 // simple fix
 
 const usernameLimit = 10;
@@ -807,6 +808,6 @@ if (DEVELOPMENT) {
     });
 }
 
-server.listen(3000, async () => {
-    console.log(`Server Listening on port @3000`)
+server.listen(10080, async () => {
+    console.log(`Server Listening on port @10080`)
 })
