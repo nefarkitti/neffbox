@@ -83,7 +83,40 @@ const roomData = {
     selected: null,
     twistUser: null
 }
+const root = document.getElementById("root");
 if (roomID) {
+    root.innerHTML = `
+<span onclick="leaveGame()" class="leavebtn"><i class="fa-solid fa-right-to-bracket"></i></span>
+<main>
+        <div class="roomLayout">
+            <div class="roomItem hidemobile">
+                <h3>- LOBBY -</h3>
+                <div class="lobbyList" id="lobbyList">
+                </div>
+            </div>
+            <div class="roomItem gameItem">
+                <h3 id="roundnameth">- GAME -</h3>
+                <div class="game">
+                    <div class="promptBox show" id="promptBox"> <!--dont comment the id part thingy ok thank you!-->
+                    </div>
+                </div>
+                <span class="timer"><i class="fa-solid fa-clock"></i> <span id="timer">Waiting...</span></span>
+            </div>
+            <div class="roomItem chatItem hidemobile">
+                <h3>- CHAT -</h3>
+                <div class="chat">
+                    <div class="chat-list" id="messages">
+                    </div>
+                    <div class="chatbox">
+                        <form id="message-form">
+                            <input id="message-input" placeholder="Type a message here..." type="text">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+`
     document.title = `${roomID} - Survive The Neffinet`
     const userList = document.getElementById("lobbyList");
     if (userList) {
@@ -800,5 +833,9 @@ if (roomID) {
             socket.emit('user_message', content);
             document.getElementById('message-input').value = ''
         })
+    }
+} else {
+    if (root) {
+        root.innerText = "Page not found."
     }
 }
