@@ -50,13 +50,13 @@ const sio = new Server(server, {
         origin: "*"
     }
 });
-app.set("trust proxy", true); 
+app.set("trust proxy", 1); 
 
 app.use(rateLimit({
 	windowMs: 5 * 60 * 1000, // 5 minutes
 	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
 	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-    message: "Too many requests are being sent! Please try again later.",
+    message: "Too many requests are being sent! Please try again later."
 }))
 
 app.use(cors({
