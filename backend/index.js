@@ -20,24 +20,42 @@ PADORU PADORU!!!!
 
 const DEVELOPMENT = true;
 
-const path = require('path');
-const express = require('express');
-const http = require('http');
+import path from 'path';
+import express from 'express';
+import http from 'http';
 const app = express();
 const server = http.createServer(app);
-const rateLimit = require('express-rate-limit');
-const cors = require('cors');
-const crypto = require('crypto');
+import rateLimit from 'express-rate-limit';
+import validator from 'express-validator';
+import cors from 'cors';
+import crypto from 'crypto';
+import imageType from 'image-type';
+
+
+// simple fix 
+import url from 'url';
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.use(express.static(__dirname + "/../"))
+// simple fix
 
 const usernameLimit = 10;
 
-const sio = require('socket.io')(server, {
+import { Server } from 'socket.io'
+const sio = new Server(server, {
     cors: {
         origin: "*"
     }
 });
+
+app.use(rateLimit({
+	windowMs: 5 * 60 * 1000, // 5 minutes
+	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    message: "Too many requests are being sent! Please try again later.",
+}))
 
 app.use(cors({
     origin: true
@@ -46,7 +64,19 @@ app.use(cors({
 app.use(express.urlencoded({
     extended: false
 }))
-app.use(express.json({ limit: '100mb' }))
+app.use(
+    express.json({
+        limit: '80mb', // 100 might be a bit too much
+        verify : (req, res, buf, encoding) => {
+            try {
+                JSON.parse(buf);
+            } catch(e) {
+                res.status(403).send('no.');
+                throw Error('invalid JSON');
+            }
+        }
+    })
+)
 
 //app.use(express.raw({ limit: '100mb' })); // , type: 'image/*'
 
@@ -142,9 +172,10 @@ function generateUniqueRoomID() {
 const uniqueKey = crypto.randomBytes(16).toString('hex');
 
 function calculateUserHash(ip, username, id) {
+    const evenMoreUniqueKey = crypto.randomBytes(32).toString('hex');
     // best security
     //return sha512(`${uniqueKey}${ip}${req.headers['user-agent']}${username}${id}`)
-    return sha512(`${uniqueKey}${ip}${username}${id}`)
+    return sha512(`${uniqueKey}${ip}${username}${id}${evenMoreUniqueKey}`)
 }
 
 function getValidUser(roomData, username, token, ip) {
@@ -155,15 +186,38 @@ function getValidUser(roomData, username, token, ip) {
     }
 }
 
-app.get("/myhash", (req, res) => {
+app.get("/myhash", validator.query('username').notEmpty().isString(), (req, res) => {
+    const result = validator.validationResult(req);
+    if (!result.isEmpty()) return res.status(400).json({ errors: result.array() })
     if (!req.query.username) return res.sendStatus(400);
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     res.send(calculateUserHash(req.query.username, '00000', ip))
 })
 
-app.post('/create', (req, res) => {
+app.use('/create', rateLimit({
+	windowMs: 3 * 60 * 1000,
+	max: 3,
+	standardHeaders: true,
+    message: "Too many requests are being sent! Please try again later.",
+}))
+app.use('/join', rateLimit({
+	windowMs: 3 * 60 * 1000,
+	max: 30,
+	standardHeaders: true,
+    message: "Too many requests are being sent! Please try again later.",
+}))
+app.use('/upload', rateLimit({
+	windowMs: 1 * 60 * 1000,
+	max: 2,
+	standardHeaders: true,
+    message: "Too many requests are being sent! Please try again later.",
+}))
+
+app.post('/create', validator.body('username').notEmpty().isString(), (req, res) => {
+    const result = validator.validationResult(req);
+    if (!result.isEmpty()) return res.status(400).json({ errors: result.array() })
     const username = req.body.username;
-    if (!username) res.sendStatus(400);
+    if (!username || typeof username != 'string') res.sendStatus(400);
     if (username.length > usernameLimit) return res.sendStatus(413);
     if (!username.length) return res.status(400).send("whar");
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -197,35 +251,50 @@ const roomTimeouts = {};
 const submitTimeouts = {};
 const submitTimer = 60;
 
-app.post('/join', (req, res) => {
-    const roomID = req.body.roomID;
-    const username = req.body.username;
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    if (!roomID || !username) res.sendStatus(400);
-    if (username.length > usernameLimit) return res.sendStatus(413);
-    if (!username.length) return res.status(400).send("whar");
-    const roomData = getRoom(roomID)
-    if (!roomData) return res.status(404).send("could not find room");
-    if (roomData.users.length >= maxPlayers) return res.status(403).send(`there are too many players (${maxPlayers}) in the room`)
-    if (roomData.started) return res.status(403).send("the room has already started a round");
-    const userExists = roomData.users.find(user => user.name == username);
-    if (userExists) return res.status(403).send("someone has the same username in that room!");
-    const userInRoom = rooms.find(room => room.users.find(user => user.token == calculateUserHash(ip, username, room.id)))
-    if (userInRoom) return res.status(400).send("you are already in a room!");
-    const userToken = calculateUserHash(ip, username, roomID);
-    roomData.users.push(genUser(username, userToken));
-    return res.json({
-        users: roomData.users.map(user => { 
-            return { name: user.name, points: user.points, idHash: sha512(user.name) }
-        }),
-        host: roomData.host,
-        token: userToken
-    })
-})
+app.post(
+    '/join',
+    validator.body('roomID').notEmpty().isInt(),
+    validator.body('username').notEmpty().isString(),
+    (req, res) => {
+        const result = validator.validationResult(req);
+        if (!result.isEmpty()) return res.status(400).json({ errors: result.array() })
+        const roomID = req.body.roomID;
+        const username = req.body.username;
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        if (!roomID || !username) res.sendStatus(400);
+        if (typeof roomID != "string" || typeof username != "string") res.sendStatus(400);
+        if (username.length > usernameLimit) return res.sendStatus(413);
+        if (!username.length) return res.status(400).send("whar");
+        const roomData = getRoom(roomID)
+        if (!roomData) return res.status(404).send("could not find room");
+        if (roomData.users.length >= maxPlayers) return res.status(403).send(`there are too many players (${maxPlayers}) in the room`)
+        if (roomData.started) return res.status(403).send("the room has already started a round");
+        const userExists = roomData.users.find(user => user.name == username);
+        if (userExists) return res.status(403).send("someone has the same username in that room!");
+        const userInRoom = rooms.find(room => room.users.find(user => user.token == calculateUserHash(ip, username, room.id)))
+        if (userInRoom) return res.status(400).send("you are already in a room!");
+        const userToken = calculateUserHash(ip, username, roomID);
+        roomData.users.push(genUser(username, userToken));
+        return res.json({
+            users: roomData.users.map(user => { 
+                return { name: user.name, points: user.points, idHash: sha512(user.name) }
+            }),
+            host: roomData.host,
+            token: userToken
+        })
+    }
+)
 
-app.post('/upload', (req, res) => {
-    // bad security 101
-    // but who cares [as]
+function isValidBase64(str) {
+    if (typeof str !== 'string') return false;
+    const regex = /^(data:image\/[a-zA-Z]+;base64,)/;
+    return regex.test(str);
+}
+
+app.post('/upload', validator.query('roomID').notEmpty().isInt(), validator.body('username').notEmpty().isString(), validator.body('ext').notEmpty().isString(), validator.body('file').notEmpty().isString(), (req, res) => {
+    const result = validator.validationResult(req);
+    if (!result.isEmpty()) return res.status(400).json({ errors: result.array() })
+    // neffi the neffi
     const roomID = req.query.roomID;
     const roomData = getRoom(roomID);
     if (!roomData) return res.sendStatus(404);
@@ -234,21 +303,35 @@ app.post('/upload', (req, res) => {
     const username = req.body.username
     if (!file || file.length === 0) return res.status(400).send('Invalid file');
     if (!roomID || !file || !extension || !username) return res.sendStatus(400);
-    const hash = sha512(file)
-    console.debug(`/upload - ${roomID} - ${hash}`);
-    const findUser = roomData.users.find(user => {
-        return user.name == username
-    })
-    if (!findUser) return res.status(403).send("you tried uploading a file, but you dont have access to the room")
-    roomData.imgs.set(hash, {
-        buffer: file,
-        extension
+    //if (!isValidBase64(file)) return res.status(400).send("Invalid base64.")
+    const base64ImageData = file.replace(/^data:image\/\w+;base64,/, '')
+    const buffer = Buffer.from(base64ImageData, 'base64');
+    imageType(buffer).then(type => {
+        if (!type) return res.status(400).send('Invalid image file');
+        if (!type.mime || !type.mime.startsWith('image')) return res.status(400).send('Invalid image file');
+        if (extension != type.mime) return res.status(400).send("Extensions do not match!");
+        const hash = sha512(file)
+        console.debug(`/upload - ${roomID} - ${hash}`);
+        const findUser = roomData.users.find(user => {
+            return user.name == username
+        })
+        if (!findUser) return res.status(403).send("you tried uploading a file, but you dont have access to the room");
+        if (!file.startsWith("data")) return;
+        
+        roomData.imgs.set(hash, {
+            buffer: file,
+            extension: type.mime
+        });
+        findUser.file = hash;
+        res.send(hash);
+
+    }).catch(e => {
+        res.sendStatus(500);
+        console.error(e);
     });
-    findUser.file = hash;
-    res.send(hash);
 })
 
-app.get('/imgs/:room/:hash', (req, res) => {
+app.get('/imgs/:room/:hash', validator.query("room").notEmpty().isInt(), validator.query("hash").notEmpty().isString(), (req, res) => {
     const hash = req.params.hash;
     const room = req.params.room;
     const roomData = getRoom(room);
@@ -284,7 +367,10 @@ function getTopics(topic) {
     }
 }
 
-const EmojiConvertor = require('emoji-js');
+navigator.product = "ReactNative"
+import EmojiConvertor from 'emoji-js';
+const emoji = new EmojiConvertor();
+//emoji.replace_mode = "unified"
 
 function addPoints(roomID, username, points) {
     const roomData = getRoom(roomID);
@@ -352,7 +438,7 @@ sio.on('connection', socket => {
                 user.finished = false;
                 return user;
             })
-            submitTimeouts[roomData.id] = setTimeout(notEveryoneDid, ((updatedRoomData.round >= 4) ? submitTimer * 2 : submitTimer) * 1000)
+            submitTimeouts[roomData.id] = setTimeout(notEveryoneDid, ((updatedRoomData.doubleTime) ? submitTimer * 2 : submitTimer) * 1000)
             updatedRoomData.users.forEach(user => {
                 sio.to(user.id).emit('roomEvent', { event: "nextround", user: user.topic2user, prompt: user.topic2 });
             })
@@ -392,6 +478,11 @@ sio.on('connection', socket => {
                 updatedRoomData.round++;
                 updatedRoomData.topicRound = 1;
                 const roundName = updatedRoomData.rounds[updatedRoomData.round - 1]
+                if (roundName == "IMAGE") {
+                    updatedRoomData.doubleTime = true;
+                } else {
+                    updatedRoomData.doubleTime = false;
+                }
                 const topics = shuffle(getTopics(roundName))
                 updatedRoomData.users = updatedRoomData.users.map(user => {
                     user.finished = false;
@@ -463,7 +554,7 @@ sio.on('connection', socket => {
                     const sacUser = updatedRoomData.users.find(user => user.name == winnerObj.username)
                     let winnerPoints = maxVotes * 100;
                     let sacPoints = (maxVotes * 100) * (1/5);
-                    if (updatedRoomData.round >= 4) {
+                    if (updatedRoomData.doubleTime) {
                         winnerPoints *= 2
                         sacPoints *= 2
                     }
@@ -498,8 +589,6 @@ sio.on('connection', socket => {
         if (updatedRoomData.voting) return socket.emit('error', "how")
         
         const updatedUserData = updatedRoomData.users.find(user => user.name == userData.name);
-        const emoji = new EmojiConvertor();
-        emoji.replace_mode = "unified"
         content = emoji.replace_colons(content);
         updatedUserData[`response${updatedRoomData.topicRound}`] = content;
         updatedUserData.finished = true;
@@ -581,8 +670,6 @@ return {
         if (!content || typeof content != "string") return socket.emit("error", "nice try")
         if (content.length > 256) return socket.emit('error', "Message too long!");
         
-        const emoji = new EmojiConvertor();
-        emoji.replace_mode = "unified"
         content = emoji.replace_colons(content);
         content = content.replaceAll("/shrug", "¯\\_(ツ)_/¯")
         console.log(`[${roomData.id}] ${userData.name} > ${content}`);
