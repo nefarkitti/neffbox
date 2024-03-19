@@ -1,6 +1,6 @@
 let socket = null;
-const promptBox = document.getElementById("promptBox");
-const timer = document.getElementById("timer")
+let promptBox = document.getElementById("promptBox");
+let timer = document.getElementById("timer")
 function leaveGame() {
     if (socket != null) socket.emit("leave");
     const oldUsername = localStorage.getItem("username");
@@ -118,6 +118,8 @@ if (roomID) {
     </main>
 `
     document.title = `${roomID} - Survive The Neffinet`
+    promptBox = document.getElementById("promptBox");
+    timer = document.getElementById("timer")
     const userList = document.getElementById("lobbyList");
     if (userList) {
         if (localStorage.getItem("tempData") != null && localStorage.getItem("host") == null) {
