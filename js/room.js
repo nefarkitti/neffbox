@@ -421,8 +421,8 @@ if (roomID) {
                 }
                 break;
             case "nexttopic":
-                let actualRoundTitle = data.roundName
-                switch (data.roundName) {
+                let actualRoundTitle = roomData.roundName
+                switch (roomData.roundName) {
                     case "NEWS": {
                         actualRoundTitle = "TOP NEWS"
                         break;
@@ -581,7 +581,6 @@ if (roomID) {
                             titleDiv.appendChild(usernameSpan);
                             titleDiv.appendChild(document.createElement("br"));
                             titleDiv.innerHTML += `<span class="opinion">checked in at</span><br>`
-                            titleDiv.appendChild(flavourText)
                             const opinionSpan = document.createElement("span");
                             opinionSpan.classList.add("opinion");
                             opinionSpan.innerText = submission.title
@@ -609,7 +608,6 @@ if (roomID) {
                             titleSpan.classList.add("place")
                             titleDiv.appendChild(titleSpan);
                             titleDiv.innerHTML += `<span class="opinion">1 review</span><br>`
-                            titleDiv.appendChild(flavourText)
                             setTimeout(() => {
                                 if (animate) titleDiv.classList.add("response-animate");
                             }, 51)
