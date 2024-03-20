@@ -123,7 +123,6 @@ input:focus-visible {
     animation-iteration-count: infinite;
     overflow: hidden;
 }
-
 .promptBox {
     transform: translate(0, 100%);
 
@@ -151,16 +150,16 @@ input:focus-visible {
 }
 .response-animate {
     animation-name: showResponse;
-    animation-duration: 3s;
+    animation-duration: 2s;
     animation-timing-function:cubic-bezier(0.175, 0.885, 0.32, 1.275);
     animation-fill-mode: forwards;
     filter: opacity(0%);
-    transform:scale(130%, 130%);
+    transform:translate(200%, 0%) scale(200%, 200%);
 }
 @keyframes showResponse {
-    0% {filter: opacity(0%);transform:scale(130%, 130%);}
-    20% {filter: opacity(0%);transform:scale(130%, 130%);}
-    100% {filter: opacity(100%);transform:scale(100%, 100%);}
+    0% {filter: opacity(0%);transform:translate(200%, 0%) scale(200%, 200%);}
+    20% {filter: opacity(0%);transform:translate(100%, 0%) scale(200%, 200%);}
+    100% {filter: opacity(100%);transform:translate(0%, 0%) scale(100%, 100%);}
 }
 .noanim {
     animation: none !important;
@@ -282,6 +281,7 @@ input:focus-visible {
 }
 .news .opinion {
     font-weight: 400;
+    filter:opacity(75%)
 }
 .news span {
     width: 97%;

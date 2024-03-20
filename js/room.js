@@ -145,6 +145,7 @@ if (roomID) {
     socket.emit("join", {
         id: roomData.id,
         token: localStorage.getItem("secret")
+        // tax time!
     });
     /*if (roomData.isHost) {
         socket.on('reconnect', () => {
@@ -420,6 +421,33 @@ if (roomID) {
                 }
                 break;
             case "nexttopic":
+                let actualRoundTitle = data.roundName
+                switch (data.roundName) {
+                    case "NEWS": {
+                        actualRoundTitle = "TOP NEWS"
+                        break;
+                    }
+                    case "RATINGS": {
+                        actualRoundTitle = "REVIEWS"
+                        break;
+                    }
+                    case "TRAVELLING": {
+                        actualRoundTitle = "WONDERS OF THE WORLD"
+                        break;
+                    }
+                    case "IMAGES": {
+                        actualRoundTitle = "IMAGE SHOWCASE"
+                        break;
+                    }
+                    case "SHOPPING": {
+                        actualRoundTitle = `PRODUCT REVIEWS` // a bad reskin of reviews
+                        break;
+                    }
+                    default: {
+                        actualRoundTitle = data.roundName
+                        break;
+                    }
+                }
                 /*
                 <h1 class="round-number">Round (numbre)</h1>
                         <h2 class="round-topic">NEWS</h2>
@@ -432,7 +460,7 @@ if (roomID) {
                 promptBox.classList.remove("show")
                 promptBox.innerHTML = `
                 <h1 class="round-number">Round ${roomData.round}</h1>
-                <h2 class="round-topic">${roomData.roundName}</h2>
+                <h2 class="round-topic">${actualRoundTitle}</h2>
                 `
                 document.getElementById("roundnameth").innerText = `- GAME (${roomData.roundName}) -`
                 setTimeout(() => {
@@ -488,12 +516,14 @@ if (roomID) {
                     resultDiv.classList.add("result", "news");
                     switch (roomData.roundName) {
                         case "NEWS": {
-                            resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-newspaper"></i>TOP NEWS TODAY</span>`
+                            resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-newspaper"></i>THE NEW NEFFI TIMES</span>`
                             const titleDiv = document.createElement("div");
                             titleDiv.classList.add("title");
                             const titleSpan = document.createElement("span");
                             titleSpan.innerText = submission.desc;
                             titleDiv.appendChild(titleSpan);
+                            titleDiv.appendChild(document.createElement("br"));
+                            titleDiv.innerHTML += `<span class="opinion">1 comment found</span><br>`
                             setTimeout(() => {
                                 if (animate) titleDiv.classList.add("response-animate");
                             }, 51)
@@ -513,8 +543,8 @@ if (roomID) {
                             resultDiv.appendChild(messageDiv);
                             break;
                         }
-                        case "RATINGS": {
-                            resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-star-half-stroke"></i>RATINGS</span>`
+                        case "RATINGS": { // might remove this maybe idk
+                            resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-star-half-stroke"></i>NELP</span>`
                             const titleDiv = document.createElement("div");
                             titleDiv.classList.add("title");
                             const usernameSpan = document.createElement("span");
@@ -522,7 +552,7 @@ if (roomID) {
                             usernameSpan.innerText = submission.username
                             titleDiv.appendChild(usernameSpan);
                             titleDiv.appendChild(document.createElement("br"));
-                            titleDiv.innerHTML += `<span class="opinion">Recommends</span><br>`
+                            titleDiv.innerHTML += `<span class="opinion">recommends</span><br>`
                             const recommendSpan = document.createElement("span");
                             recommendSpan.classList.add("recommendation");
                             recommendSpan.innerText = submission.desc //submission.desc
@@ -542,7 +572,7 @@ if (roomID) {
                             break;
                         }
                         case "TRAVELLING": {
-                            resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-location-dot"></i>HOT TOURIST LOCATIONS</span>`
+                            resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-location-dot"></i>NEFFADVISOR</span>`
                             const titleDiv = document.createElement("div");
                             titleDiv.classList.add("title");
                             const usernameSpan = document.createElement("span");
@@ -550,6 +580,8 @@ if (roomID) {
                             usernameSpan.innerText = submission.username
                             titleDiv.appendChild(usernameSpan);
                             titleDiv.appendChild(document.createElement("br"));
+                            titleDiv.innerHTML += `<span class="opinion">checked in at</span><br>`
+                            titleDiv.appendChild(flavourText)
                             const opinionSpan = document.createElement("span");
                             opinionSpan.classList.add("opinion");
                             opinionSpan.innerText = submission.title
@@ -568,6 +600,35 @@ if (roomID) {
                             resultDiv.appendChild(messageDiv);
                             break;
                         }
+                        case "SHOPPING": { // bad reskin of reviews but we love feature bloat dont we hahahahahahahahahahahahahahahahhahahahahahahahahhahahahahahahahahahahhahahahhaha
+                            resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-cart-shopping"></i>NEFFMART</span>`
+                            const titleDiv = document.createElement("div");
+                            titleDiv.classList.add("title");
+                            const titleSpan = document.createElement("span");
+                            titleSpan.innerText = submission.desc;
+                            titleSpan.classList.add("place")
+                            titleDiv.appendChild(titleSpan);
+                            titleDiv.innerHTML += `<span class="opinion">1 review</span><br>`
+                            titleDiv.appendChild(flavourText)
+                            setTimeout(() => {
+                                if (animate) titleDiv.classList.add("response-animate");
+                            }, 51)
+                            
+                            const messageDiv = document.createElement("div");
+                            messageDiv.classList.add("message");
+                            const usernameSpan = document.createElement("span");
+                            usernameSpan.classList.add("username");
+                            usernameSpan.innerText = submission.username
+                            const contentSpan = document.createElement("span");
+                            contentSpan.classList.add("contents");
+                            contentSpan.innerText = submission.title;
+                            messageDiv.appendChild(usernameSpan);
+                            messageDiv.appendChild(document.createElement("br"));
+                            messageDiv.appendChild(contentSpan);
+                            resultDiv.appendChild(titleDiv);
+                            resultDiv.appendChild(messageDiv);
+                            break;
+                        }
                         case "IMAGE": {
                             /*
                        <div class="result news">
@@ -579,7 +640,7 @@ if (roomID) {
                             </div>
                       </div>
                             */
-                            resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-image"></i>IMAGE SHOWCASE</span>`
+                            resultDiv.innerHTML = `<span class="header"><i class="fa-brands fa-instagram"></i>NEFFIGRAM</span>`
                             const titleDiv = document.createElement("div");
                             titleDiv.classList.add("title");
                             const img = document.createElement("img");
@@ -611,8 +672,8 @@ if (roomID) {
                         for (let i = 0; i < submissions.length; i++) {
                             setTimeout(function() {
                                 clearTimeout(timers)
-                                countdown = 10;
-                                timer.innerText = "10s left"
+                                countdown = 8;
+                                timer.innerText = `${countdown}s left` // why didnt you do this originally lol no hate just silly
                                 timers = setInterval(() => {
                                     countdown--;
                                     timer.innerText = `${countdown}s left`
@@ -663,7 +724,7 @@ if (roomID) {
                             }
                             const finalsDiv = document.createElement("div");
                             finalsDiv.classList.add("finals")
-                            finalsDiv.innerHTML = `<p>CAST YOUR VOTES!</p>`;
+                            finalsDiv.innerHTML = `<p>CAST YOUR VOTES!</p>`; // make it skip the countdown once @firee
                             finalsDiv.appendChild(finalsWrapDiv)
                             promptBox.appendChild(finalsDiv);
                             countdown = 30;
@@ -671,7 +732,7 @@ if (roomID) {
                             timers = setInterval(() => {
                                 countdown--;
                                 timer.innerText = `${countdown}s left`
-                                if (countdown < 0) clearTimeout(timers);
+                                if (countdown < 0) clearTimeout(timers); // wait im gonna try doing it based off context clues nvm how the hell
                             }, 1000)
                             if (roomData.isHost) {
                                 socket.emit("roomEvent", {
@@ -755,7 +816,7 @@ if (roomID) {
                 break;
             case "gameend":
                 setTimeout(function() {
-                    document.getElementById("roundnameth").innerText = `- GAME -`
+                    document.getElementById("roundnameth").innerText = `- GAME (END) -`
                     roomData.users.forEach(user => {
                         setIcon(user.idHash, "fa-user");
                     })
@@ -773,8 +834,16 @@ if (roomID) {
                         const h3Sac = document.createElement("h3");
                         h3Win.innerText = `Winner - ${data.username}`;
                         h3Sac.innerText = `Won with ${data.points} points.`;
+
+                        // @firee
+                        // show all the "featured" posts (things that won previous rounds from rounds 1-4) underneath the winner in a marquee
+                        // the marquee will contain the "finals" layout but without the grid part
+                        // basically just copy what you have already in "finals" and have it display in the marquee underneath, showing only the winning posts from all rounds
+                        const featuredMarquee = document.getElementById("marquee") // deprecated but who cares
+
                         promptBox.appendChild(h3Win)
                         promptBox.appendChild(h3Sac)
+                        //promptBox.appendChild(featuredMarquee)
                         roomData.started = false;
                         if (roomData.isHost) {
                             const startBtn = document.createElement("button");

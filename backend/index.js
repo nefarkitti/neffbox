@@ -50,12 +50,12 @@ const sio = new Server(server, {
         origin: "*"
     }
 });
-app.set("trust proxy", 1); 
+app.set("trust proxy", 1);
 
 app.use(rateLimit({
-	windowMs: 5 * 60 * 1000, // 5 minutes
-	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    windowMs: 5 * 60 * 1000, // 5 minutes
+    max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
     message: "Too many requests are being sent! Please try again later."
 }))
 
@@ -69,10 +69,10 @@ app.use(express.urlencoded({
 app.use(
     express.json({
         limit: '80mb', // 100 might be a bit too much
-        verify : (req, res, buf, encoding) => {
+        verify: (req, res, buf, encoding) => {
             try {
                 JSON.parse(buf);
-            } catch(e) {
+            } catch (e) {
                 res.status(403).send('no.');
                 throw Error('invalid JSON');
             }
@@ -100,19 +100,19 @@ function shuffle(array) {
     return shuffleNoCollide(array);
     //let currentIndex = array.length-1,  randomIndex;
     let currentIndex = array.length, randomIndex;
-  
+
     // While there remain elements to shuffle.
     while (currentIndex > 0) {
-  
-      // Pick a remaining element.
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-  
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
+
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
     }
-  
+
     return array;
 }
 
@@ -157,14 +157,14 @@ function generateUniqueRoomID() {
 
     while (attempts < maxAttempts) {
         roomId = randomID(5);
-        
+
         // Check if the generated roomId is unique
         if (!getRoom(roomId)) {
             return roomId; // Return the unique roomId
         }
         // neff do you realize how bad this is1?!?! well realistically we wouldnt reach that many people but brUH
         console.log(`Attempt ${attempts} at finding available room ID`);
-        
+
 
         attempts++;
     }
@@ -197,23 +197,27 @@ app.get("/myhash", validator.query('username').notEmpty().isString(), (req, res)
 })
 
 app.use('/create', rateLimit({
-	windowMs: 3 * 60 * 1000,
-	max: 3,
-	standardHeaders: true,
+    windowMs: 3 * 60 * 1000,
+    max: 3,
+    standardHeaders: true,
     message: "Too many requests are being sent! Please try again later.",
 }))
 app.use('/join', rateLimit({
-	windowMs: 3 * 60 * 1000,
-	max: 30,
-	standardHeaders: true,
+    windowMs: 3 * 60 * 1000,
+    max: 30,
+    standardHeaders: true,
     message: "Too many requests are being sent! Please try again later.",
 }))
 app.use('/upload', rateLimit({
-	windowMs: 1 * 60 * 1000,
-	max: 2,
-	standardHeaders: true,
+    windowMs: 1 * 60 * 1000,
+    max: 2,
+    standardHeaders: true,
     message: "Too many requests are being sent! Please try again later.",
 }))
+
+function simpleRandom(max) {
+    return Math.floor(Math.random() * max + 1);
+}
 
 app.post('/create', validator.body('username').notEmpty().isString(), (req, res) => {
     const result = validator.validationResult(req);
@@ -228,6 +232,18 @@ app.post('/create', validator.body('username').notEmpty().isString(), (req, res)
     const roomID = generateUniqueRoomID().toString();
     if (roomID == -1) return res.sendStatus(500);
     const userToken = calculateUserHash(ip, username, roomID);
+
+    let allPossibleRounds = ["NEWS", "RATINGS", "TRAVELLING", "SHOPPING"] // im sorry if this change breaks something @firee
+    let actualChosenRounds = []
+
+    for (let i = 0; i < 3; i++) { // 3 times hopefully i cant test rn
+        const rolled = allPossibleRounds[simpleRandom(allPossibleRounds.length - 1)]
+        actualChosenRounds.push(rolled)
+        allPossibleRounds.splice(allPossibleRounds.indexOf(rolled), 1)
+        // support for multiple different rounds
+        // im sorry if this breaks something
+    }
+
     rooms.push({
         id: roomID,
         host: username,
@@ -236,7 +252,7 @@ app.post('/create', validator.body('username').notEmpty().isString(), (req, res)
         started: false,
         voting: false,
         users: [genUser(username, userToken)],
-        rounds: [...shuffle(["NEWS", "RATINGS", "TRAVELLING"]), "IMAGE"],
+        rounds: [...shuffle(actualChosenRounds), "IMAGE"],
         imgs: new Map()
     })
     return res.send({
@@ -278,7 +294,7 @@ app.post(
         const userToken = calculateUserHash(ip, username, roomID);
         roomData.users.push(genUser(username, userToken));
         return res.json({
-            users: roomData.users.map(user => { 
+            users: roomData.users.map(user => {
                 return { name: user.name, points: user.points, idHash: sha512(user.name) }
             }),
             host: roomData.host,
@@ -319,7 +335,7 @@ app.post('/upload', validator.query('roomID').notEmpty().isInt(), validator.body
         })
         if (!findUser) return res.status(403).send("you tried uploading a file, but you dont have access to the room");
         if (!file.startsWith("data")) return;
-        
+
         roomData.imgs.set(hash, {
             buffer: file,
             extension: type.mime
@@ -357,13 +373,15 @@ function getTopics(topic) {
     switch (topic) {
         // yesssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
         case "NEWS":
-            return ["Queen lizzy has returned from the dead! What do you make of this??", "What's your opinion on the recent inflation rises??", "King Charles dethroned! Your reaction to this is..."]
+            return ["How would you react if the world ended right now?"]
         case "RATINGS":
-            return ["What do you think of the latest iPhone?", "Review the last meal that you had.", "How was the last country you visited?", "Give an honest review of someone you know."]
+            return ["Review the last food that you've had.", "Review someone you know"]
         case "TRAVELLING":
-            return ["Review the last place you've been to.", "Describe your country in a few words!", "What kind of place is your local area?", "Where do you live? 👁️", "How's the weather over there?"]
+            return ["Review the last place you've been to."]
+        case "SHOPPING":
+            return ["Describe/review the latest product you've bought."]
         case "IMAGE": // image would have a single one because there's no point in having multiple prompts
-            return ["Provide us with a funny image and describe it for the next player!"]
+            return ["Provide us with a funny image!"]
         default:
             return ["Uhh! Something went wrong!"]
     }
@@ -414,7 +432,7 @@ sio.on('connection', socket => {
 
     function finishRound(updatedRoomData) {
         updatedRoomData.topicRound++;
-        const shuffledUsers = shuffleNoCollide(updatedRoomData.users.map(x=>updatedRoomData.users.indexOf(x)))
+        const shuffledUsers = shuffleNoCollide(updatedRoomData.users.map(x => updatedRoomData.users.indexOf(x)))
         if (updatedRoomData.topicRound > 2) {
             updatedRoomData.voting = true;
             updatedRoomData.users = updatedRoomData.users.map(user => {
@@ -456,7 +474,7 @@ sio.on('connection', socket => {
             if (user.finished) return user;
             user[`response${updatedRoomData.topicRound}`] = "[No response given]";
             user.finished = true;
-            
+
             sio.to(roomData.id).emit('roomEvent', { event: "waiting", users: [] });
             return user;
         })
@@ -529,7 +547,7 @@ sio.on('connection', socket => {
                 sio.to(roomData.id).emit('roomEvent', { event: "nexttopic", round: updatedRoomData.round, roundName });
                 break;
             case "votingtime":
-                setTimeout(function() {
+                setTimeout(function () {
                     const updatedRoomData = getRoom(roomData.id);
                     if (!updatedRoomData) return socket.emit('error', "couldnt find room");
                     const unvoters = updatedRoomData.users.filter(user => !user.votedFor);
@@ -555,7 +573,7 @@ sio.on('connection', socket => {
                         }
                     }
                     const allVoters = updatedRoomData.users.filter(user => user.votedFor).map(user => user.votedFor);
-                    
+
                     if (!allVoters.length) return sio.to(roomData.id).emit('roomEvent', {
                         event: "winneris",
                         noone: true
@@ -580,7 +598,7 @@ sio.on('connection', socket => {
                     const winnerUser = updatedRoomData.users.find(user => user.name == winnerObj.actual)
                     const sacUser = updatedRoomData.users.find(user => user.name == winnerObj.username)
                     let winnerPoints = maxVotes * 100;
-                    let sacPoints = (maxVotes * 100) * (1/5);
+                    let sacPoints = (maxVotes * 100) * (1 / 5);
                     if (updatedRoomData.doubleTime) {
                         winnerPoints *= 2
                         sacPoints *= 2
@@ -614,16 +632,18 @@ sio.on('connection', socket => {
         const updatedRoomData = getRoom(roomData.id);
         if (!updatedRoomData) return socket.emit('error', "couldnt find room");
         if (updatedRoomData.voting) return socket.emit('error', "how")
-        
+
         const updatedUserData = updatedRoomData.users.find(user => user.name == userData.name);
         content = emoji.replace_colons(content);
         updatedUserData[`response${updatedRoomData.topicRound}`] = content;
         updatedUserData.finished = true;
         userData = updatedUserData;
         roomData = updatedRoomData;
-        sio.to(roomData.id).emit('roomEvent', { event: "waiting", users: updatedRoomData.users.filter(user => !user.finished).map(user => {
-            return { username: user.name, hash: sha512(user.name) }
-        }) });
+        sio.to(roomData.id).emit('roomEvent', {
+            event: "waiting", users: updatedRoomData.users.filter(user => !user.finished).map(user => {
+                return { username: user.name, hash: sha512(user.name) }
+            })
+        });
         if (!updatedRoomData.users.filter(user => !user.finished).length) {
             clearTimeout(submitTimeouts[roomData.id]);
             finishRound(updatedRoomData);
@@ -696,7 +716,7 @@ return {
         if (!roomData || !userData) return socket.emit('error', "Invalid Session.");
         if (!content || typeof content != "string") return socket.emit("error", "nice try")
         if (content.length > 256) return socket.emit('error', "Message too long!");
-        
+
         content = emoji.replace_colons(content);
         content = content.replaceAll("/shrug", "¯\\_(ツ)_/¯")
         console.log(`[${roomData.id}] ${userData.name} > ${content}`);

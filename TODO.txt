@@ -1,0 +1,3 @@
+proper popup
+joining game with url (sti/00000) requires popup
+play helldivers 2
