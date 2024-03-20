@@ -203,6 +203,7 @@ if (roomID) {
     })
 
     let timers;
+    let votingTimer;
     let countdown = 60;
     function handleRound(topic, round, player, resp) { // last 2 are for round 2
         roomData.users.forEach(user => {
@@ -378,6 +379,7 @@ if (roomID) {
     }
 
     socket.on('roomEvent', (data) => {
+        clearTimeout(votingTimer);
         switch (data.event) {
             case "start":
                 roomData.waiting = false;
@@ -421,8 +423,8 @@ if (roomID) {
                 }
                 break;
             case "nexttopic":
-                let actualRoundTitle = roomData.roundName
-                switch (roomData.roundName) {
+                let actualRoundTitle = "Unknown"
+                switch (data.roundName) {
                     case "NEWS": {
                         actualRoundTitle = "TOP NEWS"
                         break;
@@ -440,7 +442,7 @@ if (roomID) {
                         break;
                     }
                     case "SHOPPING": {
-                        actualRoundTitle = `PRODUCT REVIEWS` // a bad reskin of reviews
+                        actualRoundTitle = "PRODUCT REVIEWS" // a bad reskin of reviews
                         break;
                     }
                     default: {
@@ -498,6 +500,9 @@ if (roomID) {
                         break;
                     case "TRAVELLING":
                         handleRound("would be an ACCURATE description for...", 2, data.user, data.prompt)
+                        break;
+                    case "SHOPPING":
+                        handleRound("would be the PERFECT review for a product called...", 2, data.user, data.prompt)
                         break;
                     case "IMAGE":
                         handleRound("The perfect accompanying caption would be...", 2, data.user, data.prompt)
@@ -607,11 +612,10 @@ if (roomID) {
                             titleSpan.innerText = submission.desc;
                             titleSpan.classList.add("place")
                             titleDiv.appendChild(titleSpan);
-                            titleDiv.innerHTML += `<span class="opinion">1 review</span><br>`
+                            titleDiv.innerHTML += `<br><span class="opinion">1 review</span><br>`
                             setTimeout(() => {
                                 if (animate) titleDiv.classList.add("response-animate");
                             }, 51)
-                            
                             const messageDiv = document.createElement("div");
                             messageDiv.classList.add("message");
                             const usernameSpan = document.createElement("span");
@@ -684,7 +688,7 @@ if (roomID) {
                                 setTimeout(() => {
                                     promptBox.classList.add("show")
                                 }, 50)
-                            }, i * 10000)
+                            }, i * 8000)
                         }
                         setTimeout(function() {
                             clearTimeout(timers)
@@ -737,11 +741,11 @@ if (roomID) {
                                     event: "votingtime"
                                 })
                             }
-                            setTimeout(function() {
+                            votingTimer = setTimeout(function() {
                                 timer.innerText = "Waiting..."
                                 promptBox.innerHTML = ""
                             }, 30000)
-                        }, submissions.length * 10000)
+                        }, submissions.length * 8000)
                     }
                 }, 2000)
                 break;

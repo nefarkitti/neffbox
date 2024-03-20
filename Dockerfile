@@ -10,8 +10,11 @@ COPY backend .
 # Install dependencies
 RUN npm install
 
+ENV PORT=10080
+ENV PRODUCTION=1
+
 # Expose the port your app runs on
-EXPOSE 10080
+EXPOSE $PORT
 
 # Command to run the application
 CMD ["node", "."]
