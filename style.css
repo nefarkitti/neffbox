@@ -3,6 +3,7 @@
 :root {
     --accent: #eb144c;
 }
+
 body {
     margin: 0;
     background-image: url("assets/memphis-mini.png");
@@ -13,6 +14,7 @@ body {
     animation-iteration-count: infinite;
     animation-direction: reverse;
 }
+
 * {
     font-family: "Rubik", sans-serif;
 }
@@ -25,6 +27,7 @@ main {
     transform: translate(-50%, -50%);
     text-align: center;
 }
+
 main h3 {
     margin: 0;
     margin-bottom: 40px;
@@ -38,6 +41,7 @@ main h3 {
     border: grey 1px solid;
     box-shadow: 0px 2px 2px black;
 }
+
 input {
     width: 100px;
     border: grey 1px solid;
@@ -45,6 +49,7 @@ input {
     border-radius: 5px;
     padding: 5px;
 }
+
 input:focus-visible {
     outline: none;
 }
@@ -53,6 +58,7 @@ input:focus-visible {
     display: flex;
     justify-content: center;
 }
+
 .roomItem {
     min-width: 100px;
     padding: 1%;
@@ -63,10 +69,12 @@ input:focus-visible {
     border: grey 1px solid;
     box-shadow: 0px 2px 2px black;
 }
+
 .lobbyList {
     width: 210px;
     text-align: left;
 }
+
 .lobbyList div {
     display: inline;
     float: left;
@@ -74,31 +82,39 @@ input:focus-visible {
     vertical-align: middle;
     margin: 1px 0px;
 }
+
 .lobbyList div i {
     margin-right: 3px;
 }
+
 .lobbyList .points {
     font-size: 13px;
     font-weight: 500;
 }
+
 .roomItem h3 {
     margin: 0;
     margin-bottom: 5px;
     font-size: 15px;
 }
+
 .you {
     color: var(--accent);
     font-weight: 500;
 }
+
 .host {
     font-weight: bold;
 }
+
 .gameItem {
     width: 700px;
 }
+
 .round-number {
     margin: 0;
 }
+
 .round-topic {
     color: white;
     font-weight: 900;
@@ -106,6 +122,7 @@ input:focus-visible {
     margin: 0;
     font-size: 60px;
 }
+
 .game {
     width: 100%;
     height: 90%;
@@ -113,16 +130,17 @@ input:focus-visible {
     justify-content: center;
     align-items: center;
     border-radius: 5px;
-    background:url('./assets/misc.png');
+    background: url('./assets/misc.png');
     background-color: rgb(244, 244, 244);
     background-size: 200px;
-    
+
     animation-name: example;
     animation-duration: 10s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     overflow: hidden;
 }
+
 .promptBox {
     transform: translate(0, 100%);
 
@@ -131,42 +149,83 @@ input:focus-visible {
     align-items: center;
     flex-direction: column;
 }
+
 .promptBox button {
     margin: 10px;
 }
+
+.marquee {
+    animation-name: marqueeLoop;
+    animation-duration: 15s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    transform: translateX(120%);
+}
+
+@keyframes marqueeLoop {
+    0% {
+        transform: translateX(120%);
+    }
+
+    100% {
+        transform: translateX(-120%);
+    }
+}
+
+.marquee .finals {
+    flex-direction: row;
+    display: flex;
+}
+
 .show {
     animation-name: showBox;
     animation-duration: 0.7s;
-    animation-timing-function:cubic-bezier();
+    animation-timing-function: cubic-bezier();
     animation-fill-mode: forwards;
     filter: opacity(0%);
 }
+
 .promptBox.hide {
     animation-name: showBox;
     animation-duration: 0.4s;
-    animation-timing-function:cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     animation-fill-mode: backwards;
     animation-direction: reverse;
 }
+
 .response-animate {
     animation-name: showResponse;
     animation-duration: 2s;
-    animation-timing-function:cubic-bezier(0.175, 0.885, 0.32, 1.275);
     animation-fill-mode: forwards;
     filter: opacity(0%);
-    transform:translate(200%, 0%) scale(200%, 200%);
+    transform: translate(200%, 0%) scale(200%, 200%);
 }
+
 @keyframes showResponse {
-    0% {filter: opacity(0%);transform:translate(200%, 0%) scale(200%, 200%);}
-    20% {filter: opacity(0%);transform:translate(100%, 0%) scale(200%, 200%);}
-    100% {filter: opacity(100%);transform:translate(0%, 0%) scale(100%, 100%);}
+    0% {
+        filter: opacity(0%);
+        transform: translate(200%, 0%);
+    }
+
+    50% {
+        filter: opacity(0%);
+        transform: translate(100%, 0%);
+    }
+
+    100% {
+        filter: opacity(100%);
+        transform: translate(0%, 0%);
+    }
 }
+
 .noanim {
     animation: none !important;
 }
+
 .promptBox.noanim {
     transform: translate(0, 0);
 }
+
 .promptBox input {
     padding: 6px;
     margin-top: 5px;
@@ -177,10 +236,12 @@ input:focus-visible {
     font-size: 20px;
     background-color: white;
 }
+
 .promptBox input[type="file"] {
     width: 260px;
     font-size: 15px;
 }
+
 .promptBox .message {
     background-color: white;
     border: 3px solid black;
@@ -191,12 +252,15 @@ input:focus-visible {
     display: inline-block;
     border-radius: 4px;
 }
+
 .promptBox .message .username {
     font-weight: 700;
 }
+
 .promptBox .message .contents {
     font-size: 200%;
 }
+
 .promptBox .inputImage {
     background-color: white;
     border: 3px solid black;
@@ -238,16 +302,24 @@ input:focus-visible {
     text-align: left;
     margin: 5px;
 }
+
 .result .message .contents {
     font-size: 15px;
     margin: 0px auto;
 }
+
 .contents {
-    word-break: break-all;
+    word-break: break-word;
 }
+
 .finals-wrap .result * {
     font-size: medium !important;
 }
+
+.finals-wrap .result i {
+    font-size: 15px !important;
+}
+
 .finals-wrap .result .contents {
     font-size: small !important;
 }
@@ -255,9 +327,11 @@ input:focus-visible {
 .news {
     max-width: 60%;
 }
+
 .header i {
     margin-right: 5px;
 }
+
 .news .header {
     background-color: var(--accent);
     color: white;
@@ -268,10 +342,14 @@ input:focus-visible {
     text-align: left;
     text-indent: 2px;
     padding: 5px;
-    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-    box-sizing: border-box;         /* Opera/IE 8+ */   
+    -webkit-box-sizing: border-box;
+    /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;
+    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    /* Opera/IE 8+ */
 }
+
 .news .title {
     padding: 5px;
     margin: 0;
@@ -279,30 +357,42 @@ input:focus-visible {
     text-align: left;
     width: 97%;
 }
+.title span {
+    word-break: break-word;
+}
 .news .opinion {
     font-weight: 400;
-    filter:opacity(75%)
 }
+
+.flavour {
+    filter: opacity(75%);
+}
+
 .news span {
     width: 97%;
 }
+
 .news .place {
     font-weight: 900;
     font-size: 35px;
 }
+
 .news .recommendation {
     font-size: 20px;
 }
+
 .news .place i {
     margin-right: 5px;
 }
+
 .reply-thing {
     padding-left: 5px;
 }
 
 img {
-    object-fit:contain;
+    object-fit: contain;
 }
+
 .result img {
     float: left;
     width: 140px;
@@ -313,16 +403,19 @@ img {
     border-radius: 5px;
     background-color: white;
 }
+
 .finals-wrap .result img {
     width: 60px;
     height: 60px;
     float: left;
 }
+
 .inputImage img {
     width: 200px;
     height: 140px;
     border: 3px solid black;
 }
+
 .promptBox p {
     margin: 0;
     margin-top: 15px;
@@ -345,18 +438,21 @@ img {
     transform: translate(-40%, -35%);
     display: none;
 }
+
 .loading-img {
     margin-bottom: 10px;
     image-rendering: pixelated;
 }
+
 .tick i {
     font-size: 35px !important;
-    transform:rotate(-20deg);
+    transform: rotate(-20deg);
     background-color: white;
     border-radius: 100%;
     color: var(--accent);
     -webkit-text-stroke: 1.5px black;
 }
+
 .finals-wrap {
     display: flex;
     justify-content: center;
@@ -366,6 +462,7 @@ img {
     flex-wrap: wrap;
     text-align: center;
 }
+
 .finals .result {
     display: inline;
     width: 200px;
@@ -373,35 +470,45 @@ img {
     margin: 5px;
     display: flex;
 }
+
 .finals .result * {
     font-size: smaller !important;
 }
+
 div.finals-results span {
     font-weight: bolder;
 }
+
 .finals .result:hover {
     filter: brightness(110%);
     cursor: pointer;
 }
+
 .finals .result:hover * {
     filter: opacity(100%);
 }
+
 .selected {
     filter: opacity(100%);
 }
+
 .selected .tick {
     display: unset;
     z-index: 999;
 }
+
 .finals-wrap *:not(.selected) {
     filter: opacity(85%);
-} 
+}
+
 .finals-wrap .selected * {
     filter: opacity(100%);
 }
+
 .finals .result * {
     font-size: 8px;
 }
+
 .finals .result .header {
     font-size: 11px;
 }
@@ -409,6 +516,7 @@ div.finals-results span {
 .logo {
     filter: drop-shadow(2px 2px 1px #000000);
 }
+
 button {
     background-color: var(--accent);
     border: none;
@@ -419,6 +527,7 @@ button {
     border: solid black 2px;
     box-shadow: 4px 4px 0px black;
 }
+
 button:hover {
     cursor: pointer;
     filter: brightness(110%);
@@ -427,6 +536,7 @@ button:hover {
 .roomItem.chatItem {
     width: 300px;
 }
+
 .chat {
     display: flex;
     flex-direction: column;
@@ -434,19 +544,27 @@ button:hover {
     height: 100%;
     overflow-x: hidden;
 }
+
 .chat-list {
     text-align: left;
     overflow: scroll;
 }
+
 .chat-message {
     width: 99% !important;
     font-size: 12px;
-    word-break: break-all;
+    word-break: break-word;
     overflow: hidden;
 }
+
 .chat-message .username {
     font-weight: 900;
 }
+.chat-message img {
+    width: 100%;
+    height: 100px;
+}
+
 .chat input {
     width: 150px;
     padding: 4px;
@@ -455,6 +573,24 @@ button:hover {
     box-shadow: 0px 2px 2px black;
     border-radius: 5px;
 }
+
+.capture {
+    filter: opacity(50%);
+    font-style: italic;
+    display: inline-block;
+    vertical-align: middle;
+    display: none !important;
+}
+.capture i {
+    margin-right: 5px;
+}
+.capture:hover {
+    filter: opacity(75%);
+}
+.finals .capture {
+    display: none !important;
+}
+
 .sorry {
     display: none;
 }
@@ -463,10 +599,12 @@ button:hover {
     .roomLayout {
         display: block !important;
     }
+
     .roomItem {
         width: 90vw;
         height: 85vh;
     }
+
     .hidemobile {
         display: none !important;
     }
@@ -482,17 +620,100 @@ button:hover {
     border-radius: 100%;
     color: var(--accent);
 }
+
 .leavebtn:hover i {
     cursor: pointer;
     color: white;
     background-color: var(--accent);
 }
 
-@keyframes showBox {
-    from { transform: translate(0, 100%);filter: opacity(0%);}
-    to { transform: translate(0, 0%);filter: opacity(100%);}
+.modal-overlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.473);
+    position: absolute;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: calc(var(--sidebar-width) / 2);
+    user-select: none;
+    flex-direction: column;
+    display: none;
 }
+
+.modal {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    padding: 5px;
+    border: var(--gr) 1px solid;
+    box-shadow: 0px 2px 2px black;
+    min-width: 30vw;
+    text-align: center;
+    padding-bottom: 15px;
+}
+
+.show-modal {
+    display: flex;
+}
+
+.show-modal .modal {
+    transform: scale(0%, 0%);
+    animation-name: showmodal;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter: opacity(0%);
+}
+
+.closebtn {
+    float: right;
+    font-size: 15px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border-radius: 100%;
+}
+
+.closebtn:hover {
+    cursor: pointer;
+    background-color: #c9c9c9;
+}
+
+@keyframes showmodal {
+    from {
+        transform: scale(0%, 0%);
+        filter: opacity(0%);
+    }
+
+    to {
+        transform: scale(100%, 100%);
+        filter: opacity(100%);
+    }
+}
+
+@keyframes showBox {
+    from {
+        transform: translate(0, 100%);
+        filter: opacity(0%);
+    }
+
+    to {
+        transform: translate(0, 0%);
+        filter: opacity(100%);
+    }
+}
+
 @keyframes example {
-    from {background-position: 0px 0px;}
-    to {background-position: 200px 195px;}
+    from {
+        background-position: 0px 0px;
+    }
+
+    to {
+        background-position: 200px 195px;
+    }
 }

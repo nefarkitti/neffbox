@@ -31,7 +31,7 @@ import cors from 'cors';
 import crypto from 'crypto';
 import imageType from 'image-type';
 import url from 'url';
-import sharp from 'sharp'
+//import sharp from 'sharp'
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -52,17 +52,19 @@ const sio = new Server(server, {
 });
 app.set("trust proxy", 1);
 
-app.use(rateLimit({
-    windowMs: 5 * 60 * 1000, // 5 minutes
-    max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-    message: "Too many requests are being sent! Please try again later."
-}))
-
+if (!DEVELOPMENT) {
+    app.use(rateLimit({
+        windowMs: 5 * 60 * 1000, // 5 minutes
+        max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+        standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+        message: "Too many requests are being sent! Please try again later."
+    }))
+}
+/*
 app.use(cors({
     origin: true
 }))
-
+*/
 app.use(express.urlencoded({
     extended: false
 }))
@@ -193,25 +195,32 @@ app.get("/myhash", validator.query('username').notEmpty().isString(), (req, res)
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     res.send(calculateUserHash(req.query.username, '00000', ip))
 })
-
-app.use('/create', rateLimit({
-    windowMs: 3 * 60 * 1000,
-    max: 3,
-    standardHeaders: true,
-    message: "Too many requests are being sent! Please try again later.",
-}))
-app.use('/join', rateLimit({
-    windowMs: 3 * 60 * 1000,
-    max: 30,
-    standardHeaders: true,
-    message: "Too many requests are being sent! Please try again later.",
-}))
-app.use('/upload', rateLimit({
-    windowMs: 1 * 60 * 1000,
-    max: 2,
-    standardHeaders: true,
-    message: "Too many requests are being sent! Please try again later.",
-}))
+if (!DEVELOPMENT) {
+    app.use('/create', rateLimit({
+        windowMs: 3 * 60 * 1000,
+        max: 3,
+        standardHeaders: true,
+        message: "Too many requests are being sent! Please try again later.",
+    }))
+    app.use('/join', rateLimit({
+        windowMs: 3 * 60 * 1000,
+        max: 30,
+        standardHeaders: true,
+        message: "Too many requests are being sent! Please try again later.",
+    }))
+    app.use('/upload', rateLimit({
+        windowMs: 1 * 60 * 1000,
+        max: 3,
+        standardHeaders: true,
+        message: "Too many requests are being sent! Please try again later.",
+    }))
+    app.use('/capture', rateLimit({
+        windowMs: 8 * 60 * 1000,
+        max: 2,
+        standardHeaders: true,
+        message: "Too many requests are being sent! Please try again later.",
+    }))
+}
 
 function simpleRandom(max) {
     return Math.floor(Math.random() * max + 1);
@@ -308,18 +317,18 @@ function isValidBase64(str) {
     return regex.test(str);
 }
 
-app.post('/upload', validator.query('roomID').notEmpty().isInt(), validator.body('username').notEmpty().isString(), validator.body('ext').notEmpty().isString(), validator.body('file').notEmpty().isString(), (req, res) => {
-    const result = validator.validationResult(req);
-    if (!result.isEmpty()) return res.status(400).json({ errors: result.array() })
+function uploadImage(req, res, capture) {
+    // probably should impl some auth, will do later
     // neffi the neffi
     const roomID = req.query.roomID;
     const roomData = getRoom(roomID);
     if (!roomData) return res.sendStatus(404);
     const file = req.body.file;
     const extension = req.body.ext;
-    const username = req.body.username
+    const username = req.body.username;
     if (!file || file.length === 0) return res.status(400).send('Invalid file');
-    if (!roomID || !file || !extension || !username) return res.sendStatus(400);
+    if (!roomID || !file || !username) return res.sendStatus(400);
+    if (!extension && !capture) return res.sendStatus(400);
     if (!isValidBase64(file)) return res.status(400).send("Invalid base64.")
     if (!file.startsWith("data")) return res.sendStatus(400);
     let base64ImageData = file.replace(/^data:image\/\w+;base64,/, '')
@@ -327,35 +336,72 @@ app.post('/upload', validator.query('roomID').notEmpty().isInt(), validator.body
     imageType(buffer).then(async type => {
         if (!type) return res.status(400).send('Invalid image file');
         if (!type.mime || !type.mime.startsWith('image')) return res.status(400).send('Invalid image file');
-        if (extension != type.mime) return res.status(400).send("Extensions do not match!");
+        if (extension != type.mime && !capture) return res.status(400).send("Extensions do not match!");
         if (type && type.ext && !['png', 'jpeg', 'gif', 'jpg'].includes(type.ext)) {
             // convert image
             try {
-                const pngBuffer = await sharp(buffer).toFormat('png').toBuffer();
-                base64ImageData = pngBuffer.toString('base64');
+                //const pngBuffer = await sharp(buffer).toFormat('png').toBuffer();
+                //base64ImageData = pngBuffer.toString('base64');
             } catch (e) {
                 console.error(e)
                 return res.status(500).send("Couldn't convert image.")
             }
         }
         const hash = sha512(base64ImageData)
-        console.debug(`/upload - ${roomID} - ${hash}`);
+        console.debug(`/upload - ${roomID} - ${hash} - ${capture}`);
         const findUser = roomData.users.find(user => {
             return user.name == username
         })
         if (!findUser) return res.status(403).send("you tried uploading a file, but you dont have access to the room");
-
-        roomData.imgs.set(hash, {
-            buffer: base64ImageData,
-            extension: type.mime
-        });
-        findUser.file = hash;
+        if (capture) {
+            roomData.imgs.set(hash, {
+                buffer: base64ImageData,
+                extension: "image/png"
+            });
+            sio.to(roomID).emit('message', {
+                username,
+                content: hash,
+                image: true
+            });
+        } else {
+            findUser.file = hash;
+            roomData.imgs.set(hash, {
+                buffer: base64ImageData,
+                extension: type.mime
+            });
+        }
         res.send(hash);
-
     }).catch(e => {
         res.sendStatus(500);
         console.error(e);
     });
+}
+
+app.post('/upload', validator.query('roomID').notEmpty().isInt(), validator.body('username').notEmpty().isString(), validator.body('ext').notEmpty().isString(), validator.body('file').notEmpty().isString(), (req, res) => {
+    const result = validator.validationResult(req);
+    if (!result.isEmpty()) return res.status(400).json({ errors: result.array() })
+    uploadImage(req, res, false)
+})
+
+function calculateBase64Size(base64String) {
+    // Remove header information from the base64 string
+    const base64WithoutHeader = base64String.split(',')[1];
+    // Convert Base64 string to a binary array
+    const binaryString = Buffer.from(base64WithoutHeader, 'base64');
+    // Get the length of the binary array
+    const bytes = binaryString.length;
+    // Convert bytes to megabytes
+    const megabytes = bytes / (1024 * 1024);
+    return megabytes;
+}
+
+
+app.post('/capture', validator.query('roomID').notEmpty().isInt(), validator.body('username').notEmpty().isString(), validator.body('file').notEmpty().isString(), (req, res) => {
+    const result = validator.validationResult(req);
+    if (!result.isEmpty()) return res.status(400).json({ errors: result.array() })
+    const file = req.body.file;
+    if (file && calculateBase64Size(file) > 2) return res.status(400).send("File too large!")
+    uploadImage(req, res, true)
 })
 
 app.get('/imgs/:room/:hash', validator.query("room").notEmpty().isInt(), validator.query("hash").notEmpty().isString(), (req, res) => {
@@ -395,10 +441,10 @@ function getTopics(topic) {
     }
 }
 
-navigator.product = "ReactNative"
+//navigator.product = "ReactNative"
 import EmojiConvertor from 'emoji-js';
 const emoji = new EmojiConvertor();
-//emoji.replace_mode = "unified" //
+emoji.replace_mode = "unified" //
 
 function addPoints(roomID, username, points) {
     const roomData = getRoom(roomID);
@@ -577,6 +623,7 @@ sio.on('connection', socket => {
                 updatedRoomData.started = true;
                 updatedRoomData.round = 0;
                 updatedRoomData.topicRound = 1;
+                updatedRoomData.imgs = new Map()
                 sio.to(roomData.id).emit('roomEvent', { event: "start" });
                 break;
             case "nexttopic":
@@ -584,7 +631,9 @@ sio.on('connection', socket => {
                 updatedRoomData.round++;
                 updatedRoomData.topicRound = 1;
                 const roundName = updatedRoomData.rounds[updatedRoomData.round - 1]
-                if (!roundName) {
+                console.debug(`[${roomData.id}] Next Topic - ${roundName}`)
+                if (updatedRoomData.round > updatedRoomData.rounds.length) {
+                    console.debug(`[${roomData.id}] Game ended!`)
                     // assume that rounds ended
                     updatedRoomData.voting = false;
                     updatedRoomData.started = false;
@@ -613,17 +662,18 @@ sio.on('connection', socket => {
                 } else {
                     updatedRoomData.doubleTime = false;
                 }
-                const topics = shuffle(getTopics(roundName))
+                //const topics = shuffle(getTopics(roundName))
                 updatedRoomData.users = updatedRoomData.users.map(user => {
                     user.finished = false;
                     delete user.votedFor;
                     user.topic2 = null
                     user.topic2response = null
-                    if (topics.length == 1) {
+                    /*if (topics.length == 1) {
                         user.topic1 = topics[0];
                     } else {
                         user.topic1 = topics[updatedRoomData.users.indexOf(user)];
-                    }
+                    }*/
+                    user.topic1 = shuffle(getTopics(roundName))[0];
                     sio.to(user.id).emit('roomEvent', { event: "yourtopic", topic: user.topic1 })
                     return user;
                 })
@@ -664,7 +714,7 @@ sio.on('connection', socket => {
     socket.on("vote", (data) => {
         const updatedRoomData = getRoom(roomData.id);
         if (!updatedRoomData) return socket.emit('error', "couldnt find room");
-        if (!updatedRoomData.voting) return socket.emit('error', "HOW.");
+        if (!updatedRoomData.voting) return;
         const updatedUserData = updatedRoomData.users.find(user => user.name == userData.name);
         if (!updatedUserData) return socket.emit('error', "couldnt find user");
         /*
@@ -680,6 +730,7 @@ return {
         if (!findUser) return socket.emit('error', "couldnt find who made that");
         updatedUserData.votedFor = { ...data, actual: findUser.name };
         if (!updatedRoomData.users.filter(user => !user.votedFor).length) {
+            updatedRoomData.voting = false;
             clearTimeout(voteTimeouts[roomData.id]);
             finishVoting();
         }
