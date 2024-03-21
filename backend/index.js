@@ -60,11 +60,11 @@ if (!DEVELOPMENT) {
         message: "Too many requests are being sent! Please try again later."
     }))
 }
-/*
+
 app.use(cors({
     origin: true
 }))
-*/
+    
 app.use(express.urlencoded({
     extended: false
 }))
