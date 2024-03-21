@@ -1,3 +1,9 @@
+<<<<<<< Updated upstream
 fix selected tick
 finish capture
+=======
+my friend still got some xmlhttps error uploading a 888kb jpeg
+proper popup
+joining game with url (sti/00000) requires popup
+>>>>>>> Stashed changes
 play helldivers 2
