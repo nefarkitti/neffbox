@@ -25,7 +25,7 @@ body {
 
 *:not(.fa-solid .fa-regular) {
     /*font-family: "Rubik", sans-serif;*/
-    font-family: "Poppins", sans-serif !important;
+    font-family: "Poppins", sans-serif;
 }
 
 main {
