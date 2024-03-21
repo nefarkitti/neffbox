@@ -519,6 +519,10 @@ if (roomID) {
                             actualRoundTitle = "PRODUCT REVIEWS" // a bad reskin of reviews
                             break;
                         }
+                        case "GOFUNDME": {
+                            actualRoundTitle = "GONEFFME" // a bad reskin of news
+                            break;
+                        }
                         default: {
                             actualRoundTitle = data.roundName
                             break;
@@ -599,6 +603,10 @@ if (roomID) {
                         const resultDiv = document.createElement("div");
                         resultDiv.classList.add("result", "news");
                         if (!roundname) roundname = roomData.roundName
+                        // @firee
+                        // im gonna red all of this just
+                        // tell me what's the twist and what's the "comment" for all of these
+                        // i'll rebuild them myself
                         switch (roundname) {
                             case "NEWS": {
                                 resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-newspaper"></i>THE NEW NEFFI TIMES</span>`
@@ -608,7 +616,7 @@ if (roomID) {
                                 titleSpan.innerText = submission.desc;
                                 titleDiv.appendChild(titleSpan);
                                 titleDiv.appendChild(document.createElement("br"));
-                                titleDiv.innerHTML += `<span class="flavour">1 comment found</span><br>`
+                                titleDiv.innerHTML += `<span class="flavour">1 comment</span><br>`
                                 setTimeout(() => {
                                     if (animate) titleDiv.classList.add("response-animate");
                                 }, 51)
@@ -696,6 +704,34 @@ if (roomID) {
                                 setTimeout(() => {
                                     if (animate) titleDiv.classList.add("response-animate");
                                 }, 51)
+                                const messageDiv = document.createElement("div");
+                                messageDiv.classList.add("message");
+                                const usernameSpan = document.createElement("span");
+                                usernameSpan.classList.add("username");
+                                usernameSpan.innerText = submission.username
+                                const contentSpan = document.createElement("span");
+                                contentSpan.classList.add("contents");
+                                contentSpan.innerText = submission.title;
+                                messageDiv.appendChild(usernameSpan);
+                                messageDiv.appendChild(document.createElement("br"));
+                                messageDiv.appendChild(contentSpan);
+                                resultDiv.appendChild(titleDiv);
+                                resultDiv.appendChild(messageDiv);
+                                break;
+                            }
+                            case "GOFUNDME": { // feature bloat ahahahahhahahahaha
+                                resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-coins"></i>GONEFFME</span>`
+                                const titleDiv = document.createElement("div");
+                                titleDiv.classList.add("title");
+                                const titleSpan = document.createElement("span");
+                                titleSpan.innerText = submission.desc;
+                                titleDiv.appendChild(titleSpan);
+                                titleDiv.appendChild(document.createElement("br"));
+                                titleDiv.innerHTML += `<span class="flavour">1 comment</span><br>`
+                                setTimeout(() => {
+                                    if (animate) titleDiv.classList.add("response-animate");
+                                }, 51)
+                                
                                 const messageDiv = document.createElement("div");
                                 messageDiv.classList.add("message");
                                 const usernameSpan = document.createElement("span");

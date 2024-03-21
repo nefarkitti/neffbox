@@ -1,3 +1,4 @@
+add actual custom styling to the things !!!!
 my friend still got some xmlhttps error uploading a 888kb jpeg
 proper popup
 joining game with url (sti/00000) requires popup

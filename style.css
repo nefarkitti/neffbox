@@ -2,6 +2,13 @@
 
 :root {
     --accent: #eb144c;
+
+    --ratings-accent: #ff5722;
+    --travelling-accent: #ff9307;
+    --shopping-accent: #2196f3;
+    --gofundme-accent: #00d084;
+    --images-accent: #673ab7;
+    --thing: 2px;
 }
 
 body {
@@ -219,7 +226,7 @@ input:focus-visible {
 }
 
 .noanim {
-    animation: none !important;
+    animation-name: none !important;
 }
 
 .promptBox.noanim {
@@ -292,6 +299,7 @@ input:focus-visible {
     animation-direction: reverse;
     width: 500px;
     margin: 20px;
+    overflow: hidden;
 }
 
 .result .message {
@@ -335,6 +343,7 @@ input:focus-visible {
 .news .header {
     background-color: var(--accent);
     color: white;
+    font-style: italic;
     width: 100%;
     display: inline-block;
     font-size: 20px;
@@ -348,7 +357,24 @@ input:focus-visible {
     /* Firefox, other Gecko */
     box-sizing: border-box;
     /* Opera/IE 8+ */
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.363);
 }
+.ratings .header {
+    background-color: var(--ratings-accent);
+}
+.travelling .header {
+    background-color: var(--travelling-accent);
+}
+.shopping .header {
+    background-color: var(--shopping-accent);
+}
+.gofundme .header {
+    background-color: var(--gofundme-accent);
+}
+.images .header {
+    background: var(--images-accent);
+}
+
 
 .news .title {
     padding: 5px;
@@ -365,7 +391,8 @@ input:focus-visible {
 }
 
 .flavour {
-    filter: opacity(75%);
+    font-weight: 800;
+    filter: opacity(50%);
 }
 
 .news span {
@@ -374,7 +401,7 @@ input:focus-visible {
 
 .news .place {
     font-weight: 900;
-    font-size: 35px;
+    font-size: 30px;
 }
 
 .news .recommendation {
@@ -542,12 +569,12 @@ button:hover {
     flex-direction: column;
     justify-content: flex-end;
     height: 100%;
-    overflow-x: hidden;
 }
 
 .chat-list {
     text-align: left;
     overflow: scroll;
+    overflow-x: hidden;
 }
 
 .chat-message {
@@ -610,7 +637,10 @@ button:hover {
     }
 }
 
-.leavebtn i {
+.leavebtn {
+    color: var(--accent);
+}
+.btn i {
     width: max-content;
     height: max-content;
     background-color: white;
@@ -618,10 +648,9 @@ button:hover {
     font-size: 15px;
     margin: 10px;
     border-radius: 100%;
-    color: var(--accent);
 }
 
-.leavebtn:hover i {
+.btn i:hover {
     cursor: pointer;
     color: white;
     background-color: var(--accent);
@@ -716,4 +745,132 @@ button:hover {
     to {
         background-position: 200px 195px;
     }
+}
+
+
+/* custom boxes section */
+
+.news-box {
+    border-radius: 5px;
+    border: solid gray 2px;
+    background-color: white;
+    padding: 5px;
+    box-sizing: border-box;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.363);
+    padding-top: 4px;
+}
+.ratings-box {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.shopping-box {
+    border-radius: 5px;
+    border: solid gray 2px;
+    background-color: white;
+    padding: 5px;
+    box-sizing: border-box;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.363);
+    padding-top: 4px;
+    margin: 5px;
+    overflow: hidden;
+    width: 90%;
+}
+.travelling-box {
+    border-radius: 5px;
+    border: solid gray 2px;
+    background-color: white;
+    padding: 5px;
+    box-sizing: border-box;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.363);
+    padding-top: 4px;
+    width: 95%;
+    margin: 5px;
+}
+.ratings-box-addition {
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+    filter: opacity(70%);
+}
+.news-box-addition, .gofundme-box-addition, .shopping-box-addition, .travelling-box-addition {
+    font-weight: 900;
+    filter: opacity(50%);
+    vertical-align: middle;
+    font-style: italic;
+    width: 100%;
+    display: inline;
+}
+.travelling-box-addition {
+    font-style: normal;
+    font-size: 15px;
+    display: inline-block;
+}
+.shopping-box-addition {
+    filter: opacity(70%);
+    display: inline-block;
+}
+.shopping-box .title {
+    padding: 0;
+    margin: 0;
+}
+.shopping-rating {
+    color: var(--shopping-accent);
+}
+.cart {
+    float: right;
+    font-style: normal;
+    color: white;
+    background-color: black;
+    width: fit-content !important;
+    box-sizing: border-box;
+    padding: 5px;
+    border-radius: 5px;
+    vertical-align: middle;
+    background-color: var(--shopping-accent);
+    filter: opacity(100%);
+}
+.cart i {
+    margin-right:5px;
+    font-size: 15px;
+    vertical-align: middle;
+}
+.live {
+    margin-right: 3px;
+    font-size: 13px;
+    vertical-align: middle;
+    color: var(--accent);
+}
+
+.gofundme-box-addition {
+    text-align: right;
+    display: inline-block;
+}
+.price {
+    font-style: normal;
+    filter: opacity(90%);
+    font-weight: 700;
+    font-size: 20px;
+}
+.raised {
+    font-weight: 800;
+    filter: opacity(80%);
+    font-style: normal;
+}
+.bar {
+    width: 100%;
+    height: 10px;
+    background-color: rgb(214, 214, 214);
+    margin: 5px 0px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.363);
+}
+.bar .fill {
+    width: 50%;
+    height: 100%;
+    background-color: var(--gofundme-accent);
+}
+.backing {
+    font-size: 13px;
 }

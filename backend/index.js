@@ -163,6 +163,7 @@ function generateUniqueRoomID() {
             return roomId; // Return the unique roomId
         }
         // neff do you realize how bad this is1?!?! well realistically we wouldnt reach that many people but brUH
+        // what the hell why do you do it like this LMAO
         console.log(`Attempt ${attempts} at finding available room ID`);
 
 
@@ -240,7 +241,7 @@ app.post('/create', validator.body('username').notEmpty().isString(), (req, res)
     if (roomID == -1) return res.sendStatus(500);
     const userToken = calculateUserHash(ip, username, roomID);
 
-    let allPossibleRounds = ["NEWS", "RATINGS", "TRAVELLING", "SHOPPING"] // im sorry if this change breaks something @firee
+    let allPossibleRounds = ["NEWS", "RATINGS", "TRAVELLING", "SHOPPING", "GOFUNDME"] // im sorry if this change breaks something @firee
     let actualChosenRounds = []
 
     for (let i = 0; i < 3; i++) { // 3 times hopefully i cant test rn
@@ -434,6 +435,8 @@ function getTopics(topic) {
             return ["Review the last place you've been to."]
         case "SHOPPING":
             return ["Describe/review the latest product you've bought."]
+        case "GOFUNDME":
+            return ["What type of comment would you write in support of the gofundme?", "What type of comment would you write, disagreeing with the gofundme?"]
         case "IMAGE": // image would have a single one because there's no point in having multiple prompts
             return ["Provide us with a funny image!"]
         default:
