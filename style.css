@@ -23,7 +23,7 @@ body {
     animation-direction: reverse;
 }
 
-*:not(.fa-solid .fa-regular) {
+*:not(.fa-solid) {
     /*font-family: "Rubik", sans-serif;*/
     font-family: "Poppins", sans-serif;
 }
