@@ -140,7 +140,8 @@ if (roomID) {
         }
     } else {
         root.innerHTML = `
-    <span onclick="leaveGame()" class="leavebtn"><i class="fa-solid fa-right-to-bracket"></i></span>
+        <span onclick="leaveGame()" class="btn leavebtn"><i class="fa-solid fa-right-to-bracket"></i></span>
+        <span class="btn"><i class="fa-solid fa-gear"></i></span>
     <main>
             <div class="roomLayout">
                 <div class="roomItem hidemobile">
@@ -603,13 +604,75 @@ if (roomID) {
                         const resultDiv = document.createElement("div");
                         resultDiv.classList.add("result", "news");
                         if (!roundname) roundname = roomData.roundName
-                        // @firee
-                        // im gonna red all of this just
-                        // tell me what's the twist and what's the "comment" for all of these
-                        // i'll rebuild them myself
                         switch (roundname) {
                             case "NEWS": {
-                                resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-newspaper"></i>THE NEW NEFFI TIMES</span>`
+
+                                const br1 = document.createElement("br")
+                                const br2 = document.createElement("br")
+                                const br3 = document.createElement("br")
+
+                                const headerSpan = document.createElement("span")
+                                headerSpan.classList.add("header")
+                                headerSpan.innerHTML = `<i class="fa-solid fa-newspaper"></i>THE NEW NEFFI TIMES`
+
+                                const titleDiv = document.createElement("div")
+                                titleDiv.classList.add("title")
+
+                                const newsBox = document.createElement("div")
+                                newsBox.classList.add("news-box")
+
+                                const live = document.createElement("span")
+                                live.classList.add("live")
+                                live.innerHTML = `<i class="fa-solid fa-circle"></i></span><span class="news-box-addition">BREAKING</span><br>`
+                                
+                                // SECOND INPUT
+                                const newsBoxContent = document.createElement("span")
+                                newsBoxContent.innerText = submission.desc
+
+                                const newsBoxAddition = document.createElement("span")
+                                newsBoxAddition.classList.add("news-box-addition")
+                                newsBoxAddition.style.fontWeight = '500'
+                                newsBoxAddition.innerText = `Business | 9 hours ago` // make random later
+
+                                const flavour = document.createElement("span")
+                                flavour.classList.add("flavour")
+                                flavour.innerText = "1 comment"
+
+                                const messageDiv = document.createElement("div")
+                                messageDiv.classList.add("message")
+
+                                const usernameSpan = document.createElement("span")
+                                usernameSpan.classList.add("username")
+                                usernameSpan.innerText = submission.username
+
+                                const contentsSpan = document.createElement("span")
+                                contentsSpan.classList.add("contents")
+                                contentsSpan.innerText = submission.title
+
+                                resultDiv.appendChild(headerSpan)
+                                resultDiv.appendChild(titleDiv)
+                                titleDiv.appendChild(live)
+                                titleDiv.appendChild(br1)
+                                titleDiv.appendChild(newsBoxContent)
+                                titleDiv.appendChild(br2)
+                                titleDiv.appendChild(newsBoxAddition)
+                                resultDiv.appendChild(flavour)
+                                resultDiv.appendChild(messageDiv)
+                                messageDiv.appendChild(usernameSpan)
+                                messageDiv.appendChild(br3)
+                                messageDiv.appendChild(contentsSpan)
+
+                                setTimeout(() => {
+                                    if (animate) newsBoxContent.classList.add("response-animate");
+                                }, 51)
+
+                                // this actually looks so good if it works i love it
+                                // i just need to manually update it in the css for the finals wrapper
+
+                                // 
+                                // new above
+
+                                /*resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-newspaper"></i>THE NEW NEFFI TIMES</span>`
                                 const titleDiv = document.createElement("div");
                                 titleDiv.classList.add("title");
                                 const titleSpan = document.createElement("span");
@@ -633,7 +696,7 @@ if (roomID) {
                                 messageDiv.appendChild(document.createElement("br"));
                                 messageDiv.appendChild(contentSpan);
                                 resultDiv.appendChild(titleDiv);
-                                resultDiv.appendChild(messageDiv);
+                                resultDiv.appendChild(messageDiv);*/
                                 break;
                             }
                             case "RATINGS": { // might remove this maybe idk
