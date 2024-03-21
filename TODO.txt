@@ -1,1 +1,3 @@
+fix selected tick
+finish capture
 play helldivers 2
