@@ -782,7 +782,7 @@ return {
     });
     // i just realized i didnt even need to do any authentication after first authenticating, why didnt i realize this back then
     function commandHandler(command, args) {
-
+        // hello hello hello ehllo
     }
     socket.on('user_message', async (content) => {
         if (!roomData || !userData) return socket.emit('error', "Invalid Session.");
