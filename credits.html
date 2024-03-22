@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/d250854114.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script type="text/javascript" src="js/config.js"></script>
-    <script defer type="text/javascript" src="js/home.js"></script>
     <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
 </head>
 <body>
@@ -23,26 +21,22 @@
         </div>
     </div>-->
     <main>
-        <img class="logo" src="assets/favicon.png" alt="" height="75">
-        <h3 class="title">neffbox</h3>
-        <div class="menu popAnim">
-            <h3 id="currentUser">username (currently unset)</h3>
-            <input type="text" name="username" id="username" placeholder="username">
-            <button onclick="onSaveUser()">save</button>
-            <!--try making it so joining a room also saves so they dont have to press it
-            3 of my irls got confused by this lol-->
-            <h3>rooms</h3>
-            <input type="text" name="roomid" id="roomid" placeholder="room id">
-            <button onclick="onJoinRoom()">join</button><br>
-            <!--<span id="notfoundroom" hidden>could not find room</span>-->
-            <span id="errortextjoin" hidden>what</span>
-            <br><br>
-            <button onclick="onCreateRoom()">create a room</button><br>
-            <span id="errortextcreate" hidden>what</span>
+        <div class="menu popAnim" style="text-align: left;">
+            <h3 style="text-align: center;">credits</h3>
+            <span>
+                <b>neffi</b> - frontend & a little backend
+            </span><br>
+            <span>
+                <b>firee</b> - backend
+            </span><br>
+            <span>
+                <b>b-build</b> - qa tester & advisor
+            </span><br>
+            <span>
+                <b>some other people</b> - tester
+            </span><br>
         </div>
-        <p style="filter: opacity(50%);">a project by neffi & firee
-        <br><a href="credits.html">full credits</a>
-    </p>
+        <p style="filter: opacity(80%);"><a href="index.html">back to main menu</a></p>
     </main>
 </body>
 </html>
