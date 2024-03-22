@@ -624,8 +624,6 @@ if (roomID) {
                         if (!roundname) roundname = roomData.roundName
                         switch (roundname) {
                             case "NEWS": {
-                                const br2 = document.createElement("br")
-                                const br3 = document.createElement("br")
 
                                 const headerSpan = document.createElement("span")
                                 headerSpan.classList.add("header")
@@ -674,12 +672,12 @@ if (roomID) {
                                 }
                                 //titleDiv.appendChild(br1)
                                 newsBox.appendChild(newsBoxContent)
-                                newsBox.appendChild(br2)
+                                newsBox.appendChild(document.createElement("br"))
                                 newsBox.appendChild(newsBoxAddition)
                                 resultDiv.appendChild(flavour)
                                 resultDiv.appendChild(messageDiv)
                                 messageDiv.appendChild(usernameSpan)
-                                messageDiv.appendChild(br3)
+                                messageDiv.appendChild(document.createElement("br"))
                                 messageDiv.appendChild(contentsSpan)
 
                                 setTimeout(() => {
