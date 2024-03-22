@@ -12,6 +12,7 @@ RUN npm install
 
 ENV PORT=10080
 ENV PRODUCTION=1
+ENV SECRETDEVCODE=YOURSECRETHERE
 
 # Expose the port your app runs on
 EXPOSE $PORT
