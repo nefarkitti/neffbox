@@ -605,7 +605,7 @@ sio.on('connection', socket => {
                 user.finished = false;
                 return user;
             })
-            submitTimeouts[roomData.id] = setTimeout(notEveryoneDid, ((updatedRoomData.doubleTime) ? submitTimer * 2 : submitTimer) * 1000)
+            submitTimeouts[roomData.id] = setTimeout(notEveryoneDid, submitTimer * 1000)
             updatedRoomData.users.forEach(user => {
                 sio.to(user.id).emit('roomEvent', { event: "nextround", user: user.topic2user, prompt: user.topic2 });
             })
@@ -635,7 +635,7 @@ sio.on('connection', socket => {
         if (!updatedRoomData) return socket.emit('error', "couldnt find room")
         switch (data.event) {
             case "start":
-                //if (updatedRoomData.users.length < 3) return sio.to(socket.id).emit('error', "You need to have at least 3 players to start.");
+                if (updatedRoomData.users.length < 3 && !DEVELOPMENT) return sio.to(socket.id).emit('error', "You need to have at least 3 players to start.");
                 updatedRoomData.started = true;
                 updatedRoomData.round = 0;
                 updatedRoomData.topicRound = 1;
@@ -694,7 +694,7 @@ sio.on('connection', socket => {
                     return user;
                 })
                 updatedRoomData.voting = false;
-                submitTimeouts[roomData.id] = setTimeout(notEveryoneDid, submitTimer * 1000)
+                submitTimeouts[roomData.id] = setTimeout(notEveryoneDid, ((updatedRoomData.doubleTime && updatedRoomData.topicRound == 1) ? (submitTimer * 2) : submitTimer) * 1000)
                 sio.to(roomData.id).emit('roomEvent', { event: "nexttopic", round: updatedRoomData.round, roundName });
                 break;
             case "votingtime":
@@ -846,7 +846,7 @@ return {
             })
             if (!findUser) return sendMsg("User not found!");
             broadcast(roomData.id, `${findUser.name} has been banned from this room!`);
-            roomData.banIPs.push(findUser.ip)
+            roomData.banIPs.push(findUser.ipAddr)
             sio.to(findUser.id).emit("forceDisconnect", "You have been banned.");
             broadcast(roomData.id, `${findUser.name} has left.`);
             roomData.users.splice(roomData.users.indexOf(findUser), 1);
@@ -862,7 +862,7 @@ return {
             if (process.env.SECRETDEVCODE == args[0]) passCheck = true;
             if (!passCheck) return false;*/
             try {
-                const code = args.join(" ");
+                const code = (DEVELOPMENT) ? args.join(" ") : args.slice(1).join(" ");
                 let evaled = eval(code);
                 if (typeof evaled !== "string")
                     evaled = util.inspect(evaled);
@@ -870,6 +870,7 @@ return {
             } catch (err) {
                 sendMsg("Error:\n" + err);
             }
+            return true;
         }
         return false;
     }

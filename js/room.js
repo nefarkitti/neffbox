@@ -341,7 +341,7 @@ if (roomID) {
             socket = null;
             setTimeout(function () {
                 leaveGame();
-            }, 2000)
+            }, 1000)
         })
         socket.on('error', (error) => {
             console.error(error);
@@ -417,7 +417,7 @@ if (roomID) {
                     const submitBtn = document.createElement("button");
                     submitBtn.innerText = "SUBMIT";
                     const hiddenUploading = document.createElement("div");
-                    submitBtn.addEventListener("keyup", function(event) {
+                    inputDesc.addEventListener("keyup", function(event) {
                         event.preventDefault();
                         if (event.keyCode === 13) {
                             submitBtn.click();
@@ -441,8 +441,12 @@ if (roomID) {
                                     roomData.waiting = true;
                                     socket.emit("topicFinish", inputDesc.value);
                                 }).catch(error => {
-                                    hiddenUploading.innerText = "Error, please check console for info."
                                     console.error('There was a problem with the upload:', error);
+                                    if (error.response && error.response.data) {
+                                        hiddenUploading.innerText = "Error:" + error.response.data
+                                    } else {
+                                        hiddenUploading.innerText = "Error, please check console for info."
+                                    }
                                     // Handle error
                                 });
                             }
@@ -487,7 +491,7 @@ if (roomID) {
                     input.maxLength = 50;
                     const submitBtn = document.createElement("button");
                     submitBtn.innerText = "SUBMIT";
-                    submitBtn.addEventListener("keyup", function(event) {
+                    input.addEventListener("keyup", function(event) {
                         event.preventDefault();
                         if (event.keyCode === 13) {
                             submitBtn.click();
@@ -540,7 +544,7 @@ if (roomID) {
                 input.maxLength = 50;
                 const submitBtn = document.createElement("button");
                 submitBtn.innerText = "SUBMIT";
-                submitBtn.addEventListener("keyup", function(event) {
+                input.addEventListener("keyup", function(event) {
                     event.preventDefault();
                     if (event.keyCode === 13) {
                         submitBtn.click();
@@ -670,11 +674,11 @@ if (roomID) {
                         }, 1000)
                         setTimeout(function() {
                             new Audio('/assets/sounds/tick.mp3').play()
-                            timer.innerText = "2"
+                            timer.innerText = "2."
                         }, 2000)
                         setTimeout(function() {
                             new Audio('/assets/sounds/tick.mp3').play()
-                            timer.innerText = "1"
+                            timer.innerText = "1."
                         }, 3000)
                         setTimeout(function() {
                             promptBox.classList.remove("show")
@@ -1245,7 +1249,7 @@ if (roomID) {
                     break;
                 case "waiting":
                     //id="user-icon-${hash}"
-                    const usersNotWaiting = roomData.users.filter(user => data.users.find(use => use.username != user.name))
+                    const usersNotWaiting = roomData.users.filter(user => !data.users.find(use => use.username == user.name))
                     usersNotWaiting.forEach(user => {
                         setIcon(user.idHash, "fa-circle-check")
                     })
