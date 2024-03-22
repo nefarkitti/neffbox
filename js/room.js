@@ -171,7 +171,7 @@ if (roomID) {
                         <div class="promptBox show" id="promptBox"> <!--dont comment the id part thingy ok thank you!-->
                         </div>
                     </div>
-                    <span class="timer"><i class="fa-solid fa-clock"></i> <span id="timer">Waiting...</span></span>
+                    <span class="timer"><i class="fa-solid fa-clock"></i> <span id="timer">Waiting</span></span>
                 </div>
                 <div class="roomItem chatItem hidemobile">
                     <h3>- CHAT -</h3>
@@ -270,7 +270,7 @@ if (roomID) {
                     promptBox.classList.remove("show")
                     promptBox.classList.add("show")
                 }
-                timer.innerText = "Waiting..."
+                timer.innerText = "Waiting"
             }
         })
 
@@ -481,7 +481,7 @@ if (roomID) {
                         }
                     })
                     roomData.started = true;
-                    timer.innerText = "Starting...";
+                    timer.innerText = "Starting";
                     promptBox.innerHTML = "<h3>5</h3>"
                     /*setTimeout(function() {
                         promptBox.innerHTML = "<h3>4</h3>"
@@ -567,15 +567,15 @@ if (roomID) {
                     setTimeout(function() {
                         setTimeout(function() {
                             new Audio('/assets/sounds/tick.mp3').play()
-                            timer.innerText = "3..."
+                            timer.innerText = "3."
                         }, 1000)
                         setTimeout(function() {
                             new Audio('/assets/sounds/tick.mp3').play()
-                            timer.innerText = "2..."
+                            timer.innerText = "2"
                         }, 2000)
                         setTimeout(function() {
                             new Audio('/assets/sounds/tick.mp3').play()
-                            timer.innerText = "1..."
+                            timer.innerText = "1"
                         }, 3000)
                         setTimeout(function() {
                             promptBox.classList.remove("show")
@@ -617,7 +617,7 @@ if (roomID) {
                         setIcon(user.idHash, "fa-user");
                     })
                     promptBox.innerHTML = "<h3>Now for the results!</h3>";
-                    timer.innerText = "Waiting...";
+                    timer.innerText = "Waiting";
                     function createTopic(submission, animate, roundname) {
                         const resultDiv = document.createElement("div");
                         resultDiv.classList.add("result", "news");
@@ -1120,7 +1120,7 @@ if (roomID) {
                                     })
                                 }
                                 votingTimer = setTimeout(function() {
-                                    timer.innerText = "Waiting..."
+                                    timer.innerText = "Waiting"
                                     promptBox.innerHTML = ""
                                 }, 30000)
                             }, submissions.length * 8000)
@@ -1142,7 +1142,7 @@ if (roomID) {
                                 <span>patrick</span>
                             </div>
                     */
-                    promptBox.innerHTML = "<img class='loading-img' src='../assets/loop.gif'><h3>Waiting for other players...</h3>";
+                    promptBox.innerHTML = "<img class='loading-img' src='../assets/loop.gif'><h3>Waiting for other players</h3>";
                     const waitingForDiv = document.createElement("div");
                     waitingForDiv.classList.add("waitingFor");
                     data.users.forEach(user => {
@@ -1155,9 +1155,9 @@ if (roomID) {
                 case "winneris":
                     setTimeout(function() {
                         clearTimeout(timers)
-                        timer.innerText = "Waiting..."
+                        timer.innerText = "Waiting"
                         promptBox.classList.remove("show")
-                        promptBox.innerHTML = "<h3>The winner is...</h3>";
+                        promptBox.innerHTML = "<h3>The winner is</h3>";
                         setTimeout(() => {
                             promptBox.classList.add("show")
                         }, 50)
@@ -1203,7 +1203,7 @@ if (roomID) {
                             setIcon(user.idHash, "fa-user");
                         })
                         clearTimeout(timers)
-                        timer.innerText = "Waiting..."
+                        timer.innerText = "Waiting"
                         promptBox.classList.remove("show")
                         promptBox.innerHTML = "<h3>ROUND END!</h3>";
                         setTimeout(() => {
