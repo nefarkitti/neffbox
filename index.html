@@ -12,6 +12,7 @@
     <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
 </head>
 <body>
+    <span class="btn"><i class="fa-solid fa-gear"></i></span>
     <!--<div class="modal-overlay">
         <div class="modal">
             <span class="closebtn"><i class="fa-solid fa-x"></i></span>
@@ -23,14 +24,13 @@
     </div>-->
     <main>
         <img class="logo" src="assets/favicon.png" alt="" height="75">
-        <h3>neffbox</h3>
-        <div class="menu">
+        <h3 class="title">neffbox</h3>
+        <div class="menu popAnim">
             <h3 id="currentUser">username (currently unset)</h3>
             <input type="text" name="username" id="username" placeholder="username">
             <button onclick="onSaveUser()">save</button>
             <!--try making it so joining a room also saves so they dont have to press it
             3 of my irls got confused by this lol-->
-            <br>
             <h3>rooms</h3>
             <input type="text" name="roomid" id="roomid" placeholder="room id">
             <button onclick="onJoinRoom()">join</button><br>

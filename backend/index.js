@@ -224,7 +224,7 @@ if (!DEVELOPMENT) {
 }
 
 function simpleRandom(max) {
-    return Math.floor(Math.random() * max + 1);
+    return Math.floor(Math.random() * max);
 }
 
 app.post('/create', validator.body('username').notEmpty().isString(), (req, res) => {
@@ -241,11 +241,11 @@ app.post('/create', validator.body('username').notEmpty().isString(), (req, res)
     if (roomID == -1) return res.sendStatus(500);
     const userToken = calculateUserHash(ip, username, roomID);
 
-    let allPossibleRounds = ["NEWS", "RATINGS", "TRAVELLING", "SHOPPING", "GOFUNDME"] // im sorry if this change breaks something @firee
+    let allPossibleRounds = ["RATINGS", "NEWS", "TRAVELLING", "SHOPPING", "GOFUNDME"] // im sorry if this change breaks something @firee
     let actualChosenRounds = []
 
     for (let i = 0; i < 3; i++) { // 3 times hopefully i cant test rn
-        const rolled = allPossibleRounds[simpleRandom(allPossibleRounds.length - 1)]
+        const rolled = allPossibleRounds[simpleRandom(allPossibleRounds.length)]
         actualChosenRounds.push(rolled)
         allPossibleRounds.splice(allPossibleRounds.indexOf(rolled), 1)
         // support for multiple different rounds
@@ -622,7 +622,7 @@ sio.on('connection', socket => {
         if (!updatedRoomData) return socket.emit('error', "couldnt find room")
         switch (data.event) {
             case "start":
-                if (updatedRoomData.users.length < 3) return sio.to(socket.id).emit('error', "You need to have at least 3 players to start.");
+                //if (updatedRoomData.users.length < 3) return sio.to(socket.id).emit('error', "You need to have at least 3 players to start.");
                 updatedRoomData.started = true;
                 updatedRoomData.round = 0;
                 updatedRoomData.topicRound = 1;
@@ -781,6 +781,9 @@ return {
         }
     });
     // i just realized i didnt even need to do any authentication after first authenticating, why didnt i realize this back then
+    function commandHandler(command, args) {
+
+    }
     socket.on('user_message', async (content) => {
         if (!roomData || !userData) return socket.emit('error', "Invalid Session.");
         if (!content || typeof content != "string") return socket.emit("error", "nice try")
@@ -841,8 +844,8 @@ return {
 `
                 break;
         }
-        content = content.replaceAll("/joinkers")
-
+        const splitContent = content.split(" ");
+        //if (content.startsWith("/") && commandHandler()) return;
         sio.to(roomData.id).emit('message', {
             username: userData.name,
             content

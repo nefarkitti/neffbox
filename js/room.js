@@ -64,6 +64,12 @@ const roomData = {
     twistUser: null
 }
 
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function loadMessage(username, content, isImage) {
     const messages = document.getElementById('messages')
     const div = document.createElement('div');
@@ -542,7 +548,7 @@ if (roomID) {
                     promptBox.innerHTML = `
                     <h1 class="round-number">Round ${roomData.round}</h1>
                     <h2 class="round-topic">${actualRoundTitle}</h2>
-                    `
+                    ` // make border colour of game change to round specific colour
                     new Audio('/assets/sounds/trowel.mp3').play()
                     document.getElementById("roundnameth").innerText = `- GAME (${roomData.roundName}) -`
                     setTimeout(() => {
@@ -587,6 +593,8 @@ if (roomID) {
                         case "SHOPPING":
                             handleRound("would be the PERFECT review for a product called...", 2, data.user, data.prompt)
                             break;
+                        case "GOFUNDME":
+                            handleRound("would be the PERFECT reply for a gofundme called...", 2, data.user, data.prompt)
                         case "IMAGE":
                             handleRound("The perfect accompanying caption would be...", 2, data.user, data.prompt)
                             break;
@@ -606,8 +614,6 @@ if (roomID) {
                         if (!roundname) roundname = roomData.roundName
                         switch (roundname) {
                             case "NEWS": {
-
-                                const br1 = document.createElement("br")
                                 const br2 = document.createElement("br")
                                 const br3 = document.createElement("br")
 
@@ -629,10 +635,12 @@ if (roomID) {
                                 const newsBoxContent = document.createElement("span")
                                 newsBoxContent.innerText = submission.desc
 
+                                const randomTopics = ["Business", "Politics", "World", "Health", "Family", "Entertainment"]
+
                                 const newsBoxAddition = document.createElement("span")
                                 newsBoxAddition.classList.add("news-box-addition")
                                 newsBoxAddition.style.fontWeight = '500'
-                                newsBoxAddition.innerText = `Business | 9 hours ago` // make random later
+                                newsBoxAddition.innerText = `${randomTopics[getRandomInt(0, randomTopics.length-1)]} | ${getRandomInt(1, 12)} hours ago` // make random later
 
                                 const flavour = document.createElement("span")
                                 flavour.classList.add("flavour")
@@ -651,11 +659,12 @@ if (roomID) {
 
                                 resultDiv.appendChild(headerSpan)
                                 resultDiv.appendChild(titleDiv)
-                                titleDiv.appendChild(live)
-                                titleDiv.appendChild(br1)
-                                titleDiv.appendChild(newsBoxContent)
-                                titleDiv.appendChild(br2)
-                                titleDiv.appendChild(newsBoxAddition)
+                                titleDiv.appendChild(newsBox)
+                                newsBox.appendChild(live)
+                                //titleDiv.appendChild(br1)
+                                newsBox.appendChild(newsBoxContent)
+                                newsBox.appendChild(br2)
+                                newsBox.appendChild(newsBoxAddition)
                                 resultDiv.appendChild(flavour)
                                 resultDiv.appendChild(messageDiv)
                                 messageDiv.appendChild(usernameSpan)
@@ -665,149 +674,303 @@ if (roomID) {
                                 setTimeout(() => {
                                     if (animate) newsBoxContent.classList.add("response-animate");
                                 }, 51)
-
                                 // this actually looks so good if it works i love it
                                 // i just need to manually update it in the css for the finals wrapper
-
-                                // 
-                                // new above
-
-                                /*resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-newspaper"></i>THE NEW NEFFI TIMES</span>`
-                                const titleDiv = document.createElement("div");
-                                titleDiv.classList.add("title");
-                                const titleSpan = document.createElement("span");
-                                titleSpan.innerText = submission.desc;
-                                titleDiv.appendChild(titleSpan);
-                                titleDiv.appendChild(document.createElement("br"));
-                                titleDiv.innerHTML += `<span class="flavour">1 comment</span><br>`
-                                setTimeout(() => {
-                                    if (animate) titleDiv.classList.add("response-animate");
-                                }, 51)
-                                
-                                const messageDiv = document.createElement("div");
-                                messageDiv.classList.add("message");
-                                const usernameSpan = document.createElement("span");
-                                usernameSpan.classList.add("username");
-                                usernameSpan.innerText = submission.username
-                                const contentSpan = document.createElement("span");
-                                contentSpan.classList.add("contents");
-                                contentSpan.innerText = submission.title;
-                                messageDiv.appendChild(usernameSpan);
-                                messageDiv.appendChild(document.createElement("br"));
-                                messageDiv.appendChild(contentSpan);
-                                resultDiv.appendChild(titleDiv);
-                                resultDiv.appendChild(messageDiv);*/
                                 break;
                             }
                             case "RATINGS": { // might remove this maybe idk
-                                resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-star-half-stroke"></i>NELP</span>`
-                                const titleDiv = document.createElement("div");
-                                titleDiv.classList.add("title");
-                                const usernameSpan = document.createElement("span");
-                                usernameSpan.classList.add("username");
-                                usernameSpan.innerText = submission.username
-                                titleDiv.appendChild(usernameSpan);
-                                titleDiv.appendChild(document.createElement("br"));
-                                titleDiv.innerHTML += `<span class="flavour">recommends</span><br>`
-                                const recommendSpan = document.createElement("span");
-                                recommendSpan.classList.add("recommendation");
-                                recommendSpan.innerText = submission.desc //submission.desc
-                                titleDiv.appendChild(recommendSpan);
                                 
-                                const messageDiv = document.createElement("div");
-                                messageDiv.classList.add("message");
-                                const contentSpan = document.createElement("span");
-                                contentSpan.classList.add("contents");
-                                contentSpan.innerText = `"${submission.title}"`;
-                                messageDiv.appendChild(contentSpan);
+                                resultDiv.classList.add("ratings")
+
+                                const headerSpan = document.createElement("span")
+                                headerSpan.classList.add("header")
+                                headerSpan.innerHTML = `<i class="fa-solid fa-star-half-stroke" aria-hidden="true"></i>NELP`
+
+                                const ratingsBox = document.createElement("div")
+                                ratingsBox.classList.add("ratings-box")
+
+                                const titleDiv = document.createElement("div")
+                                titleDiv.classList.add("title")
+
+                                const usernameSpan = document.createElement("span")
+                                usernameSpan.classList.add("username")
+                                usernameSpan.innerText = submission.username
+
+                                const flavour = document.createElement("span")
+                                flavour.classList.add("flavour")
+                                flavour.innerText = "recommends"
+
+                                const recommendation = document.createElement("span")
+                                recommendation.classList.add("recommendation")
+                                recommendation.innerText = submission.desc
+
+                                const shoppingBoxAdditionRating = document.createElement("span")
+                                shoppingBoxAdditionRating.classList.add("ratings-box-addition")
+
+                                const rollStars = getRandomInt(1, 5)
+                                for (let i = 1;i < 6;i++) {
+                                    if (i <= rollStars) {
+                                        const j = document.createElement("i")
+                                        j.classList.add("fa-solid")
+                                        j.classList.add("fa-star")
+                                        shoppingBoxAdditionRating.appendChild(j)
+                                    } else {
+                                        const j = document.createElement("i")
+                                        j.classList.add("fa-regular")
+                                        j.classList.add("fa-star")
+                                        shoppingBoxAdditionRating.appendChild(j)
+                                    }
+                                }
+
+                                const messageDiv = document.createElement("div")
+                                messageDiv.classList.add("message")
+
+                                const contentsSpan = document.createElement("span")
+                                contentsSpan.classList.add("contents")
+                                contentsSpan.innerText = submission.title
+
+                                resultDiv.appendChild(headerSpan)
+                                resultDiv.appendChild(ratingsBox)
+                                ratingsBox.appendChild(titleDiv)
+                                titleDiv.appendChild(usernameSpan)
+                                titleDiv.appendChild(document.createElement("br"))
+                                titleDiv.appendChild(flavour)
+                                titleDiv.appendChild(document.createElement("br"))
+                                titleDiv.appendChild(recommendation)
+                                titleDiv.appendChild(document.createElement("br"))
+                                titleDiv.appendChild(shoppingBoxAdditionRating)
+                                ratingsBox.appendChild(messageDiv)
+                                messageDiv.appendChild(contentsSpan)
+
                                 setTimeout(() => {
-                                    if (animate) messageDiv.classList.add("response-animate");
+                                    if (animate) recommendation.classList.add("response-animate");
                                 }, 51)
-                                resultDiv.appendChild(titleDiv);
-                                resultDiv.appendChild(messageDiv);
+
+
                                 break;
                             }
                             case "TRAVELLING": {
-                                resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-location-dot"></i>NEFFADVISOR</span>`
-                                const titleDiv = document.createElement("div");
-                                titleDiv.classList.add("title");
-                                const usernameSpan = document.createElement("span");
-                                usernameSpan.classList.add("username");
-                                usernameSpan.innerText = submission.username
-                                titleDiv.appendChild(usernameSpan);
-                                titleDiv.appendChild(document.createElement("br"));
-                                const opinionSpan = document.createElement("span");
-                                opinionSpan.classList.add("opinion");
-                                opinionSpan.innerText = submission.title
-                                titleDiv.appendChild(opinionSpan);
-                                titleDiv.innerHTML += `<br><span class="flavour">checked in at</span><br>`
+
+                                resultDiv.classList.add("travelling")
+
+                                const headerSpan = document.createElement("span")
+                                headerSpan.classList.add("header")
+                                headerSpan.innerHTML = `<i class="fa-solid fa-location-dot"></i>NEFFADVISOR`
+
+                                const travellingBox = document.createElement("div")
+                                travellingBox.classList.add("travelling-box")
                                 
-                                const messageDiv = document.createElement("span");
-                                messageDiv.classList.add("place");
-                                messageDiv.innerHTML = `<i class="fa-solid fa-location-dot"></i>`
-                                const contentSpan = document.createElement("span");
-                                contentSpan.innerText = submission.desc;
-                                messageDiv.appendChild(contentSpan);
+                                const titleDiv = document.createElement("div")
+                                titleDiv.classList.add("title")
+
+                                const usernameSpan = document.createElement("span")
+                                usernameSpan.classList.add("username")
+                                usernameSpan.innerText = submission.username
+
+                                const opinionSpan = document.createElement("span")
+                                opinionSpan.classList.add("opinion")
+                                opinionSpan.innerText = submission.title
+
+                                const flavour = document.createElement("span")
+                                flavour.classList.add("flavour")
+                                flavour.innerText = "checked in at"
+                                
+                                const place = document.createElement("span")
+                                place.classList.add("place")
+
+                                const i = document.createElement("i")
+                                i.classList.add("fa-solid")
+                                i.classList.add("fa-location-dot")
+
+                                const placeContents = document.createElement("span")
+                                placeContents.innerText = submission.desc
+
+                                const travellingBoxAddition = document.createElement("span")
+                                travellingBoxAddition.classList.add("travelling-box-addition")
+                                travellingBoxAddition.innerText = `${getRandomInt(2, 9)} users found this helpful`
+
+                                const gofundmeBoxAddition = document.createElement("span")
+                                gofundmeBoxAddition.classList.add("gofundme-box-addition")
+                                gofundmeBoxAddition.style.fontStyle = "normal"
+
+                                const thumbUp = document.createElement("span")
+                                thumbUp.innerHTML = `<i class="fa-solid fa-thumbs-up"></i>${getRandomInt(1, 30)}`
+                                
+                                const thumbDown = document.createElement("span")
+                                thumbDown.innerHTML = `<i class="fa-solid fa-thumbs-down"></i>${getRandomInt(1, 10)}`
+
+                                resultDiv.appendChild(headerSpan)
+                                resultDiv.appendChild(travellingBox)
+                                travellingBox.appendChild(titleDiv)
+                                titleDiv.appendChild(usernameSpan)
+                                titleDiv.appendChild(document.createElement("br"))
+                                titleDiv.appendChild(opinionSpan)
+                                travellingBox.appendChild(flavour)
+                                travellingBox.appendChild(document.createElement("br"))
+                                travellingBox.appendChild(place)
+                                place.appendChild(i)
+                                place.appendChild(placeContents)
+                                travellingBox.appendChild(travellingBoxAddition)
+                                travellingBox.appendChild(gofundmeBoxAddition)
+                                gofundmeBoxAddition.appendChild(thumbUp)
+                                gofundmeBoxAddition.appendChild(thumbDown)
+
                                 setTimeout(() => {
-                                    if (animate) messageDiv.classList.add("response-animate");
+                                    if (animate) place.classList.add("response-animate");
                                 }, 51)
-                                resultDiv.appendChild(titleDiv);
-                                resultDiv.appendChild(messageDiv);
+
                                 break;
                             }
                             case "SHOPPING": { // bad reskin of reviews but we love feature bloat dont we hahahahahahahahahahahahahahahahhahahahahahahahahhahahahahahahahahahahhahahahhaha
-                                resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-cart-shopping"></i>NEFFMART</span>`
-                                const titleDiv = document.createElement("div");
-                                titleDiv.classList.add("title");
-                                const titleSpan = document.createElement("span");
-                                titleSpan.innerText = submission.desc;
-                                titleSpan.classList.add("place")
-                                titleDiv.appendChild(titleSpan);
-                                titleDiv.innerHTML += `<br><span class="flavour">1 review</span><br>`
-                                setTimeout(() => {
-                                    if (animate) titleDiv.classList.add("response-animate");
-                                }, 51)
-                                const messageDiv = document.createElement("div");
-                                messageDiv.classList.add("message");
-                                const usernameSpan = document.createElement("span");
-                                usernameSpan.classList.add("username");
+                                
+                                resultDiv.classList.add("shopping")
+
+                                const headerSpan = document.createElement("span")
+                                headerSpan.classList.add("header")
+                                headerSpan.innerHTML = `<i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>NEFFMART`
+
+                                const shoppingBox = document.createElement("div")
+                                shoppingBox.classList.add("shopping-box")
+
+                                const titleDiv = document.createElement("div")
+                                titleDiv.classList.add("title")
+
+                                const place = document.createElement("span")
+                                place.innerText = submission.desc
+
+                                const shoppingBoxAdditionRating = document.createElement("span")
+                                shoppingBoxAdditionRating.classList.add("shopping-box-addition")
+                                shoppingBoxAdditionRating.classList.add("shopping-rating")
+
+                                const rollStars = getRandomInt(1, 5)
+                                for (let i = 1;i < 6;i++) {
+                                    if (i <= rollStars) {
+                                        const j = document.createElement("i")
+                                        j.classList.add("fa-solid")
+                                        j.classList.add("fa-star")
+                                        shoppingBoxAdditionRating.appendChild(j)
+                                    } else {
+                                        const j = document.createElement("i")
+                                        j.classList.add("fa-regular")
+                                        j.classList.add("fa-star")
+                                        shoppingBoxAdditionRating.appendChild(j)
+                                    }
+                                }
+
+                                const shoppingBoxPrice = document.createElement("span")
+                                shoppingBoxPrice.classList.add("shopping-box-addition")
+                                shoppingBoxPrice.classList.add("price")
+                                shoppingBoxPrice.innerHTML = `£${getRandomInt(5, 140)}`
+
+                                const shoppingBoxCart = document.createElement("span")
+                                shoppingBoxCart.classList.add("shopping-box-addition")
+                                shoppingBoxCart.classList.add("cart")
+                                shoppingBoxCart.innerHTML = `<i class="fa-solid fa-cart-shopping"></i>add to cart`
+
+                                const flavour = document.createElement("span")
+                                flavour.classList.add("flavour")
+                                flavour.innerText = `1 review`
+
+                                const messageDiv = document.createElement("div")
+                                messageDiv.classList.add("message")
+
+                                const usernameSpan = document.createElement("span")
+                                usernameSpan.classList.add("username")
                                 usernameSpan.innerText = submission.username
-                                const contentSpan = document.createElement("span");
-                                contentSpan.classList.add("contents");
-                                contentSpan.innerText = submission.title;
-                                messageDiv.appendChild(usernameSpan);
-                                messageDiv.appendChild(document.createElement("br"));
-                                messageDiv.appendChild(contentSpan);
-                                resultDiv.appendChild(titleDiv);
-                                resultDiv.appendChild(messageDiv);
+
+                                const contentsSpan = document.createElement("span")
+                                contentsSpan.classList.add("contents")
+                                contentsSpan.innerText = submission.title
+
+                                resultDiv.appendChild(headerSpan)
+                                resultDiv.appendChild(shoppingBox)
+                                shoppingBox.appendChild(titleDiv)
+                                titleDiv.appendChild(place)
+                                titleDiv.appendChild(document.createElement("br"))
+                                shoppingBox.appendChild(shoppingBoxAdditionRating)
+                                shoppingBox.appendChild(shoppingBoxPrice)
+                                shoppingBox.appendChild(shoppingBoxCart)
+                                resultDiv.appendChild(flavour)
+                                resultDiv.appendChild(messageDiv)
+                                messageDiv.appendChild(usernameSpan)
+                                messageDiv.appendChild(document.createElement("br"))
+                                messageDiv.appendChild(contentsSpan)
+
+                                setTimeout(() => {
+                                    if (animate) place.classList.add("response-animate");
+                                }, 51)
+
+
                                 break;
                             }
                             case "GOFUNDME": { // feature bloat ahahahahhahahahaha
-                                resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-coins"></i>GONEFFME</span>`
-                                const titleDiv = document.createElement("div");
-                                titleDiv.classList.add("title");
-                                const titleSpan = document.createElement("span");
-                                titleSpan.innerText = submission.desc;
-                                titleDiv.appendChild(titleSpan);
-                                titleDiv.appendChild(document.createElement("br"));
-                                titleDiv.innerHTML += `<span class="flavour">1 comment</span><br>`
-                                setTimeout(() => {
-                                    if (animate) titleDiv.classList.add("response-animate");
-                                }, 51)
-                                
-                                const messageDiv = document.createElement("div");
-                                messageDiv.classList.add("message");
-                                const usernameSpan = document.createElement("span");
-                                usernameSpan.classList.add("username");
+
+                                resultDiv.classList.add("gofundme")
+
+                                const headerSpan = document.createElement("span")
+                                headerSpan.classList.add("header")
+                                headerSpan.innerHTML = `<i class="fa-solid fa-coins"></i>GONEFFME`
+
+                                const titleDiv = document.createElement("div")
+                                titleDiv.classList.add("title")
+
+                                const newsBox = document.createElement("div")
+                                newsBox.classList.add("news-box")
+
+                                const newsBoxContent = document.createElement("span")
+                                newsBoxContent.classList.add("news-box-content")
+                                newsBoxContent.innerText = submission.desc
+
+                                const barDiv = document.createElement("div")
+                                barDiv.classList.add("bar")
+                                const fillDiv = document.createElement("div")
+                                fillDiv.classList.add("fill")
+                                fillDiv.style.width = `${Math.round(Math.random() * 100)}%`
+                                barDiv.appendChild(fillDiv)
+
+                                const raisedSpan = document.createElement("span")
+                                raisedSpan.classList.add("gofundme-box-addition")
+                                raisedSpan.classList.add("raised")
+                                raisedSpan.innerHTML = `£${getRandomInt(5000, 10000)} raised`
+
+                                const backingSpan = document.createElement("span")
+                                backingSpan.classList.add("gofundme-box-addition")
+                                backingSpan.classList.add("backing")
+                                backingSpan.innerHTML = `${getRandomInt(500, 5000)} backing`
+
+                                const flavour = document.createElement("span")
+                                flavour.classList.add("flavour")
+                                flavour.innerText = "1 comment"
+
+                                const messageDiv = document.createElement("div")
+                                messageDiv.classList.add("message")
+
+                                const usernameSpan = document.createElement("span")
+                                usernameSpan.classList.add("username")
                                 usernameSpan.innerText = submission.username
-                                const contentSpan = document.createElement("span");
-                                contentSpan.classList.add("contents");
-                                contentSpan.innerText = submission.title;
-                                messageDiv.appendChild(usernameSpan);
-                                messageDiv.appendChild(document.createElement("br"));
-                                messageDiv.appendChild(contentSpan);
-                                resultDiv.appendChild(titleDiv);
-                                resultDiv.appendChild(messageDiv);
+
+                                const contentsSpan = document.createElement("span")
+                                contentsSpan.classList.add("contents")
+                                contentsSpan.innerText = submission.title
+
+                                resultDiv.appendChild(headerSpan)
+                                resultDiv.appendChild(titleDiv)
+                                titleDiv.appendChild(newsBox)
+                                newsBox.appendChild(newsBoxContent)
+                                newsBox.appendChild(document.createElement("br"))
+                                newsBox.appendChild(barDiv)
+                                newsBox.appendChild(raisedSpan)
+                                newsBox.appendChild(backingSpan)
+                                resultDiv.appendChild(flavour)
+                                resultDiv.appendChild(messageDiv)
+                                messageDiv.appendChild(usernameSpan)
+                                messageDiv.appendChild(document.createElement("br"))
+                                messageDiv.appendChild(contentsSpan)
+
+                                setTimeout(() => {
+                                    if (animate) newsBoxContent.classList.add("response-animate");
+                                }, 51)
+
                                 break;
                             }
                             case "IMAGE": {
@@ -1072,7 +1235,7 @@ if (roomID) {
                                 const startBtn = document.createElement("button");
                                 startBtn.innerText = "Restart";
                                 startBtn.onclick = function() {
-                                    if (roomData.users.length < 3) return createPopup("You need 3 players to start the game!")
+                                    //if (roomData.users.length < 3) return createPopup("You need 3 players to start the game!")
                                     socket.emit("roomEvent", {
                                         event: "start"
                                     })
