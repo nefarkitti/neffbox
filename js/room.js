@@ -636,10 +636,6 @@ if (roomID) {
 
                                 const newsBox = document.createElement("div")
                                 newsBox.classList.add("news-box")
-
-                                const live = document.createElement("span")
-                                live.classList.add("live")
-                                live.innerHTML = `<i class="fa-solid fa-circle"></i></span><span class="news-box-addition">BREAKING</span><br>`
                                 
                                 // SECOND INPUT
                                 const newsBoxContent = document.createElement("span")
@@ -670,7 +666,12 @@ if (roomID) {
                                 resultDiv.appendChild(headerSpan)
                                 resultDiv.appendChild(titleDiv)
                                 titleDiv.appendChild(newsBox)
-                                newsBox.appendChild(live)
+                                if (Math.random() > 0.5) {
+                                    const live = document.createElement("span")
+                                    live.classList.add("live")
+                                    live.innerHTML = `<i class="fa-solid fa-circle"></i></span><span class="news-box-addition">BREAKING</span><br>`
+                                    newsBox.appendChild(live)
+                                }
                                 //titleDiv.appendChild(br1)
                                 newsBox.appendChild(newsBoxContent)
                                 newsBox.appendChild(br2)
