@@ -37,7 +37,6 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 // simple fix 
 if (DEVELOPMENT) {
-
     app.use(express.static(__dirname + "/../"))
 }
 // simple fix
@@ -116,7 +115,7 @@ function shuffle(array) {
     return array;
 }
 
-function genUser(username, userToken) {
+function genUser(username, userToken, ip) {
     return {
         id: null,
         name: username,
@@ -127,7 +126,8 @@ function genUser(username, userToken) {
         topic2user: null,
         response1: null,
         response2: null,
-        votedFor: null
+        votedFor: null,
+        ipAddr: sha512(ip)
     }
 }
 
@@ -231,8 +231,8 @@ app.post('/create', validator.body('username').notEmpty().isString(), (req, res)
     const result = validator.validationResult(req);
     if (!result.isEmpty()) return res.status(400).json({ errors: result.array() })
     const username = req.body.username;
-    if (!username || typeof username != 'string') res.sendStatus(400);
-    if (username.length > usernameLimit) return res.sendStatus(413);
+    if (!username || typeof username != 'string') res.status(400).send("Give a valid username!");
+    if (username.length > usernameLimit) return res.status(413).send("Username is too long!");
     if (!username.length) return res.status(400).send("whar");
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const userExists = rooms.find(room => room.users.find(user => user.token == calculateUserHash(ip, username, room.id)))
@@ -259,9 +259,11 @@ app.post('/create', validator.body('username').notEmpty().isString(), (req, res)
         topicRound: 1,
         started: false,
         voting: false,
-        users: [genUser(username, userToken)],
+        users: [genUser(username, userToken, ip)],
         rounds: [...shuffle(actualChosenRounds), "IMAGE"],
-        imgs: new Map()
+        imgs: new Map(),
+        banUsernames: [],
+        banIPs: [] // hashed! don't worry!
     })
     return res.send({
         id: roomID,
@@ -290,7 +292,7 @@ app.post(
         const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         if (!roomID || !username) res.sendStatus(400);
         if (typeof roomID != "string" || typeof username != "string") res.sendStatus(400);
-        if (username.length > usernameLimit) return res.sendStatus(413);
+        if (username.length > usernameLimit) return res.status(413).send("Username too long!");
         if (!username.length) return res.status(400).send("whar");
         const roomData = getRoom(roomID)
         if (!roomData) return res.status(404).send("could not find room");
@@ -300,8 +302,10 @@ app.post(
         if (userExists) return res.status(403).send("someone has the same username in that room!");
         const userInRoom = rooms.find(room => room.users.find(user => user.token == calculateUserHash(ip, username, room.id)))
         if (userInRoom) return res.status(400).send("you are already in a room!");
+        if (roomData.banUsernames.includes(username)) return res.status(403).send("your username is banned from joining the room!");
+        if (roomData.banIPs.includes(sha512(ip))) return res.status(403).send("you are banned from this room.");
         const userToken = calculateUserHash(ip, username, roomID);
-        roomData.users.push(genUser(username, userToken));
+        roomData.users.push(genUser(username, userToken, ip));
         return res.json({
             users: roomData.users.map(user => {
                 return { name: user.name, points: user.points, idHash: sha512(user.name) }
@@ -323,15 +327,15 @@ function uploadImage(req, res, capture) {
     // neffi the neffi
     const roomID = req.query.roomID;
     const roomData = getRoom(roomID);
-    if (!roomData) return res.sendStatus(404);
+    if (!roomData) return res.status(404).send("Couldn't find room.");
     const file = req.body.file;
     const extension = req.body.ext;
     const username = req.body.username;
     if (!file || file.length === 0) return res.status(400).send('Invalid file');
-    if (!roomID || !file || !username) return res.sendStatus(400);
-    if (!extension && !capture) return res.sendStatus(400);
+    if (!roomID || !file || !username) return res.status(400).send("Some parameters aren't set!");
+    if (!extension && !capture) return res.status(400).send("Give an extension.");
     if (!isValidBase64(file)) return res.status(400).send("Invalid base64.")
-    if (!file.startsWith("data")) return res.sendStatus(400);
+    if (!file.startsWith("data")) return res.status(400).send("Invalid base64. (Doesn't start with data)");
     let base64ImageData = file.replace(/^data:image\/\w+;base64,/, '')
     const buffer = Buffer.from(base64ImageData, 'base64');
     imageType(buffer).then(async type => {
@@ -341,8 +345,10 @@ function uploadImage(req, res, capture) {
         if (type && type.ext && !['png', 'jpeg', 'gif', 'jpg'].includes(type.ext)) {
             // convert image
             try {
-                //const pngBuffer = await sharp(buffer).toFormat('png').toBuffer();
-                //base64ImageData = pngBuffer.toString('base64');
+                if (!DEVELOPMENT) {
+                    const pngBuffer = await sharp(buffer).toFormat('png').toBuffer();
+                    base64ImageData = pngBuffer.toString('base64');
+                }
             } catch (e) {
                 console.error(e)
                 return res.status(500).send("Couldn't convert image.")
@@ -409,7 +415,7 @@ app.get('/imgs/:room/:hash', validator.query("room").notEmpty().isInt(), validat
     const hash = req.params.hash;
     const room = req.params.room;
     const roomData = getRoom(room);
-    if (!roomData) return res.sendStatus(404);
+    if (!roomData) return res.status(404).send("Room not found.");
 
     // Check if the hash exists in the storage
     if (!roomData.imgs.has(hash)) return res.status(404).send('Image not found');
@@ -444,10 +450,12 @@ function getTopics(topic) {
     }
 }
 
-//navigator.product = "ReactNative"
+if (!DEVELOPMENT) { // because neff doesn't want to update nodejs!
+    navigator.product = "ReactNative"
+}
 import EmojiConvertor from 'emoji-js';
 const emoji = new EmojiConvertor();
-emoji.replace_mode = "unified" //
+if (DEVELOPMENT) emoji.replace_mode = "unified"
 
 function addPoints(roomID, username, points) {
     const roomData = getRoom(roomID);
@@ -538,6 +546,10 @@ sio.on('connection', socket => {
 
         const winnerUser = updatedRoomData.users.find(user => user.name == winnerObj.actual)
         const sacUser = updatedRoomData.users.find(user => user.name == winnerObj.username)
+        if (!winnerUser || !sacUser) return sio.to(roomData.id).emit('roomEvent', {
+            event: "winneris",
+            noone: true
+        })
         let winnerPoints = maxVotes * 100;
         let sacPoints = (maxVotes * 100) * (1 / 5);
         if (updatedRoomData.doubleTime) {
@@ -782,7 +794,64 @@ return {
     });
     // i just realized i didnt even need to do any authentication after first authenticating, why didnt i realize this back then
     function commandHandler(command, args) {
-        // hello hello hello ehllo
+        // you made me get a merge conflict
+        roomData = getRoom(roomData.id);
+        command = command.slice(1);
+        if (command == "help") {
+            sendMsg("Commands:\n/help - List of commands\n/ping - Pong!\n/kick <PLAYER> - Kicks a player.\n/ban <PLAYER> - Bans a player by username.\n/banip <PLAYER> - In case banning a username isn't enough.");
+            return true;
+        }
+        if (command == "ping") {
+            sendMsg("Pong!");
+            return true;
+        }
+        if (command == "kick") {
+            if (!args[0]) return sendMsg("Provide a username!");
+            if (args.join(" ") == userData.name) return sendMsg("nope!");
+            const findUser = roomData.users.find(user => {
+                return user.name == args.join(" ")
+            })
+            if (!findUser) return sendMsg("User not found!");
+            broadcast(roomData.id, `${findUser.name} has been kicked from this room!`);
+            sio.to(findUser.id).emit("forceDisconnect", "You have been kicked.");
+            broadcast(roomData.id, `${findUser.name} has left.`);
+            roomData.users.splice(roomData.users.indexOf(findUser), 1);
+            sio.to(roomData.id).emit("leave", sha512(findUser.name));
+            return true;
+        }
+        if (command == "ban") {
+            if (!args[0]) return sendMsg("Provide a username!");
+            if (args.join(" ") == userData.name) return sendMsg("nope!");
+            const findUser = roomData.users.find(user => {
+                return user.name == args.join(" ")
+            })
+            if (roomData.banUsernames.includes(args.join(" "))) return sendMsg("That username has already been banned!");
+            broadcast(roomData.id, `The username ${args.join(" ")} has been banned from this room!`);
+            roomData.banUsernames.push(args.join(" "))
+            if (findUser) {
+                sio.to(findUser.id).emit("forceDisconnect", "You have been banned.");
+                broadcast(roomData.id, `${findUser.name} has left.`);
+                roomData.users.splice(roomData.users.indexOf(findUser), 1);
+                sio.to(roomData.id).emit("leave", sha512(findUser.name));
+            }
+            return true;
+        }
+        if (command == "banip") {
+            if (!args[0]) return sendMsg("Provide a username!");
+            if (args.join(" ") == userData.name) return sendMsg("nope!");
+            const findUser = roomData.users.find(user => {
+                return user.name == args.join(" ")
+            })
+            if (!findUser) return sendMsg("User not found!");
+            broadcast(roomData.id, `${findUser.name} has been banned from this room!`);
+            roomData.banIPs.push(findUser.ip)
+            sio.to(findUser.id).emit("forceDisconnect", "You have been banned.");
+            broadcast(roomData.id, `${findUser.name} has left.`);
+            roomData.users.splice(roomData.users.indexOf(findUser), 1);
+            sio.to(roomData.id).emit("leave", sha512(findUser.name));
+            return true;
+        }
+        return false;
     }
     socket.on('user_message', async (content) => {
         if (!roomData || !userData) return socket.emit('error', "Invalid Session.");
@@ -845,7 +914,7 @@ return {
                 break;
         }
         const splitContent = content.split(" ");
-        //if (content.startsWith("/") && commandHandler()) return;
+        if (content.startsWith("/") && commandHandler(splitContent[0], splitContent.slice(1))) return;
         sio.to(roomData.id).emit('message', {
             username: userData.name,
             content
@@ -880,6 +949,8 @@ return {
                 sio.to(roomData.id).emit("forceDisconnect", "The host has left.");
                 rooms.splice(rooms.indexOf(roomData), 1);
             } else {
+                const findMe = roomData.users.find(user => user.name == username)
+                if (!findMe) return;
                 broadcast(roomData.id, `${username} has left.`);
                 roomData.users.splice(roomData.users.indexOf(roomData.users.find(user => user.name == username)), 1);
                 sio.to(roomData.id).emit("leave", sha512(username));
