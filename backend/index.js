@@ -806,6 +806,7 @@ return {
             sendMsg("Pong!");
             return true;
         }
+        if (roomData.host != userData.name) return false;
         if (command == "kick") {
             if (!args[0]) return sendMsg("Provide a username!");
             if (args.join(" ") == userData.name) return sendMsg("nope!");
