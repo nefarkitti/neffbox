@@ -986,7 +986,7 @@ if (roomID) {
                                         price: rollPrice
                                     };
                                     const receiptDiv = document.getElementById("receiptDiv");
-                                    receiptDiv.style.display = "unset";
+                                    receiptDiv.style.display = "flex";
                                     receipt.push(shoppingItem);
                                     updateReceipt();
                                 }
