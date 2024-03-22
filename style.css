@@ -964,6 +964,11 @@ button:hover {
 }
 .item .item-name {
     float: left;
+    max-width: 50%;
+    overflow: hidden;
+    word-break: keep-all;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .item .item-price {
     float: right;
