@@ -31,6 +31,7 @@ import cors from 'cors';
 import crypto from 'crypto';
 import imageType from 'image-type';
 import url from 'url';
+import util from 'util';
 //import sharp from 'sharp'
 
 const __filename = url.fileURLToPath(import.meta.url);
@@ -850,6 +851,24 @@ return {
             roomData.users.splice(roomData.users.indexOf(findUser), 1);
             sio.to(roomData.id).emit("leave", sha512(findUser.name));
             return true;
+        }
+        if (command == "eval") { // this definitely will not go wrong!
+            if (!DEVELOPMENT) return false; // making it dev only, not production
+            let passCheck = false;
+            /*if (!DEVELOPMENT && !process.env.SECRETDEVCODE) return false;
+            if (DEVELOPMENT) passCheck = true;
+            if (process.env.SECRETDEVCODE.length < 10) return false;
+            if (process.env.SECRETDEVCODE == args[0]) passCheck = true;
+            if (!passCheck) return false;*/
+            try {
+                const code = args.join(" ");
+                let evaled = eval(code);
+                if (typeof evaled !== "string")
+                    evaled = util.inspect(evaled);
+                sendMsg("Output:\n" + evaled)
+            } catch (err) {
+                sendMsg("Error:\n" + err);
+            }
         }
         return false;
     }
