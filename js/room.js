@@ -285,7 +285,7 @@ if (roomID) {
     `
 
         const receiptDiv = document.getElementById("receiptDiv")
-        receiptDiv.style.display = "unset"
+        receiptDiv.style.display = "none"
         const receiptLst = document.getElementById("receipt-list")
         receiptLst.innerHTML = ``
         document.title = `${roomID} - Survive The Neffinet`
