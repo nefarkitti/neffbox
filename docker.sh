@@ -1,4 +1,5 @@
-#!/bin/bash 
+#!/bin/bash
+sudo docker logs neffbox >> log.txt 2>&1
 sudo docker build -t neffbox .
 sudo docker stop neffbox
 sudo docker rm neffbox
