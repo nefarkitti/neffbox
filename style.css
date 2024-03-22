@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://db.onlinewebfonts.com/c/975a5a4b60d2801c3382561ee634109b?family=Hypermarket+W00+Regular');
 
 :root {
     --accent: #eb144c;
@@ -21,6 +22,7 @@ body {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: reverse;
+    overflow: hidden;
 }
 
 *:not(.fa-solid) {
@@ -891,4 +893,79 @@ button:hover {
 }
 .backing {
     font-size: 13px;
+}
+
+.showReceipt {
+    animation-name: showReceipt;
+    animation-duration: 0.5s;
+    animation-timing-function: cubic-bezier( 0.46, 0.76, 0.92, 0.52) ease-out;
+    animation-fill-mode:forwards;
+    transform: translateX(120%);
+}
+
+@keyframes showReceipt {
+    0% {
+        transform: translate(0%, 100%);
+    }
+
+    100% {
+        transform: translate(0%, 0%);
+    }
+}
+
+.receipt {
+    display: flex;
+    background-color: white;
+    position: absolute;
+    bottom: 0;
+    right: 55px;
+    height: fit-content;
+    padding: 5px;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #e6e6e6;
+    background: url('/assets/paper.jpg');
+    border-radius: 1px;
+    box-shadow: 2px 2px 5px black;
+}
+.receipt .tm {
+    vertical-align: top;
+    font-size: 10px;
+}
+.receipt hr {
+    border-color: black;
+    width: 100%;
+    filter: opacity(50%);
+}
+.receipt * {
+    font-family: "Hypermarket W00 Regular", sans-serif !important;
+    font-smooth: never !important;
+    -webkit-font-smoothing: none !important;
+}
+.receipt h3 {
+    margin: 0;
+    margin-top: -15px;
+}
+.receipt #receipt-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.receipt img {
+    filter:grayscale(100%);
+    image-rendering: pixelated;
+}
+.receipt .item {
+    width: 160px;
+    display: inline-block;
+}
+.item .item-name {
+    float: left;
+}
+.item .item-price {
+    float: right;
 }

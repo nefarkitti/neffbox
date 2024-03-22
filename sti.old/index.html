@@ -72,7 +72,48 @@
                                             <i class="fa-regular fa-star"></i>
                                         </span>
                                         <span class="shopping-box-addition price">£50</span>
-                                        <span class="shopping-box-addition cart"><i class="fa-solid fa-cart-shopping"></i>add to cart</span>
+                                        <span class="shopping-box-addition cart" onclick="
+                                                                            let shoppingItem = {
+                                        name: 'Bike',
+                                        price: 30
+                                    };
+                                    const receiptDiv = document.getElementById('receiptDiv');
+                                    receiptDiv.style.display = 'flex';
+                                    receipt.push(shoppingItem);
+                                    updateReceipt();
+                                        "><i class="fa-solid fa-cart-shopping"></i>add to cart</span>
+                                    </div>
+                                    <span class="flavour">1 review</span>
+                                    <div class="message">
+                                        <span class="username">neff</span><br>
+                                        <span class="contents">i am the first input.</span>
+                                    </div>
+                                    <span class="capture"><i class="fa-solid fa-camera" aria-hidden="true"></i>Capture</span>
+                                </div>
+                                <div class="result news shopping" id="resultdiv">
+                                    <span class="header"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>NEFFMART</span>
+                                    <div class="shopping-box">
+                                        <div class="title response-animate">
+                                            <span class="place">Bike</span><br>
+                                        </div>
+                                        <span class="shopping-box-addition shopping-rating">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                        </span>
+                                        <span class="shopping-box-addition price">£50</span>
+                                        <span class="shopping-box-addition cart" onclick="
+                                                                            let shoppingItem = {
+                                        name: 'Joe',
+                                        price: 10
+                                    };
+                                    const receiptDiv = document.getElementById('receiptDiv');
+                                    receiptDiv.style.display = 'flex';
+                                    receipt.push(shoppingItem);
+                                    updateReceipt();
+                                        "><i class="fa-solid fa-cart-shopping"></i>add to cart</span>
                                     </div>
                                     <span class="flavour">1 review</span>
                                     <div class="message">
@@ -343,12 +384,39 @@
                     </div>
                 </div>
             </div>
-            <div class="roomItem receipt hidemobile">
-                <h3>- RECEIPT -</h3>
-                <div id="receipt-list"></div>
-            </div>
         </div>
     </main>
+    <div id="receiptDiv" class="receipt hidemobile" style="display: none;">
+        <img src="../assets/favicon.png" alt="" width="50"><br>
+        <h3>NEFFMART<span class="tm">TM</span></h3>
+        <p>
+            Neffmart Supermarket Ltd<br>
+            37 Neffington Road NE7 9FI<br>
+            www.neffmart.nyaco.tk<br>
+            Vat Number: 534 2394 32
+        </p>
+        <div id="receipt-list">
+        </div>
+        <hr>
+        <span class="item">
+            <span class="item-name">TOTAL</span>
+            <span id="receipt-total" class="item-price">£30</span>
+        </span>
+        <span class="item">
+            <span class="item-name">Visa Debit</span>
+            <span id="receipt-visa" class="item-price">£30</span>
+        </span>
+        <span class="item">
+            <span class="item-name">Contactless</span>
+            <span class="item-price"></span>
+        </span>
+        <span class="item">
+            <span class="item-name">Change Due</span>
+            <span class="item-price">£0</span>
+        </span>
+        <br>
+        <img src="/assets/bar.png" alt="" width="150">
+    </div>
 </body>
 
 </html>

@@ -122,24 +122,60 @@ let receipt = []
 
 function updateReceipt() {
 
+    new Audio('/assets/sounds/cha-ching.mp3').play()
+
+    const receiptDiv = document.getElementById("receiptDiv")
     const receiptLst = document.getElementById("receipt-list")
+    const receiptTtl = document.getElementById("receipt-total")
+    const receiptVisa = document.getElementById("receipt-visa")
+
+    receiptDiv.classList.add("showReceipt")
+
+    receiptLst.innerHTML = ``
+
+    let total = 0
 
     receipt.forEach(item => {
 
-        const itemDiv = document.createElement("div")
-        itemDiv.classList.add("receipt-item")
+        /* 
+                    <span class="item">
+                <span class="item-name">Bike</span>
+                <span class="item-price">£30</span>
+            </span>
+        */
 
-        const itemNameSpan = document.createElement("span")
-        itemNameSpan.innerText = item.name
+        if (document.getElementById(item.name)) {
+            let thing = document.getElementById(item.name)
+            thing.dataset.itemCount = Number(thing.dataset.itemCount) + 1
 
-        const itemPriceSpan = document.createElement("span")
-        itemPriceSpan.innerText = "£" + toString(item.price)
+            thing.innerHTML = `
+            <span class="item">
+            <span class="item-name">${item.name} x ${thing.dataset.itemCount}</span>
+            <span class="item-price">£${item.price * Number(thing.dataset.itemCount)}</span>
+        </span>
+            `
+        } else {
+            const itemDiv = document.createElement("span")
+            itemDiv.id = item.name
+            itemDiv.classList.add("item")
+            itemDiv.dataset.itemCount = 1;
+    
+            const itemNameSpan = document.createElement("span")
+            itemNameSpan.classList.add("item-name")
+            itemNameSpan.innerText = item.name
+    
+            const itemPriceSpan = document.createElement("span")
+            itemPriceSpan.classList.add("item-price")
+            itemPriceSpan.innerText = `£${item.price}`
+    
+            receiptLst.appendChild(itemDiv)
+            itemDiv.appendChild(itemNameSpan)
+            itemDiv.appendChild(itemPriceSpan)
+        }
 
-        receiptLst.appendChild(itemDiv)
-        itemDiv.appendChild(itemNameSpan)
-        itemDiv.appendChild(document.createElement("br"))
-        itemDiv.appendChild(itemPriceSpan)
-
+        total += item.price
+        receiptTtl.innerHTML = `£${total}`
+        receiptVisa.innerHTML = `£${total}`
     })
 
 }
@@ -212,17 +248,46 @@ if (roomID) {
                         </div>
                     </div>
                 </div>
-                <div class="roomItem receipt hidemobile" id="receiptDiv">
-                    <h3>- RECEIPT -</h3>
-                    <div id="receipt-list"></div>
-                </div>
                 <div id="promptBox-screenshot" style="display:none"><div>
             </div>
         </main>
+        <div id="receiptDiv" class="receipt hidemobile" style="display: none;">
+        <img src="../assets/favicon.png" alt="" width="50"><br>
+        <h3>NEFFMART<span class="tm">TM</span></h3>
+        <p>
+            Neffmart Supermarket Ltd<br>
+            37 Neffington Road NE7 9FI<br>
+            www.neffmart.nyaco.tk<br>
+            Vat Number: 534 2394 32
+        </p>
+        <div id="receipt-list">
+        </div>
+        <hr>
+        <span class="item">
+            <span class="item-name">TOTAL</span>
+            <span id="receipt-total" class="item-price">£30</span>
+        </span>
+        <span class="item">
+            <span class="item-name">Visa Debit</span>
+            <span id="receipt-visa" class="item-price">£30</span>
+        </span>
+        <span class="item">
+            <span class="item-name">Contactless</span>
+            <span class="item-price"></span>
+        </span>
+        <span class="item">
+            <span class="item-name">Change Due</span>
+            <span class="item-price">£0</span>
+        </span>
+        <br>
+        <img src="/assets/bar.png" alt="" width="150">
+    </div>
     `
 
         const receiptDiv = document.getElementById("receiptDiv")
         receiptDiv.style.display = "unset"
+        const receiptLst = document.getElementById("receipt-list")
+        receiptLst.innerHTML = ``
         document.title = `${roomID} - Survive The Neffinet`
         promptBox = document.getElementById("promptBox");
         timer = document.getElementById("timer")
@@ -916,10 +981,14 @@ if (roomID) {
                                     price: rollPrice
                                 }
                                 shoppingBoxCart.onclick = function() {
-                                    const receiptDiv = document.getElementById("receiptDiv")
-                                    receiptDiv.style.display = "unset"
+                                    let shoppingItem = {
+                                        name: submission.desc,
+                                        price: rollPrice
+                                    };
+                                    const receiptDiv = document.getElementById("receiptDiv");
+                                    receiptDiv.style.display = "unset";
                                     receipt.push(shoppingItem);
-                                    updateReceipt()
+                                    updateReceipt();
                                 }
 
                                 // onclick easter egg
