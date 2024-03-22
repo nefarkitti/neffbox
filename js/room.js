@@ -117,6 +117,33 @@ function onSaveUser() {
     localStorage.setItem("username", username.value);
     window.location.reload()
 }
+
+let receipt = []
+
+function updateReceipt() {
+
+    const receiptLst = document.getElementById("receipt-list")
+
+    receipt.forEach(item => {
+
+        const itemDiv = document.createElement("div")
+        itemDiv.classList.add("receipt-item")
+
+        const itemNameSpan = document.createElement("span")
+        itemNameSpan.innerText = item.name
+
+        const itemPriceSpan = document.createElement("span")
+        itemPriceSpan.innerText = "£" + toString(item.price)
+
+        receiptLst.appendChild(itemDiv)
+        itemDiv.appendChild(itemNameSpan)
+        itemDiv.appendChild(document.createElement("br"))
+        itemDiv.appendChild(itemPriceSpan)
+
+    })
+
+}
+
 const root = document.getElementById("root");
 if (roomID) {
     
@@ -185,10 +212,17 @@ if (roomID) {
                         </div>
                     </div>
                 </div>
+                <div class="roomItem receipt hidemobile" id="receiptDiv">
+                    <h3>- RECEIPT -</h3>
+                    <div id="receipt-list"></div>
+                </div>
                 <div id="promptBox-screenshot" style="display:none"><div>
             </div>
         </main>
     `
+
+        const receiptDiv = document.getElementById("receiptDiv")
+        receiptDiv.style.display = "unset"
         document.title = `${roomID} - Survive The Neffinet`
         promptBox = document.getElementById("promptBox");
         timer = document.getElementById("timer")
@@ -869,12 +903,26 @@ if (roomID) {
                                 const shoppingBoxPrice = document.createElement("span")
                                 shoppingBoxPrice.classList.add("shopping-box-addition")
                                 shoppingBoxPrice.classList.add("price")
-                                shoppingBoxPrice.innerHTML = `£${getRandomInt(5, 140)}`
+                                let rollPrice = getRandomInt(5, 140)
+                                shoppingBoxPrice.innerHTML = `£${rollPrice}`
 
                                 const shoppingBoxCart = document.createElement("span")
                                 shoppingBoxCart.classList.add("shopping-box-addition")
                                 shoppingBoxCart.classList.add("cart")
                                 shoppingBoxCart.innerHTML = `<i class="fa-solid fa-cart-shopping"></i>add to cart`
+                                
+                                let shoppingItem = {
+                                    name: submission.desc,
+                                    price: rollPrice
+                                }
+                                shoppingBoxCart.onclick = function() {
+                                    const receiptDiv = document.getElementById("receiptDiv")
+                                    receiptDiv.style.display = "unset"
+                                    receipt.push(shoppingItem);
+                                    updateReceipt()
+                                }
+
+                                // onclick easter egg
 
                                 const flavour = document.createElement("span")
                                 flavour.classList.add("flavour")
