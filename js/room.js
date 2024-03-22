@@ -99,10 +99,20 @@ function loadMessage(username, content, isImage) {
     messages.scrollTop = messages.scrollHeight;
 }
 
+function createErrorPopup(text) {
+    const popDiv = document.createElement("div")
+    popDiv.innerHTML = `<h1>Something went wrong!</h1>
+    <p>${text}</p>`
+
+    createPopup(popDiv, function() {
+        window.location.href = "/"
+    });
+}
+
 function onSaveUser() {
     const username = document.getElementById("username");
     if (!username) return console.error("Could not find username");
-    if (username.value.length > 10) return alert("Your username cannot be more than 10 characters!")
+    if (username.value.length > 10) return createErrorPopup("Your username cannot be more than 10 characters!")
     if (!username.value.length) return alert("Please enter in a username!")
     localStorage.setItem("username", username.value);
     window.location.reload()
