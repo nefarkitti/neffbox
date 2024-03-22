@@ -2,4 +2,5 @@ images still buggy what (image dmed to you soon)
 image timer is NOT 120 seconds
 friend kept on getting randomly dcd?
 friend joined lobby as host some how
+update the backend
 play helldivers 2
