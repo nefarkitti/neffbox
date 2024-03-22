@@ -947,7 +947,6 @@ button:hover {
 }
 .receipt h3 {
     margin: 0;
-    margin-top: -15px;
 }
 .receipt #receipt-list {
     display: flex;

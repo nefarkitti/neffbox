@@ -710,7 +710,7 @@ if (roomID) {
                     }
                     break;
                 case "results":
-                    new Audio('/assets/sounds/tick.mp3').play()
+                    new Audio('/assets/sounds/trowel.mp3').play()
                     clearTimeout(timers)
                     roomData.users.forEach(user => {
                         setIcon(user.idHash, "fa-user");
