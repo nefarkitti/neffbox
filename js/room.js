@@ -8,7 +8,7 @@ const tracks = [
     new Audio('/assets/sounds/scp3008-thursday.mp3'),
     new Audio('/assets/sounds/super-bomb-survival-stinger6.mp3'),
     new Audio('/assets/sounds/nicos-nextbots-safezone.mp3'),
-    new Audio('/assets/sounds/nicos-nextbots-safezone.mp3')
+    new Audio('/assets/sounds/nicos-nextbots-8twelve.mp3')
 ]
 
 tracks.forEach(element => {
