@@ -2,15 +2,27 @@ let socket = null;
 let promptBox = document.getElementById("promptBox");
 let timer = document.getElementById("timer")
 
-let menuSong = new Audio('/assets/sounds/scp3008-sunday.mp3')
-let roundSong = new Audio('/assets/sounds/scp3008-friday.mp3')
-let imageSong = new Audio('/assets/sounds/scp3008-thursday.mp3')
-let resultSong = new Audio('/assets/sounds/super-bomb-survival-stinger6.mp3')
+const tracks = [
+    new Audio('/assets/sounds/scp3008-sunday.mp3'),
+    new Audio('/assets/sounds/scp3008-friday.mp3'),
+    new Audio('/assets/sounds/scp3008-thursday.mp3'),
+    new Audio('/assets/sounds/super-bomb-survival-stinger6.mp3'),
+    new Audio('/assets/sounds/nicos-nextbots-safezone.mp3'),
+    new Audio('/assets/sounds/nicos-nextbots-safezone.mp3')
+]
 
-menuSong.loop = true
-roundSong.loop = true
-imageSong.loop = true
-resultSong.loop = true
+tracks.forEach(element => {
+    element.loop = true
+})
+
+function changeTrack(index) {
+    tracks.forEach(element => {
+        element.pause()
+    })    
+    if (index) {
+        tracks[index].play()
+    }
+}
 
 function leaveGame() {
     if (socket != null) socket.emit("leave");
@@ -368,10 +380,8 @@ if (roomID) {
         socket.on('roomState', (data) => {
             roomData.started = data.started;
             if (!roomData.started) {
-                menuSong.play()
-                roundSong.pause()
-                imageSong.pause()
                 if (roomData.isHost) {
+                    changeTrack(0)
                     promptBox.innerHTML = `<p class="prompt">You're the host!</p><br><br>`
                     const startBtn = document.createElement("button");
                     startBtn.innerText = "Start the game";
@@ -400,13 +410,7 @@ if (roomID) {
             clearTimeout(timers)
             countdown = 60;
             timer.innerText = "60s left"
-            menuSong.pause()
-            roundSong.play()
-            imageSong.pause()
             if (topic == "IMAGE") {
-                menuSong.pause()
-                roundSong.pause()
-                imageSong.play()
                 countdown = 120
                 timer.innerText = "120s left"
             }
@@ -417,7 +421,9 @@ if (roomID) {
             }, 1000)
             promptBox.classList.remove("show")
             if (round == 1) {
+                changeTrack(1)
                 if (roomData.roundName == "IMAGE") {
+                    changeTrack(5)
                     const prompt = document.createElement("p");
                     prompt.classList.add("prompt");
                     prompt.innerText = roomData.topic;
@@ -547,6 +553,11 @@ if (roomID) {
                             <button>SUBMIT</button>
                             <div style="display: none;">something went wrong for whatever reason!</div>
                 */
+               changeTrack(1)
+                if (roomData.roundName == "IMAGE") {
+                    changeTrack(5)
+                }
+
                 const messageDiv = document.createElement("div");
                 messageDiv.classList.add("message");
                 const usernameSpan = document.createElement("span");
@@ -742,10 +753,8 @@ if (roomID) {
                     roomData.users.forEach(user => {
                         setIcon(user.idHash, "fa-user");
                     })
+                    changeTrack(3)
                     promptBox.innerHTML = "<h3>Now for the results!</h3>";
-                    menuSong.pause()
-                    roundSong.pause()
-                    imageSong.pause()
                     timer.innerText = "Waiting";
                     function createTopic(submission, animate, roundname) {
                         const resultDiv = document.createElement("div");
@@ -1248,6 +1257,7 @@ if (roomID) {
                                     }
                                     finalsWrapDiv.appendChild(resultDiv)
                                 }
+                                changeTrack(4)
                                 const finalsDiv = document.createElement("div");
                                 finalsDiv.classList.add("finals")
                                 finalsDiv.innerHTML = `<p>CAST YOUR VOTES!</p>`;
@@ -1344,6 +1354,9 @@ if (roomID) {
                     break;
                 case "gameend":
                     setTimeout(function() {
+
+                        changeTrack(0)
+
                         document.getElementById("roundnameth").innerText = `- GAME (END) -`
                         roomData.users.forEach(user => {
                             setIcon(user.idHash, "fa-user");
