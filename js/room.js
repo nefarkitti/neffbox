@@ -1,6 +1,12 @@
 let socket = null;
 let promptBox = document.getElementById("promptBox");
 let timer = document.getElementById("timer")
+
+let menuSong = new Audio('/assets/sounds/scp3008-sunday.mp3')
+let roundSong = new Audio('assets/sounds/scp3008-friday.mp3')
+let imageSong = new Audio('assets/sounds/scp3008-thursday.mp3')
+//let resultSong = new Audio('assets/sounds/')
+
 function leaveGame() {
     if (socket != null) socket.emit("leave");
     const oldUsername = localStorage.getItem("username");
@@ -357,6 +363,9 @@ if (roomID) {
         socket.on('roomState', (data) => {
             roomData.started = data.started;
             if (!roomData.started) {
+                menuSong.play()
+                roundSong.pause()
+                imageSong.pause()
                 if (roomData.isHost) {
                     promptBox.innerHTML = `<p class="prompt">You're the host!</p><br><br>`
                     const startBtn = document.createElement("button");
@@ -386,7 +395,13 @@ if (roomID) {
             clearTimeout(timers)
             countdown = 60;
             timer.innerText = "60s left"
+            menuSong.pause()
+            roundSong.play()
+            imageSong.pause()
             if (topic == "IMAGE") {
+                menuSong.pause()
+                roundSong.pause()
+                imageSong.play()
                 countdown = 120
                 timer.innerText = "120s left"
             }
@@ -723,6 +738,9 @@ if (roomID) {
                         setIcon(user.idHash, "fa-user");
                     })
                     promptBox.innerHTML = "<h3>Now for the results!</h3>";
+                    menuSong.pause()
+                    roundSong.pause()
+                    imageSong.pause()
                     timer.innerText = "Waiting";
                     function createTopic(submission, animate, roundname) {
                         const resultDiv = document.createElement("div");
