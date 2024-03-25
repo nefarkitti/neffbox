@@ -53,7 +53,6 @@ h3.title {
     background-color: rgb(246, 246, 246);
     padding: 10px 30px;
     border-radius: 5px;
-    padding-bottom: 35px;
     border: grey 1px solid;
     box-shadow: 0px 2px 2px black;
 }
@@ -972,4 +971,29 @@ button:hover {
 }
 .item .item-price {
     float: right;
+}
+
+.rooms-tbl {
+    margin-top: 20px;
+    width: 100%;
+    background-color: rgb(240, 240, 240);
+    border-radius: 10px;
+}
+.rooms-tbl td {
+    width: fit-content;
+}
+.rooms-tbl tr:hover {
+    background-color: rgb(235, 235, 235);
+    cursor: pointer;
+}
+.rooms-tbl button {
+    box-shadow: none;
+    width: 80%;
+}
+.room-players {
+    width: 10px;
+}
+.room-host {
+    text-align: left;
+    text-indent: 10px;
 }

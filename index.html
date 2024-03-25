@@ -12,33 +12,47 @@
     <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
 </head>
 <body>
-    <span class="btn"><i class="fa-solid fa-gear"></i></span>
-    <!--<div class="modal-overlay">
+    <div class="modal-overlay show-">
         <div class="modal">
-            <span class="closebtn"><i class="fa-solid fa-x"></i></span>
-            <h1>Room (roomid)</h1>
-            <p>please set a username before joining!</p>
-            <input type="text" name="username" id="username" placeholder="username">
-            <button onclick="onSaveUser()">save</button>
+            <h1>Rooms</h1>
+            <input type="text" name="roomid" id="roomid" placeholder="room id">
+            <button onclick="onJoinRoom()">join directly</button><br>
+            <table class="rooms-tbl">
+                <tr>
+                    <th>Host</th>
+                    <th>Room ID</th>
+                    <th class="room-players">Players</th>
+                    </tr>
+                    <tr>
+                    <td class="room-host">MMMMMMMMMM</td>
+                    <td class="room-code">32432</td>
+                    <td class="room-players">2/6</td>
+                    <td><button onclick="onJoinRoom()">Join</button></td>
+                    </tr>
+            </table>
         </div>
-    </div>-->
+    </div>
+    <span class="btn"><i class="fa-solid fa-gear"></i></span>
     <main>
         <img class="logo" src="assets/favicon.png" alt="" height="75">
         <h3 class="title">neffbox</h3>
         <div class="menu popAnim">
-            <h3 id="currentUser">username (currently unset)</h3>
-            <input type="text" name="username" id="username" placeholder="username">
-            <button onclick="onSaveUser()">save</button>
-            <!--try making it so joining a room also saves so they dont have to press it
-            3 of my irls got confused by this lol-->
-            <h3>rooms</h3>
-            <input type="text" name="roomid" id="roomid" placeholder="room id">
+            <p>technical difficulties</p>
+        </div>
+        <div class="menu popAnim" hidden>
+            <h3 id="currentUser">Welcome, (username)</h3><br>
+            <!--SET USERNAME IS NOW A POPUP IF ITS NULL
+                        <input type="text" name="username" id="username" placeholder="username">
+            <button onclick="onSaveUser()">save</button>-->
+            <button>Change username</button><br><br> <!--POPUP-->
+            <button>Rooms</button>
+            <!--<input type="text" name="roomid" id="roomid" placeholder="room id">
             <button onclick="onJoinRoom()">join</button><br>
-            <!--<span id="notfoundroom" hidden>could not find room</span>-->
+            <span id="notfoundroom" hidden>could not find room</span>
             <span id="errortextjoin" hidden>what</span>
             <br><br>
             <button onclick="onCreateRoom()">create a room</button><br>
-            <span id="errortextcreate" hidden>what</span>
+            <span id="errortextcreate" hidden>what</span>-->
         </div>
         <p style="filter: opacity(50%);">a project by neffi & firee
         <br><a href="credits.html">full credits</a>
