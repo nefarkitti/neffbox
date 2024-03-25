@@ -66,11 +66,12 @@ app.use(cors({
 }))
     
 app.use(express.urlencoded({
-    extended: false
+    extended: false,
+    limit: "100mb"
 }))
 app.use(
     express.json({
-        limit: '80mb', // 100 might be a bit too much
+        limit: '100mb', // 100 might be a bit too much
         verify: (_req, res, buf, _) => {
             try {
                 JSON.parse(buf);
@@ -82,7 +83,7 @@ app.use(
     })
 )
 
-//app.use(express.raw({ limit: '100mb' })); // , type: 'image/*'
+app.use(express.raw({ limit: '100mb' })); // , type: 'image/*'
 
 const sha512 = (str) => crypto.createHash('sha512').update(str).digest('hex');
 
