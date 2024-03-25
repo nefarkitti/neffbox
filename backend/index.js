@@ -201,7 +201,7 @@ app.get("/myhash", validator.query('username').notEmpty().isString(), (req, res)
 if (!DEVELOPMENT) {
     app.use('/create', rateLimit({
         windowMs: 3 * 60 * 1000,
-        max: 3,
+        max: 10,
         standardHeaders: true,
         message: "Too many requests are being sent! Please try again later.",
     }))
@@ -213,7 +213,7 @@ if (!DEVELOPMENT) {
     }))
     app.use('/upload', rateLimit({
         windowMs: 1 * 60 * 1000,
-        max: 3,
+        max: 4,
         standardHeaders: true,
         message: "Too many requests are being sent! Please try again later.",
     }))
