@@ -19,9 +19,12 @@ function changeTrack(index) {
     tracks.forEach(element => {
         element.pause()
     })    
-    if (index) {
-        tracks[index].play()
-    }
+    tracks[index].play()
+}
+function stopTracks() {
+    tracks.forEach(element => {
+        element.pause()
+    })  
 }
 
 function leaveGame() {
