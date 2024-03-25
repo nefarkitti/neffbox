@@ -15,7 +15,7 @@ tracks.forEach(element => {
     element.loop = true
 })
 
-function changeTrack(index) {
+function changeTrack(index) { // surely there's a better way right
     tracks.forEach(element => {
         element.pause()
     })    
