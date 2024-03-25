@@ -52,15 +52,19 @@
         <img class="logo" src="assets/favicon.png" alt="" height="75">
         <h3 class="title">neffbox</h3>
         <div class="menu popAnim">
-            <p>technical difficulties</p>
-        </div>
-        <div class="menu popAnim" hidden>
             <h3 id="currentUser">Welcome, (username)</h3><br>
             <!--SET USERNAME IS NOW A POPUP IF ITS NULL
                         <input type="text" name="username" id="username" placeholder="username">
             <button onclick="onSaveUser()">save</button>-->
-            <button>Change username</button><br><br> <!--POPUP-->
-            <button>Rooms</button>
+            <!--<button>Change username</button><br><br>POPUP-->
+            <input type="text" name="username" id="username" placeholder="username">
+            <button onclick="onSaveUser()">save</button><br>
+            <!--<button>Rooms</button>-->
+            <br>
+            <input type="text" name="roomid" id="roomid" placeholder="room id">
+            <button onclick="onJoinRoom()">join</button><br>
+            <span id="errortextcreate" hidden>what</span>
+            <br>
             <!--<input type="text" name="roomid" id="roomid" placeholder="room id">
             <button onclick="onJoinRoom()">join</button><br>
             <span id="notfoundroom" hidden>could not find room</span>
