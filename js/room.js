@@ -3,9 +3,14 @@ let promptBox = document.getElementById("promptBox");
 let timer = document.getElementById("timer")
 
 let menuSong = new Audio('/assets/sounds/scp3008-sunday.mp3')
-let roundSong = new Audio('assets/sounds/scp3008-friday.mp3')
-let imageSong = new Audio('assets/sounds/scp3008-thursday.mp3')
-//let resultSong = new Audio('assets/sounds/')
+let roundSong = new Audio('/assets/sounds/scp3008-friday.mp3')
+let imageSong = new Audio('/assets/sounds/scp3008-thursday.mp3')
+let resultSong = new Audio('/assets/sounds/super-bomb-survival-stinger6.mp3')
+
+menuSong.loop = true
+roundSong.loop = true
+imageSong.loop = true
+resultSong.loop = true
 
 function leaveGame() {
     if (socket != null) socket.emit("leave");
