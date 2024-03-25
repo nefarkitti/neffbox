@@ -10,6 +10,7 @@ play helldivers 2
 make the username setting be a popup if it's null, and show popup again to change it
 rooms are now in a popup, ignore the table for now.
 images still buggy what (images are in the errors folder)
+the file is NOT too big
 
 friend joined lobby as host some how !!!!!!!!!!!!!!!!
 (they joined normally at first but closed the tab and opned another to join again)
