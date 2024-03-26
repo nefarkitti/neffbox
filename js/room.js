@@ -1089,17 +1089,41 @@ if (roomID) {
                                 newsBoxContent.classList.add("news-box-content")
                                 newsBoxContent.innerText = submission.desc
 
+                                let fillPercent = Math.round(Math.random() * 100)
+                                let moneyRaised = getRandomInt(5000, 10000)
+
+                                resultDiv.dataset.additive = 0
+
                                 const barDiv = document.createElement("div")
                                 barDiv.classList.add("bar")
                                 const fillDiv = document.createElement("div")
                                 fillDiv.classList.add("fill")
-                                fillDiv.style.width = `${Math.round(Math.random() * 100)}%`
+                                fillDiv.style.width = `${fillPercent}%`
                                 barDiv.appendChild(fillDiv)
 
                                 const raisedSpan = document.createElement("span")
                                 raisedSpan.classList.add("gofundme-box-addition")
                                 raisedSpan.classList.add("raised")
-                                raisedSpan.innerHTML = `£${getRandomInt(5000, 10000)} raised`
+                                raisedSpan.innerHTML = `£${moneyRaised} raised`
+
+                                const backingBtnSpan = document.createElement("span")
+                                backingBtnSpan.classList.add("gofundme-box-addition")
+                                backingBtnSpan.classList.add("backing")
+
+                                const backingBtn = document.createElement("button")
+                                backingBtn.innerText = "Support"
+                                backingBtn.classList.add("gofundme")
+                                backingBtn.onclick = function() {
+                                    resultDiv.dataset.additive = Number(resultDiv.dataset.additive) + 1
+                                    let newFill = fillPercent + Number(resultDiv.dataset.additive)
+                                    if (newFill >= 100) {
+                                        newFill = 100
+                                    } else {
+                                        moneyRaised += getRandomInt(10, 100)
+                                    };
+                                    raisedSpan.innerHTML = `£${moneyRaised} raised`
+                                    fillDiv.style.width = `${newFill}`
+                                }
 
                                 const backingSpan = document.createElement("span")
                                 backingSpan.classList.add("gofundme-box-addition")
@@ -1128,6 +1152,8 @@ if (roomID) {
                                 newsBox.appendChild(document.createElement("br"))
                                 newsBox.appendChild(barDiv)
                                 newsBox.appendChild(raisedSpan)
+                                newsBox.appendChild(backingBtnSpan)
+                                backingBtnSpan.appendChild(backingBtn)
                                 newsBox.appendChild(backingSpan)
                                 resultDiv.appendChild(flavour)
                                 resultDiv.appendChild(messageDiv)
