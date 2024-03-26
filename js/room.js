@@ -787,12 +787,10 @@ if (roomID) {
                                 const newsBoxContent = document.createElement("span")
                                 newsBoxContent.innerText = submission.desc
 
-                                const randomTopics = ["Business", "Politics", "World", "Health", "Family", "Entertainment"]
-
                                 const newsBoxAddition = document.createElement("span")
                                 newsBoxAddition.classList.add("news-box-addition")
                                 newsBoxAddition.style.fontWeight = '500'
-                                newsBoxAddition.innerText = `${randomTopics[getRandomInt(0, randomTopics.length-1)]} | ${getRandomInt(1, 12)} hours ago` // make random later
+                                newsBoxAddition.innerText = `${submission.newsGenre} | ${submission.newsHours} hours ago` // make random later
 
                                 const flavour = document.createElement("span")
                                 flavour.classList.add("flavour")
@@ -812,7 +810,7 @@ if (roomID) {
                                 resultDiv.appendChild(headerSpan)
                                 resultDiv.appendChild(titleDiv)
                                 titleDiv.appendChild(newsBox)
-                                if (Math.random() > 0.5) {
+                                if (submission.newsBreaking == 1) {
                                     const live = document.createElement("span")
                                     live.classList.add("live")
                                     live.innerHTML = `<i class="fa-solid fa-circle"></i></span><span class="news-box-addition">BREAKING</span><br>`
@@ -864,7 +862,7 @@ if (roomID) {
                                 const shoppingBoxAdditionRating = document.createElement("span")
                                 shoppingBoxAdditionRating.classList.add("ratings-box-addition")
 
-                                const rollStars = getRandomInt(1, 5)
+                                const rollStars = submission.ratingsStars
                                 for (let i = 1;i < 6;i++) {
                                     if (i <= rollStars) {
                                         const j = document.createElement("i")
@@ -944,17 +942,18 @@ if (roomID) {
 
                                 const travellingBoxAddition = document.createElement("span")
                                 travellingBoxAddition.classList.add("travelling-box-addition")
-                                travellingBoxAddition.innerText = `${getRandomInt(2, 9)} users found this helpful`
+                                travellingBoxAddition.innerText = `${submission.travellingUsers} users found this helpful`
 
                                 const gofundmeBoxAddition = document.createElement("span")
                                 gofundmeBoxAddition.classList.add("gofundme-box-addition")
                                 gofundmeBoxAddition.style.fontStyle = "normal"
 
+                                // make these clickable
                                 const thumbUp = document.createElement("span")
-                                thumbUp.innerHTML = `<i class="fa-solid fa-thumbs-up"></i>${getRandomInt(1, 30)}`
+                                thumbUp.innerHTML = `<i class="fa-solid fa-thumbs-up"></i>${submission.travellingLikes}`
                                 
                                 const thumbDown = document.createElement("span")
-                                thumbDown.innerHTML = `<i class="fa-solid fa-thumbs-down"></i>${getRandomInt(1, 10)}`
+                                thumbDown.innerHTML = `<i class="fa-solid fa-thumbs-down"></i>${submission.travellingDislikes}`
 
                                 resultDiv.appendChild(headerSpan)
                                 resultDiv.appendChild(travellingBox)
@@ -999,7 +998,7 @@ if (roomID) {
                                 shoppingBoxAdditionRating.classList.add("shopping-box-addition")
                                 shoppingBoxAdditionRating.classList.add("shopping-rating")
 
-                                const rollStars = getRandomInt(1, 5)
+                                const rollStars = submission.shoppingStars
                                 for (let i = 1;i < 6;i++) {
                                     if (i <= rollStars) {
                                         const j = document.createElement("i")
@@ -1096,8 +1095,8 @@ if (roomID) {
                                 newsBoxContent.classList.add("news-box-content")
                                 newsBoxContent.innerText = submission.desc
 
-                                let fillPercent = Math.round(Math.random() * 100)
-                                let moneyRaised = getRandomInt(5000, 10000)
+                                let fillPercent = submission.gofundmeFill
+                                let moneyRaised = submission.gofundmeRaised
 
                                 resultDiv.dataset.additive = 0
 
@@ -1135,7 +1134,7 @@ if (roomID) {
                                 const backingSpan = document.createElement("span")
                                 backingSpan.classList.add("gofundme-box-addition")
                                 backingSpan.classList.add("backing")
-                                backingSpan.innerHTML = `${getRandomInt(500, 5000)} backing`
+                                backingSpan.innerHTML = `${submission.gofundmeBacking} backing`
 
                                 const flavour = document.createElement("span")
                                 flavour.classList.add("flavour")

@@ -595,7 +595,7 @@ sio.on('connection', socket => {
                 user.finished = false;
                 return user;
             })
-            const randomTopics = ["Business", "Politics", "World", "Health", "Family", "Entertainment", "War"]
+            const randomTopics = ["Business", "Politics", "Environment", "Health", "Family", "Entertainment", "War", "Technology"]
 
             const submissions = updatedRoomData.users.map(user => {
                 return {
@@ -604,13 +604,17 @@ sio.on('connection', socket => {
                     desc: user.response2,
                     file: user.file2user,
                     /*extra stuff to make extra deets the same for everyone*/
-                    newsGenre: "",
-                    newsHours: "",
+                    newsGenre: randomTopics[getRandomInt(0, randomTopics.length-1)],
+                    newsHours: getRandomInt(1, 12),
                     newsBreaking: getRandomInt(0,1),
                     gofundmeRaised: getRandomInt(5000, 10000),
                     gofundmeFill: Math.round(Math.random() * 100),
+                    gofundmeBacking: getRandomInt(500, 5000),
                     ratingsStars: getRandomInt(0, 4),
-                    shoppingStars: getRandomInt(0, 4)
+                    shoppingStars: getRandomInt(0, 4),
+                    travellingUsers: getRandomInt(2, 18),
+                    travellingLikes: getRandomInt(2, 30),
+                    travellingDislikes: getRandomInt(2, 30)
                 }
             })
             sio.to(roomData.id).emit('roomEvent', { event: "results", submissions });
