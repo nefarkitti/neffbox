@@ -668,7 +668,11 @@ if (roomID) {
                             actualRoundTitle = "WONDERS OF THE WORLD"
                             break;
                         }
-                        case "IMAGES": {
+                        case "VIDEO": {
+                            actualRoundTitle = "NEFFTUBE"
+                            break;
+                        }
+                        case "IMAGE": {
                             actualRoundTitle = "IMAGE SHOWCASE"
                             break;
                         }
@@ -743,12 +747,15 @@ if (roomID) {
                         case "SHOPPING":
                             handleRound("would be the PERFECT review for a product called...", 2, data.user, data.prompt)
                             break;
+                        case "VIDEO":
+                            handleRound("would be the PERFECT reply to a video titled...", 2, data.user, data.prompt)
+                            break;
                         case "GOFUNDME":
                             handleRound("would be the PERFECT reply for a gofundme called...", 2, data.user, data.prompt)
                         case "IMAGE":
                             handleRound("The perfect accompanying caption would be...", 2, data.user, data.prompt)
                             break;
-                    }
+                    } // what's the point of the 2 if they're all the same anyway
                     break;
                 case "results":
                     new Audio('/assets/sounds/trowel.mp3').play()
@@ -1165,6 +1172,10 @@ if (roomID) {
                                     if (animate) newsBoxContent.classList.add("response-animate");
                                 }, 51)
 
+                                break;
+                            }
+                            case "VIDEO": { // we love more news reskins
+                                // yep you heard it here folks
                                 break;
                             }
                             case "IMAGE": {
