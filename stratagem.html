@@ -10,6 +10,7 @@
 
         * {
             font-family: "Kanit", sans-serif;
+            transition: 0.2s;
         }
 
         body {
@@ -62,6 +63,9 @@
         #difficulty-level {
             font-weight: 600;
         }
+        .strata-conainter {
+            width: 50%;
+        }
     </style>
 </head>
 
@@ -75,7 +79,7 @@
             <i class="fa-solid fa-arrow-left arrow highlight"></i>
         </div>
         <br>
-        <input type="range" name="difficulty" id="difficulty-slider" min="1" max="10">
+        <input type="range" name="difficulty" id="difficulty-slider" min="1" max="100">
         <span id="difficulty-level">difficulty level: 0</span>
         <br>
         <button onclick="loadArrows()">reload</button>
@@ -86,6 +90,8 @@
         const slider = document.getElementById("difficulty-slider")
         const level = document.getElementById("difficulty-level")
         const ratio = document.getElementById("ratio")
+
+        slider.value = 1
 
         let currentStratagem = []
         let currentIndex = 0
