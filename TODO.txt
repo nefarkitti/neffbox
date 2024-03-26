@@ -1,8 +1,5 @@
 --- neffi ---:
 update the main menu ui (me)
-
-goneffme
-clicking a button goes up by one
 make config
 
 play helldivers 2
