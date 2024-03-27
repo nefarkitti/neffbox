@@ -10,6 +10,7 @@
     --shopping-accent: #2196f3;
     --gofundme-accent: #00d084;
     --images-accent: #673ab7;
+    --youtube-accent: red;
     --thing: 2px;
 }
 
@@ -377,7 +378,56 @@ input:focus-visible {
 .images .header {
     background: var(--images-accent);
 }
+.youtube .header {
+    background: var(--youtube-accent);
+}
+.youtube-timeline {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(46, 46, 46);
+    padding: 12px;
+}
+.youtube-timeline i {
+    color: white;
+}
+.youtube-bar {
+    width: 90%;
+    height: 10px;
+    background-color: rgb(102, 102, 102);
+    border-radius: 5px;
+    margin-left: 15px;
+}
 
+.youtube-box {
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.363);
+    border: solid gray 2px;
+    background-color: white;
+    border-radius: 5px;
+}
+.youtube-box-content {
+    padding: 4px;
+    display: inline-block;
+}
+.youtube-fill {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.youtube-thumb {
+    background-color: rgb(255, 255, 255);
+    width: 20px;
+    height: 20px;
+    float: right;
+    transform: translate(50%, 0);
+    border-radius: 100%;
+    box-shadow: 0px 0px 5px black;
+    position: absolute;
+}
 
 .news .title {
     padding: 5px;
