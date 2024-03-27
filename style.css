@@ -390,6 +390,7 @@ input:focus-visible {
 }
 .youtube-timeline i {
     color: white;
+    font-size: 20px;
 }
 .youtube-bar {
     width: 90%;
