@@ -48,6 +48,12 @@ body.dark {
 
     --border: #303030;
 }
+body.dark main {
+    color: var(--font-colour);
+}
+body.dark .result {
+    color: black;
+}
 body.dark .chat-message {
     color: var(--font-colour);
 }
