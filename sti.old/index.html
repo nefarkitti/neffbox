@@ -20,6 +20,13 @@
     </div>
     <span onclick="leaveGame()" class="btn leavebtn"><i class="fa-solid fa-right-to-bracket"></i></span>
     <span class="btn"><i class="fa-solid fa-gear"></i></span>
+    <button onclick="create('news')">news</button>
+    <button onclick="create('ratings')">ratings</button>
+    <button onclick="create('travelling')">travelling</button>
+    <button onclick="create('shopping')">shopping</button>
+    <button onclick="create('gofundme')">gofundme</button>
+    <button onclick="create('video')">video</button>
+    <button onclick="create('image')">image</button>
     <main>
         <div class="roomLayout">
             <div class="roomItem hidemobile">
@@ -73,7 +80,8 @@
                                         palworld part 2
                                     </span>
                                     <span class="youtube-box-content">
-                                        <span class="news-box-addition" style="font-weight: 500;">Business | 9 hours ago</span><br>
+                                        <span class="news-box-addition" style="font-weight: 500;">Business | 9 hours
+                                            ago</span><br>
                                         <span class="gofundme-box-addition" style="font-style: normal;">
                                             <i class="fa-solid fa-thumbs-up"></i>2
                                             <i class="fa-solid fa-thumbs-down"></i>2
@@ -380,6 +388,569 @@
         <br>
         <img src="/assets/bar.png" alt="" width="150">
     </div>
+    <script>
+        // for testing purposes
+        const promptBox = document.getElementById("promptBox")
+        const boxName = document.getElementById("boxName")
+
+        function create(n) {
+
+            promptBox.innerHTML = ``
+
+            let resultDiv = document.createElement("div")
+            resultDiv.classList.add("result", "news");
+
+            const randomTopics = ["Business", "Politics", "Environment", "Health", "Family", "Entertainment", "War", "Technology"]
+
+            let submission = {
+                    username: "test",
+                    title: "title",
+                    desc: "desc",
+                    file: "file",
+                    /*extra stuff to make extra deets the same for everyone*/
+                    newsGenre: randomTopics[getRandomInt(0, randomTopics.length-1)],
+                    newsHours: getRandomInt(1, 12),
+                    newsBreaking: getRandomInt(0,1),
+                    gofundmeRaised: getRandomInt(5000, 10000),
+                    gofundmeFill: Math.round(Math.random() * 100),
+                    gofundmeBacking: getRandomInt(500, 5000),
+                    ratingsStars: getRandomInt(0, 4),
+                    shoppingStars: getRandomInt(0, 4),
+                    travellingUsers: getRandomInt(2, 18),
+                    travellingLikes: getRandomInt(2, 30),
+                    travellingDislikes: getRandomInt(2, 30)
+                }
+
+                let animate = false
+
+                function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+            switch (n.toUpperCase()) {
+                case "NEWS": {
+
+                    const headerSpan = document.createElement("span")
+                    headerSpan.classList.add("header")
+                    headerSpan.innerHTML = `<i class="fa-solid fa-newspaper"></i>THE NEW NEFFI TIMES`
+
+                    const titleDiv = document.createElement("div")
+                    titleDiv.classList.add("title")
+
+                    const newsBox = document.createElement("div")
+                    newsBox.classList.add("news-box")
+
+                    // SECOND INPUT
+                    const newsBoxContent = document.createElement("span")
+                    newsBoxContent.innerText = submission.desc
+
+                    const newsBoxAddition = document.createElement("span")
+                    newsBoxAddition.classList.add("news-box-addition")
+                    newsBoxAddition.style.fontWeight = '500'
+                    newsBoxAddition.innerText = `${submission.newsGenre} | ${submission.newsHours} hours ago` // make random later
+
+                    const flavour = document.createElement("span")
+                    flavour.classList.add("flavour")
+                    flavour.innerText = "1 comment"
+
+                    const messageDiv = document.createElement("div")
+                    messageDiv.classList.add("message")
+
+                    const usernameSpan = document.createElement("span")
+                    usernameSpan.classList.add("username")
+                    usernameSpan.innerText = submission.username
+
+                    const contentsSpan = document.createElement("span")
+                    contentsSpan.classList.add("contents")
+                    contentsSpan.innerText = submission.title
+
+                    resultDiv.appendChild(headerSpan)
+                    resultDiv.appendChild(titleDiv)
+                    titleDiv.appendChild(newsBox)
+                    if (submission.newsBreaking == 1) {
+                        const live = document.createElement("span")
+                        live.classList.add("live")
+                        live.innerHTML = `<i class="fa-solid fa-circle"></i></span><span class="news-box-addition">BREAKING</span><br>`
+                        newsBox.appendChild(live)
+                    }
+                    //titleDiv.appendChild(br1)
+                    newsBox.appendChild(newsBoxContent)
+                    newsBox.appendChild(document.createElement("br"))
+                    newsBox.appendChild(newsBoxAddition)
+                    resultDiv.appendChild(flavour)
+                    resultDiv.appendChild(messageDiv)
+                    messageDiv.appendChild(usernameSpan)
+                    messageDiv.appendChild(document.createElement("br"))
+                    messageDiv.appendChild(contentsSpan)
+
+                    setTimeout(() => {
+                        if (animate) newsBoxContent.classList.add("response-animate");
+                    }, 51)
+                    // this actually looks so good if it works i love it
+                    // i just need to manually update it in the css for the finals wrapper
+                    break;
+                }
+                case "RATINGS": { // might remove this maybe idk
+
+                    resultDiv.classList.add("ratings")
+
+                    const headerSpan = document.createElement("span")
+                    headerSpan.classList.add("header")
+                    headerSpan.innerHTML = `<i class="fa-solid fa-star-half-stroke" aria-hidden="true"></i>NELP`
+
+                    const ratingsBox = document.createElement("div")
+                    ratingsBox.classList.add("ratings-box")
+
+                    const titleDiv = document.createElement("div")
+                    titleDiv.classList.add("title")
+
+                    const usernameSpan = document.createElement("span")
+                    usernameSpan.classList.add("username")
+                    usernameSpan.innerText = submission.username
+
+                    const flavour = document.createElement("span")
+                    flavour.classList.add("flavour")
+                    flavour.innerText = "recommends"
+
+                    const recommendation = document.createElement("span")
+                    recommendation.classList.add("recommendation")
+                    recommendation.innerText = submission.desc
+
+                    const shoppingBoxAdditionRating = document.createElement("span")
+                    shoppingBoxAdditionRating.classList.add("ratings-box-addition")
+
+                    const rollStars = submission.ratingsStars
+                    for (let i = 1; i < 6; i++) {
+                        if (i <= rollStars) {
+                            const j = document.createElement("i")
+                            j.classList.add("fa-solid")
+                            j.classList.add("fa-star")
+                            shoppingBoxAdditionRating.appendChild(j)
+                        } else {
+                            const j = document.createElement("i")
+                            j.classList.add("fa-regular")
+                            j.classList.add("fa-star")
+                            shoppingBoxAdditionRating.appendChild(j)
+                        }
+                    }
+
+                    const messageDiv = document.createElement("div")
+                    messageDiv.classList.add("message")
+
+                    const contentsSpan = document.createElement("span")
+                    contentsSpan.classList.add("contents")
+                    contentsSpan.innerText = submission.title
+
+                    resultDiv.appendChild(headerSpan)
+                    resultDiv.appendChild(ratingsBox)
+                    ratingsBox.appendChild(titleDiv)
+                    titleDiv.appendChild(usernameSpan)
+                    titleDiv.appendChild(document.createElement("br"))
+                    titleDiv.appendChild(flavour)
+                    titleDiv.appendChild(document.createElement("br"))
+                    titleDiv.appendChild(recommendation)
+                    titleDiv.appendChild(document.createElement("br"))
+                    titleDiv.appendChild(shoppingBoxAdditionRating)
+                    ratingsBox.appendChild(messageDiv)
+                    messageDiv.appendChild(contentsSpan)
+
+                    setTimeout(() => {
+                        if (animate) recommendation.classList.add("response-animate");
+                    }, 51)
+
+
+                    break;
+                }
+                case "TRAVELLING": {
+
+                    resultDiv.classList.add("travelling")
+
+                    const headerSpan = document.createElement("span")
+                    headerSpan.classList.add("header")
+                    headerSpan.innerHTML = `<i class="fa-solid fa-location-dot"></i>NEFFADVISOR`
+
+                    const travellingBox = document.createElement("div")
+                    travellingBox.classList.add("travelling-box")
+
+                    const titleDiv = document.createElement("div")
+                    titleDiv.classList.add("title")
+
+                    const usernameSpan = document.createElement("span")
+                    usernameSpan.classList.add("username")
+                    usernameSpan.innerText = submission.username
+
+                    const opinionSpan = document.createElement("span")
+                    opinionSpan.classList.add("opinion")
+                    opinionSpan.innerText = submission.title
+
+                    const flavour = document.createElement("span")
+                    flavour.classList.add("flavour")
+                    flavour.innerText = "checked in at"
+
+                    const place = document.createElement("span")
+                    place.classList.add("place")
+
+                    const i = document.createElement("i")
+                    i.classList.add("fa-solid")
+                    i.classList.add("fa-location-dot")
+
+                    const placeContents = document.createElement("span")
+                    placeContents.innerText = submission.desc
+
+                    const travellingBoxAddition = document.createElement("span")
+                    travellingBoxAddition.classList.add("travelling-box-addition")
+                    travellingBoxAddition.innerText = `${submission.travellingUsers} users found this helpful`
+
+                    const gofundmeBoxAddition = document.createElement("span")
+                    gofundmeBoxAddition.classList.add("gofundme-box-addition")
+                    gofundmeBoxAddition.style.fontStyle = "normal"
+
+                    // make these clickable
+                    const thumbUp = document.createElement("span")
+                    thumbUp.innerHTML = `<i class="fa-solid fa-thumbs-up"></i>${submission.travellingLikes}`
+
+                    const thumbDown = document.createElement("span")
+                    thumbDown.innerHTML = `<i class="fa-solid fa-thumbs-down"></i>${submission.travellingDislikes}`
+
+                    resultDiv.appendChild(headerSpan)
+                    resultDiv.appendChild(travellingBox)
+                    travellingBox.appendChild(titleDiv)
+                    titleDiv.appendChild(usernameSpan)
+                    titleDiv.appendChild(document.createElement("br"))
+                    titleDiv.appendChild(opinionSpan)
+                    travellingBox.appendChild(flavour)
+                    travellingBox.appendChild(document.createElement("br"))
+                    travellingBox.appendChild(place)
+                    place.appendChild(i)
+                    place.appendChild(placeContents)
+                    travellingBox.appendChild(travellingBoxAddition)
+                    travellingBox.appendChild(gofundmeBoxAddition)
+                    gofundmeBoxAddition.appendChild(thumbUp)
+                    gofundmeBoxAddition.appendChild(thumbDown)
+
+                    setTimeout(() => {
+                        if (animate) place.classList.add("response-animate");
+                    }, 51)
+
+                    break;
+                }
+                case "SHOPPING": { // bad reskin of reviews but we love feature bloat dont we hahahahahahahahahahahahahahahahhahahahahahahahahhahahahahahahahahahahhahahahhaha
+
+                    resultDiv.classList.add("shopping")
+
+                    const headerSpan = document.createElement("span")
+                    headerSpan.classList.add("header")
+                    headerSpan.innerHTML = `<i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>NEFFMART`
+
+                    const shoppingBox = document.createElement("div")
+                    shoppingBox.classList.add("shopping-box")
+
+                    const titleDiv = document.createElement("div")
+                    titleDiv.classList.add("title")
+
+                    const place = document.createElement("span")
+                    place.innerText = submission.desc
+
+                    const shoppingBoxAdditionRating = document.createElement("span")
+                    shoppingBoxAdditionRating.classList.add("shopping-box-addition")
+                    shoppingBoxAdditionRating.classList.add("shopping-rating")
+
+                    const rollStars = submission.shoppingStars
+                    for (let i = 1; i < 6; i++) {
+                        if (i <= rollStars) {
+                            const j = document.createElement("i")
+                            j.classList.add("fa-solid")
+                            j.classList.add("fa-star")
+                            shoppingBoxAdditionRating.appendChild(j)
+                        } else {
+                            const j = document.createElement("i")
+                            j.classList.add("fa-regular")
+                            j.classList.add("fa-star")
+                            shoppingBoxAdditionRating.appendChild(j)
+                        }
+                    }
+
+                    const shoppingBoxPrice = document.createElement("span")
+                    shoppingBoxPrice.classList.add("shopping-box-addition")
+                    shoppingBoxPrice.classList.add("price")
+                    let rollPrice = getRandomInt(5, 140)
+                    shoppingBoxPrice.innerHTML = `£${rollPrice}`
+
+                    const shoppingBoxCart = document.createElement("span")
+                    shoppingBoxCart.classList.add("shopping-box-addition")
+                    shoppingBoxCart.classList.add("cart")
+                    shoppingBoxCart.innerHTML = `<i class="fa-solid fa-cart-shopping"></i>add to cart`
+
+                    let shoppingItem = {
+                        name: submission.desc,
+                        price: rollPrice
+                    }
+                    /*shoppingBoxCart.onclick = function () {
+                        let shoppingItem = {
+                            name: submission.desc,
+                            price: rollPrice
+                        };
+                        const receiptDiv = document.getElementById("receiptDiv");
+                        receiptDiv.style.display = "flex";
+                        receipt.push(shoppingItem);
+                        updateReceipt();
+                    }*/
+
+                    // onclick easter egg
+
+                    const flavour = document.createElement("span")
+                    flavour.classList.add("flavour")
+                    flavour.innerText = `1 review`
+
+                    const messageDiv = document.createElement("div")
+                    messageDiv.classList.add("message")
+
+                    const usernameSpan = document.createElement("span")
+                    usernameSpan.classList.add("username")
+                    usernameSpan.innerText = submission.username
+
+                    const contentsSpan = document.createElement("span")
+                    contentsSpan.classList.add("contents")
+                    contentsSpan.innerText = submission.title
+
+                    resultDiv.appendChild(headerSpan)
+                    resultDiv.appendChild(shoppingBox)
+                    shoppingBox.appendChild(titleDiv)
+                    titleDiv.appendChild(place)
+                    titleDiv.appendChild(document.createElement("br"))
+                    shoppingBox.appendChild(shoppingBoxAdditionRating)
+                    shoppingBox.appendChild(shoppingBoxPrice)
+                    shoppingBox.appendChild(shoppingBoxCart)
+                    resultDiv.appendChild(flavour)
+                    resultDiv.appendChild(messageDiv)
+                    messageDiv.appendChild(usernameSpan)
+                    messageDiv.appendChild(document.createElement("br"))
+                    messageDiv.appendChild(contentsSpan)
+
+                    setTimeout(() => {
+                        if (animate) place.classList.add("response-animate");
+                    }, 51)
+
+
+                    break;
+                }
+                case "GOFUNDME": { // feature bloat ahahahahhahahahaha
+
+                    resultDiv.classList.add("gofundme")
+
+                    const headerSpan = document.createElement("span")
+                    headerSpan.classList.add("header")
+                    headerSpan.innerHTML = `<i class="fa-solid fa-coins"></i>GONEFFME`
+
+                    const titleDiv = document.createElement("div")
+                    titleDiv.classList.add("title")
+
+                    const newsBox = document.createElement("div")
+                    newsBox.classList.add("news-box")
+
+                    const newsBoxContent = document.createElement("span")
+                    newsBoxContent.classList.add("news-box-content")
+                    newsBoxContent.innerText = submission.desc
+
+                    let fillPercent = submission.gofundmeFill
+                    let moneyRaised = submission.gofundmeRaised
+
+                    resultDiv.dataset.additive = 0
+
+                    const barDiv = document.createElement("div")
+                    barDiv.classList.add("bar")
+                    const fillDiv = document.createElement("div")
+                    fillDiv.classList.add("fill")
+                    fillDiv.style.width = `${fillPercent}%`
+                    barDiv.appendChild(fillDiv)
+
+                    const raisedSpan = document.createElement("span")
+                    raisedSpan.classList.add("gofundme-box-addition")
+                    raisedSpan.classList.add("raised")
+                    raisedSpan.innerHTML = `£${moneyRaised} raised`
+
+                    const backingBtnSpan = document.createElement("span")
+                    backingBtnSpan.classList.add("gofundme-box-addition")
+                    backingBtnSpan.classList.add("ignore")
+                    backingBtnSpan.classList.add("backing")
+
+                    const backingBtn = document.createElement("button")
+                    backingBtn.innerText = "Support"
+                    backingBtn.classList.add("gofundme")
+                    backingBtn.onclick = function () {
+                        resultDiv.dataset.additive = Number(resultDiv.dataset.additive) + 1
+                        let newFill = fillPercent + Number(resultDiv.dataset.additive)
+                        if (newFill >= 100) {
+                            newFill = 100
+                        } else {
+                            moneyRaised += getRandomInt(10, 100)
+                        };
+                        raisedSpan.innerHTML = `£${moneyRaised} raised`
+                        fillDiv.style.width = `${newFill}%`
+                    }
+
+                    const backingSpan = document.createElement("span")
+                    backingSpan.classList.add("gofundme-box-addition")
+                    backingSpan.classList.add("backing")
+                    backingSpan.innerHTML = `${submission.gofundmeBacking} backing`
+
+                    const flavour = document.createElement("span")
+                    flavour.classList.add("flavour")
+                    flavour.innerText = "1 comment"
+
+                    const messageDiv = document.createElement("div")
+                    messageDiv.classList.add("message")
+
+                    const usernameSpan = document.createElement("span")
+                    usernameSpan.classList.add("username")
+                    usernameSpan.innerText = submission.username
+
+                    const contentsSpan = document.createElement("span")
+                    contentsSpan.classList.add("contents")
+                    contentsSpan.innerText = submission.title
+
+                    resultDiv.appendChild(headerSpan)
+                    resultDiv.appendChild(titleDiv)
+                    titleDiv.appendChild(newsBox)
+                    newsBox.appendChild(newsBoxContent)
+                    newsBox.appendChild(document.createElement("br"))
+                    newsBox.appendChild(barDiv)
+                    newsBox.appendChild(raisedSpan)
+                    newsBox.appendChild(backingBtnSpan)
+                    backingBtnSpan.appendChild(backingBtn)
+                    newsBox.appendChild(backingSpan)
+                    resultDiv.appendChild(flavour)
+                    resultDiv.appendChild(messageDiv)
+                    messageDiv.appendChild(usernameSpan)
+                    messageDiv.appendChild(document.createElement("br"))
+                    messageDiv.appendChild(contentsSpan)
+
+                    setTimeout(() => {
+                        if (animate) newsBoxContent.classList.add("response-animate");
+                    }, 51)
+
+                    break;
+                }
+                case "VIDEO": { // we love more news reskins
+                    // yep you heard it here folks
+                    resultDiv.classList.add("youtube")
+
+                    const headerSpan = document.createElement("span")
+                    headerSpan.classList.add("header")
+                    headerSpan.innerHTML = `<i class="fa-solid fa-play"></i>NEFFTUBE`
+
+                    const titleDiv = document.createElement("div")
+                    titleDiv.classList.add("title")
+
+                    const youtubeBox = document.createElement("div")
+                    youtubeBox.classList.add("youtube-box")
+
+                    const youtubeTimeline = document.createElement("div")
+                    youtubeTimeline.classList.add("youtube-timeline")
+                    youtubeTimeline.innerHTML = `
+                                <i class="fa-solid fa-play"></i>
+                                <div class="youtube-bar">
+                                    <div class="youtube-fill" style="width:${Math.random() * 100}%;">
+                                        <div class="youtube-thumb">
+                                            <div class="youtube-inner-thumb"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                `
+
+                    const contentSpan = document.createElement("span")
+                    contentSpan.classList.add("youtube-box-content")
+                    contentSpan.innerText = submission.desc
+
+                    const youtubeBoxContent = document.createElement("span")
+                    youtubeBoxContent.classList.add("youtube-box-content")
+                    youtubeBoxContent.innerHTML = `
+                                <span class="news-box-addition" style="font-weight: 500;">${"Business"} | ${2} hours ago</span><br>
+                                <span class="gofundme-box-addition" style="font-style: normal;">
+                                    <i class="fa-solid fa-thumbs-up"></i>${2}
+                                    <i class="fa-solid fa-thumbs-down"></i>${2}
+                                </span>
+                                `
+
+                    const flavour = document.createElement("span")
+                    flavour.classList.add("flavour")
+                    flavour.innerHTML = `1 comment`
+
+                    const messageDiv = document.createElement("div")
+                    messageDiv.classList.add("message")
+
+                    const usernameSpan = document.createElement("span")
+                    usernameSpan.classList.add("username")
+                    usernameSpan.innerText = submission.username
+
+                    const contentsSpan = document.createElement("span")
+                    contentsSpan.classList.add("contents")
+                    contentsSpan.innerText = submission.title
+
+                    resultDiv.appendChild(headerSpan)
+                    resultDiv.appendChild(titleDiv)
+                    titleDiv.appendChild(youtubeBox)
+                    youtubeBox.appendChild(youtubeTimeline)
+                    youtubeBox.appendChild(contentSpan)
+                    youtubeBox.appendChild(youtubeBoxContent)
+                    resultDiv.appendChild(flavour)
+                    resultDiv.appendChild(messageDiv)
+                    messageDiv.appendChild(usernameSpan)
+                    messageDiv.appendChild(document.createElement("br"))
+                    messageDiv.appendChild(contentsSpan)
+
+                    setTimeout(() => {
+                        if (animate) contentSpan.classList.add("response-animate");
+                    }, 51)
+
+                    break;
+                }
+                case "IMAGE": {
+                    /*
+            <div class="result news">
+                    <span class="header"><i class="fa-solid fa-image"></i>IMAGE SHOWCASE</span>
+                    <div class="title">
+                        <img src="../assets/RED SNAPO.jpeg" alt="">
+                        <span class="username">Jeremiah</span><br>
+                        <span class="opinion">It sucked there. Never again.</span>
+                    </div>
+            </div>
+                    */
+                    resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-image"></i>NEFFIGRAM</span>`
+                    const titleDiv = document.createElement("div");
+                    titleDiv.classList.add("title");
+                    const img = document.createElement("img");
+                    img.alt = "Image Loading...";
+                    img.src = `../assets/favicon.png`
+                    const usernameSpan = document.createElement("span");
+                    usernameSpan.classList.add("username");
+                    usernameSpan.innerText = submission.username
+                    titleDiv.appendChild(img);
+                    titleDiv.appendChild(usernameSpan);
+                    titleDiv.appendChild(document.createElement("br"));
+                    const opinionSpan = document.createElement("span");
+                    opinionSpan.classList.add("opinion");
+                    opinionSpan.innerText = submission.desc
+                    titleDiv.appendChild(opinionSpan);
+                    setTimeout(() => {
+                        if (animate) opinionSpan.classList.add("response-animate");
+                    }, 51)
+                    resultDiv.appendChild(titleDiv);
+                    break;
+                }
+                default: {
+                    resultDiv.style.padding = `5px`
+                    resultDiv.innerHTML = `Something went wrong! Are you sure that "${boxName.value}"" is a real thing?`
+                    break;
+                }
+            }
+
+            promptBox.appendChild(resultDiv)
+        }
+
+    </script>
 </body>
 
 </html>

@@ -1114,6 +1114,7 @@ if (roomID) {
 
                                 const backingBtnSpan = document.createElement("span")
                                 backingBtnSpan.classList.add("gofundme-box-addition")
+                                backingBtnSpan.classList.add("ignore")
                                 backingBtnSpan.classList.add("backing")
 
                                 const backingBtn = document.createElement("button")
