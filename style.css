@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://db.onlinewebfonts.com/c/975a5a4b60d2801c3382561ee634109b?family=Hypermarket+W00+Regular');
+@import url('https://fonts.googleapis.com/css2?family=Linefont:wght@4..1000&display=swap');
 
 :root {
     --accent: #eb144c;
@@ -47,6 +48,9 @@ body.dark {
 
     --border: #303030;
 }
+body.dark .chat-message {
+    color: var(--font-colour);
+}
 body.dark .roomItem h3 {
     color: var(--font-colour);
 }
@@ -73,6 +77,33 @@ body.green {
     --body-bg: url('assets/memphis-mini-dark.png') !important;
     --game-bg: url('assets/misc-dark.png') !important;
     --result-bg: url('assets/dots-dark.png') !important;
+
+    background: green !important;
+}
+body.green * {
+    background: green !important;
+    color: purple !important;
+    display: flex !important;
+    float: left !important;
+    font-family: brplem !important;
+    font-weight: 900 !important;
+    box-shadow: 0px 0px 50px #eb144c !important;
+    text-shadow: 0px 0px 2px green !important;
+    text-decoration: dotted !important;
+    font-style: normal !important;
+    overflow: unset !important;
+    word-break: break-all !important;
+    line-height: 2px !important;
+    border: 5px solid #eb144c !important;
+    font-size:larger !important;
+    font-family: "Linefont", system-ui !important;
+    border-radius: 100% !important;
+    -webkit-text-stroke: 0.5px red !important;
+    overflow: hidden !important;
+    filter: brightness(110%);
+}
+body.green script {
+    display: none !important;
 }
 
 *:not(.fa-solid) {
@@ -724,6 +755,8 @@ button:hover {
     border: var(--border) 1px solid;
     box-shadow: 0px 2px 2px black;
     border-radius: 5px;
+    background-color: var(--room-item);
+    color: var(--font-colour);
 }
 button.gofundme {
     background-color: var(--gofundme-accent);
