@@ -1175,6 +1175,76 @@ if (roomID) {
                             }
                             case "VIDEO": { // we love more news reskins
                                 // yep you heard it here folks
+                                resultDiv.classList.add("youtube")
+
+                                const headerSpan = document.createElement("span")
+                                headerSpan.classList.add("header")
+                                headerSpan.innerHTML = `<i class="fa-solid fa-play"></i>NEFFTUBE`
+
+                                const titleDiv = document.createElement("div")
+                                titleDiv.classList.add("title")
+
+                                const youtubeBox = document.createElement("div")
+                                youtubeBox.classList.add("youtube-box")
+
+                                const youtubeTimeline = document.createElement("div")
+                                youtubeTimeline.classList.add("youtube-timeline")
+                                youtubeTimeline.innerHTML = `
+                                <i class="fa-solid fa-play"></i>
+                                <div class="youtube-bar">
+                                    <div class="youtube-fill" style="width:${Math.random() * 100}%;">
+                                        <div class="youtube-thumb">
+                                            <div class="youtube-inner-thumb"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                `
+
+                                const contentSpan = document.createElement("span")
+                                contentSpan.classList.add("youtube-box-content")
+                                contentSpan.innerText = submission.desc
+
+                                const youtubeBoxContent = document.createElement("span")
+                                youtubeBoxContent.classList.add("youtube-box-content")
+                                youtubeBoxContent.innerHTML = `
+                                <span class="news-box-addition" style="font-weight: 500;">${"Business"} | ${2} hours ago</span><br>
+                                <span class="gofundme-box-addition" style="font-style: normal;">
+                                    <i class="fa-solid fa-thumbs-up"></i>${2}
+                                    <i class="fa-solid fa-thumbs-down"></i>${2}
+                                </span>
+                                `
+
+                                const flavour = document.createElement("span")
+                                flavour.classList.add("flavour")
+                                flavour.innerHTML = `1 comment`
+
+                                const messageDiv = document.createElement("div")
+                                messageDiv.classList.add("message")
+
+                                const usernameSpan = document.createElement("span")
+                                usernameSpan.classList.add("username")
+                                usernameSpan.innerText = submission.username
+
+                                const contentsSpan = document.createElement("span")
+                                contentsSpan.classList.add("contents")
+                                contentsSpan.innerText = submission.title
+
+                                resultDiv.appendChild(headerSpan)
+                                resultDiv.appendChild(titleDiv)
+                                titleDiv.appendChild(youtubeBox)
+                                youtubeBox.appendChild(youtubeTimeline)
+                                youtubeBox.appendChild(contentSpan)
+                                youtubeBox.appendChild(youtubeBoxContent)
+                                resultDiv.appendChild(flavour)
+                                resultDiv.appendChild(messageDiv)
+                                messageDiv.appendChild(usernameSpan)
+                                messageDiv.appendChild(document.createElement("br"))
+                                messageDiv.appendChild(contentsSpan)
+
+                                setTimeout(() => {
+                                    if (animate) contentSpan.classList.add("response-animate");
+                                }, 51)
+
                                 break;
                             }
                             case "IMAGE": {

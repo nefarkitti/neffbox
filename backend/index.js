@@ -249,7 +249,7 @@ app.post('/create', validator.body('username').notEmpty().isString(), (req, res)
     if (roomID == -1) return res.sendStatus(500);
     const userToken = calculateUserHash(ip, username, roomID);
 
-    let allPossibleRounds = ["RATINGS", "NEWS", "TRAVELLING", "SHOPPING", "GOFUNDME"/*, "VIDEO" */] // im sorry if this change breaks something @firee
+    let allPossibleRounds = ["RATINGS", "NEWS", "TRAVELLING", "SHOPPING", "GOFUNDME", "VIDEO"] // im sorry if this change breaks something @firee
     let actualChosenRounds = []
 
     for (let i = 0; i < 3; i++) { // 3 times hopefully i cant test rn
