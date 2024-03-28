@@ -10,13 +10,23 @@
     --shopping-accent: #2196f3;
     --gofundme-accent: #00d084;
     --images-accent: #673ab7;
-    --youtube-accent: red;
+    --youtube-accent: rgb(255, 58, 58);
     --thing: 2px;
+
+    --menu-bg: rgb(246, 246, 246);
+    --room-item: white;
+    --font-colour: black;
+
+    --body-bg: url("assets/memphis-mini.png");
+    --game-bg: url('./assets/misc.png');
+    --result-bg: url("assets/dots.png");
+
+    --border: grey;
 }
 
 body {
     margin: 0;
-    background-image: url("assets/memphis-mini.png");
+    background-image: var(--body-bg);
     user-select: none;
     animation-name: example;
     animation-duration: 5s;
@@ -24,6 +34,45 @@ body {
     animation-iteration-count: infinite;
     animation-direction: reverse;
     overflow: hidden;
+}
+
+body.dark {
+    --menu-bg: rgb(46, 46, 46) !important;
+    --room-item: rgb(22, 22, 22) !important;
+    --font-colour: rgb(240, 240, 240) !important;
+    
+    --body-bg: url('assets/memphis-mini-dark.png') !important;
+    --game-bg: url('assets/misc-dark.png') !important;
+    --result-bg: url('assets/dots.png') !important;
+
+    --border: #303030;
+}
+body.dark .roomItem h3 {
+    color: var(--font-colour);
+}
+body.dark .roomItem .timer {
+    color: var(--font-colour);
+}
+body.green {
+    --accent: green;
+
+    --ratings-accent: green;
+    --travelling-accent: green;
+    --shopping-accent: green;
+    --gofundme-accent: green;
+    --images-accent: green;
+    --youtube-accent: green;
+    --menu-bg: green !important;
+    --room-item: green !important;
+    --font-colour: red !important;
+    
+    --body-bg: green !important;
+    --game-bg: green !important;
+    --result-bg: green !important;
+
+    --body-bg: url('assets/memphis-mini-dark.png') !important;
+    --game-bg: url('assets/misc-dark.png') !important;
+    --result-bg: url('assets/dots-dark.png') !important;
 }
 
 *:not(.fa-solid) {
@@ -51,16 +100,16 @@ h3.title {
 }
 
 .menu {
-    background-color: rgb(246, 246, 246);
+    background-color: var(--menu-bg);
     padding: 10px 30px;
     border-radius: 5px;
-    border: grey 1px solid;
+    border: var(--border) 1px solid;
     box-shadow: 0px 2px 2px black;
 }
 
 input {
     width: 100px;
-    border: grey 1px solid;
+    border: var(--border) 1px solid;
     box-shadow: 0px 2px 2px black;
     border-radius: 5px;
     padding: 5px;
@@ -78,11 +127,11 @@ input:focus-visible {
 .roomItem {
     min-width: 100px;
     padding: 1%;
-    background-color: white;
+    background-color: var(--room-item);
     border-radius: 5px;
     margin: 10px;
     height: 500px;
-    border: grey 1px solid;
+    border: var(--border) 1px solid;
     box-shadow: 0px 2px 2px black;
 }
 
@@ -146,8 +195,7 @@ input:focus-visible {
     justify-content: center;
     align-items: center;
     border-radius: 5px;
-    background: url('./assets/misc.png');
-    background-color: rgb(244, 244, 244);
+    background: var(--game-bg);
     background-size: 200px;
 
     animation-name: example;
@@ -248,12 +296,12 @@ input:focus-visible {
 .promptBox input {
     padding: 6px;
     margin-top: 5px;
-    border: grey 1px solid;
+    border: var(--border) 1px solid;
     box-shadow: 0px 2px 2px black;
     border-radius: 5px;
     width: 400px;
     font-size: 20px;
-    background-color: white;
+    background-color: var(--room-item);
 }
 
 .promptBox input[type="file"] {
@@ -303,7 +351,7 @@ input:focus-visible {
     justify-content: center;
     align-items: center;
 
-    background-image: url("assets/dots.png");
+    background-image: var(--result-bg);
     animation-name: example;
     animation-duration: 10s;
     animation-timing-function: linear;
@@ -362,6 +410,7 @@ input:focus-visible {
     box-sizing: border-box;
     /* Opera/IE 8+ */
     text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.363);
+    font-family: "Rubik", sans-serif;
 }
 .ratings .header {
     background-color: var(--ratings-accent);
@@ -672,7 +721,7 @@ button:hover {
     width: 250px;
     padding: 4px;
     margin-top: 5px;
-    border: grey 1px solid;
+    border: var(--border) 1px solid;
     box-shadow: 0px 2px 2px black;
     border-radius: 5px;
 }
@@ -753,8 +802,8 @@ button.gofundme {
 }
 
 .modal {
-    background-color: white;
-    color: black;
+    background-color: var(--room-item);
+    color: var(--font-colour);
     border-radius: 3px;
     padding: 5px;
     border: var(--gr) 1px solid;

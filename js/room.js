@@ -18,7 +18,8 @@ tracks.forEach(element => {
 function changeTrack(index) { // surely there's a better way right
     tracks.forEach(element => {
         element.pause()
-    })    
+        element.currentTime = 0
+    }) 
     tracks[index].play()
 }
 function stopTracks() {
@@ -277,7 +278,7 @@ if (roomID) {
                 <div id="promptBox-screenshot" style="display:none"><div>
             </div>
         </main>
-        <div id="receiptDiv" class="receipt hidemobile" style="display: none;">
+        <div id="receiptDiv" onclick="document.getElementById('receiptDiv').classList.remove('showReceipt')" class="receipt hidemobile" style="display: none;">
         <img src="../assets/favicon.png" alt="" width="50"><br>
         <h3>NEFFMART<span class="tm">TM</span></h3>
         <p>
@@ -412,11 +413,10 @@ if (roomID) {
             })
             clearTimeout(timers)
             countdown = 60;
-            timer.innerText = "60s left"
             if (topic == "IMAGE") {
                 countdown = 120
-                timer.innerText = "120s left"
             }
+            timer.innerText = `${countdown}s left`
             timers = setInterval(() => {
                 countdown--;
                 timer.innerText = `${countdown}s left`
