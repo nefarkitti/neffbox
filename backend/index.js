@@ -676,6 +676,17 @@ sio.on('connection', socket => {
                     // assume that rounds ended
                     updatedRoomData.voting = false;
                     updatedRoomData.started = false;
+                    let allPossibleRounds = ["RATINGS", "NEWS", "TRAVELLING", "SHOPPING", "GOFUNDME", "VIDEO"] // im sorry if this change breaks something @firee
+                    let actualChosenRounds = []
+
+                    for (let i = 0; i < 3; i++) { // 3 times hopefully i cant test rn
+                        const rolled = allPossibleRounds[simpleRandom(allPossibleRounds.length)]
+                        actualChosenRounds.push(rolled)
+                        allPossibleRounds.splice(allPossibleRounds.indexOf(rolled), 1)
+                        // support for multiple different rounds
+                        // im sorry if this breaks something
+                    }
+                    updatedRoomData.rounds = [...shuffle(actualChosenRounds), "IMAGE"];
                     const winner = updatedRoomData.users.reduce((prevUser, currentUser) => {
                         return (prevUser.points > currentUser.points) ? prevUser : currentUser;
                     });
