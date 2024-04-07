@@ -363,6 +363,7 @@ input:focus-visible {
     display: inline-block;
     vertical-align:middle;
     border: solid black 2px;
+    background-color: white;
 }
 .usericon div {
     image-rendering: pixelated;
@@ -382,6 +383,27 @@ input:focus-visible {
 }
 .accessory {
     z-index: 12;
+}
+.base {
+    z-index: 1;
+}
+.mahoraga {
+    z-index: 0; 
+    animation-name: mahoragaSpin;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+.back {
+    z-index: 0;
+}
+@keyframes mahoragaSpin {
+    from {
+        transform: translateY(-30%) rotate(0deg);
+    }
+    to {
+        transform: translateY(-30%) rotate(360deg);
+    }
 }
 .badge {
     image-rendering: pixelated;
@@ -1229,4 +1251,12 @@ button.gofundme {
 .room-host {
     text-align: left;
     text-indent: 10px;
+}
+
+#contain-icons {
+    display: flex;
+    flex-direction: column;
+}
+#contain-icons div {
+    display: list-item !important;
 }
