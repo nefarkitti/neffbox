@@ -383,6 +383,14 @@ input:focus-visible {
 .accessory {
     z-index: 12;
 }
+.badge {
+    image-rendering: pixelated;
+    background-size: 100%;
+    width: 15px !important;
+    height: 15px !important;
+    display: inline-block;
+    vertical-align: middle;
+}
 
 .promptBox .message .username {
     font-weight: 700;
