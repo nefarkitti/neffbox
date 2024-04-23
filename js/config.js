@@ -1,5 +1,4 @@
-//let URL = "https://neffbox.firee.dev"
-let URL = "https://crazy-bananas-rhyme.loca.lt"
+let URL = "https://neffbox.firee.dev"
 console.log(window.location.host)
 if (window.location.host.startsWith("localhost")) {
     URL = "http://localhost:3000"
