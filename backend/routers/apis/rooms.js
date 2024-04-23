@@ -114,11 +114,6 @@ function uploadImage(req, res, capture) {
                 buffer: base64ImageData,
                 extension: "image/png"
             });
-            sio.to(roomID).emit('message', {
-                username,
-                content: hash,
-                image: true
-            });
         } else {
             findUser.file = hash;
             roomData.imgs.set(hash, {
