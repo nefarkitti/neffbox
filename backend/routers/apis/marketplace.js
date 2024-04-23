@@ -150,7 +150,6 @@ export function router(db) {
             // it should be a random item of that rarity
             // still not dispalying wtf
             let rarity = "uncommon"
-            console.log(roll)
             if (roll <= 65) {
                 rarity = "rare"
             }
