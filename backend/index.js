@@ -38,9 +38,13 @@ import cors from 'cors';
 import url from 'url';
 import util from 'util';
 import betterSqlite from 'better-sqlite3'
-const db = betterSqlite('../data/database.sqlite', {
+const DEVELOPMENT = (process.env.PRODUCTION != 1);
+import 'dotenv/config';
+let dbPath = (DEVELOPMENT) ? '../data/database.sqlite' : './data/database.sqlite'
+let dbOptions = (DEVELOPMENT) ? {
     verbose: console.log
-});
+} : {}
+const db = betterSqlite(dbPath, dbOptions);
 import { getRoom, rooms, sio, app, server, calculateUserHash, sha512, simpleRandom, shuffle, shuffleNoCollide, allRounds } from './constants.js'
 const systemName = "SERVER"
 const roomTimeouts = {};
@@ -48,8 +52,6 @@ const submitTimeouts = {};
 const voteTimeouts = {};
 const submitTimer = 60;
 
-import 'dotenv/config';
-const DEVELOPMENT = (process.env.PRODUCTION != 1);
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
