@@ -20,8 +20,6 @@ EXPOSE $PORT
 
 # Copy the SQLite database file to the directory
 RUN mkdir -p /usr/src/app/data
-RUN test -f /usr/src/app/data/database.sqlite || cp data/database.sqlite /usr/src/app/data
-#COPY data/database.sqlite /usr/src/app/data
 
 # Define a volume for SQLite data
 VOLUME ["/usr/src/app/data"]
