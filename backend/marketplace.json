@@ -1,0 +1,791 @@
+[
+    {
+        "name": "Gold Colour",
+        "filename": "gold",
+        "type": "bases",
+        "colour": "gold",
+        "rarity": "rare",
+        "desc": "Shiny!",
+        "tag": "ANIMATED COLOUR",
+
+        "price": 1500,
+        "available": true
+    },
+    {
+        "name": "Rainbow Colour",
+        "filename": "rainbow",
+        "type": "bases",
+        "colour": "rainbow",
+        "rarity": "uncommon",
+        "desc": "Colourful!",
+        "tag": "ANIMATED COLOUR",
+
+        "price": 1000,
+        "available": true
+    },    {
+        "name": "Flesh",
+        "filename": "flesh",
+        "type": "bases",
+        "colour": "flesh",
+        "rarity": "epic",
+        "desc": "It writhes.",
+        "tag": "ANIMATED COLOUR",
+
+        "price": 2100,
+        "available": true
+    },
+
+
+    {
+        "name": "Glasses",
+        "filename": "glasses",
+        "type": "cosmetics",
+        "rarity": "common",
+        "desc": "These spectacles make me look spec-tacular!",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 200,
+        "available": true
+    },
+
+    {
+        "name": "Buck Teeth",
+        "filename": "buck_teeth",
+        "type": "mouth",
+        "rarity": "common",
+        "desc": "Those teeth are a few bricks short of a full grill.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 300,
+        "available": true
+    },
+
+    {
+        "name": "Devillish Grin",
+        "filename": "devillish_grin",
+        "type": "mouth",
+        "rarity": "uncommon",
+        "desc": "A grin that could tempt angels to sin.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 550,
+        "available": true
+    },
+
+    {
+        "name": "Frown",
+        "filename": "frown",
+        "type": "mouth",
+        "rarity": "common",
+        "desc": "Sporting a frown that could turn milk sour.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 300,
+        "available": true
+    },
+
+    {
+        "name": "Golden Tooth",
+        "filename": "golden_tooth",
+        "type": "mouth",
+        "rarity": "rare",
+        "desc": "Flash that golden smile.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 600,
+        "available": true
+    },
+
+    {
+        "name": "Ravenous",
+        "filename": "hungry",
+        "type": "mouth",
+        "rarity": "epic",
+        "desc": "You're not you when you're hungry.",
+        "tag": "ANIMATED MOUTH",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 1200,
+        "available": true
+    },
+
+    {
+        "name": ":3",
+        "filename": "colon_three",
+        "type": "mouth",
+        "rarity": "rare",
+        "desc": ":3",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 400,
+        "available": true
+    },
+
+
+    
+    {
+        "name": "Big Eyes",
+        "filename": "big_eyes",
+        "type": "eye",
+        "rarity": "common",
+        "desc": "'Seeing is believing, especially with big eyes.'",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 350,
+        "available": true
+    },
+
+    {
+        "name": "Censored",
+        "filename": "censored",
+        "type": "eye",
+        "rarity": "common",
+        "desc": "Censored but not forgotten.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 350,
+        "available": true
+    },
+
+    {
+        "name": "Cyclops",
+        "filename": "cyclops",
+        "type": "eye",
+        "rarity": "uncommon",
+        "desc": "Eye see you!",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 550,
+        "available": true
+    },
+
+    {
+        "name": "Expunged",
+        "filename": "expunged",
+        "type": "eye",
+        "rarity": "epic",
+        "desc": "Maybe some things are, in fact, best left forgotten.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 825,
+        "available": true
+    },
+
+    {
+        "name": "Robo-Visor",
+        "filename": "robocop",
+        "type": "eye",
+        "rarity": "uncommon",
+        "desc": "I'm truly human... or am I?",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 600,
+        "available": true
+    },
+
+    {
+        "name": "snes the beerlton",
+        "filename": "undead_eyes",
+        "type": "eye",
+        "rarity": "rare",
+        "desc": "hey guts iys me snes the beerlton",
+        "tag": "ANIMATED EYES",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 800,
+        "available": true
+    },
+
+    {
+        "name": "Blank",
+        "filename": "robotic",
+        "type": "eye",
+        "rarity": "common",
+        "desc": "Devoid of all emotion.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 300,
+        "available": true
+    },
+
+
+
+    {
+        "name": "2010 called",
+        "filename": "2010_called",
+        "type": "cosmetics",
+        "rarity": "rare",
+        "desc": "They want their dead meme back.",
+        "tag": "ANIMATED",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 700,
+        "available": true
+    },
+
+    {
+        "name": "Black Bandana",
+        "filename": "bandana",
+        "type": "cosmetics",
+        "rarity": "common",
+        "desc": "In used condition, whatever that may entail.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 400,
+        "available": true
+    },
+
+    {
+        "name": "Black Cap",
+        "filename": "black_cap",
+        "type": "cosmetics",
+        "rarity": "common",
+        "desc": "Perfect for disguising celebrities.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 400,
+        "available": true
+    },
+
+    {
+        "name": "Bucket Hat",
+        "filename": "bucket_hat",
+        "type": "cosmetics",
+        "rarity": "uncommon",
+        "desc": "I Has a Bucket",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 550,
+        "available": true
+    },
+
+    {
+        "name": "Cigarette",
+        "filename": "cigarette",
+        "type": "cosmetics",
+        "rarity": "uncommon",
+        "desc": "It takes the edge off.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 600,
+        "available": true
+    },
+
+    {
+        "name": "Clown Mask",
+        "filename": "clown_mask",
+        "type": "cosmetics",
+        "rarity": "rare",
+        "desc": "Does not come with jokes.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 600,
+        "available": true
+    },
+
+    {
+        "name": "Devil Horns",
+        "filename": "devil_horns",
+        "type": "cosmetics",
+        "rarity": "uncommon",
+        "desc": "For the devious folk.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 450,
+        "available": true
+    },
+
+    {
+        "name": "Dialogue Box",
+        "filename": "dialogue_box",
+        "type": "cosmetics",
+        "rarity": "rare",
+        "desc": "Despite everything, it's still you.",
+        "tag": "ANIMATED OVERLAY",
+
+        "defaultZIndex": 9999,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 900,
+        "available": true
+    },
+
+    {
+        "name": "ERROR",
+        "filename": "error",
+        "type": "cosmetics",
+        "rarity": "rare",
+        "desc": "404 Avatar Not Found",
+        "tag": "ANIMATED OVERLAY",
+
+        "defaultZIndex": 9999,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 850,
+        "available": true
+    },
+
+    {
+        "name": "Eyepatch",
+        "filename": "eyepatch",
+        "type": "cosmetics",
+        "rarity": "common",
+        "desc": "Plundering and stuff! No? Tough crowd.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 400,
+        "available": true
+    },
+
+    {
+        "name": "Fire",
+        "filename": "fire",
+        "type": "cosmetics",
+        "rarity": "rare",
+        "desc": "Just in case you wanted to burn yourself. For whatever reason.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 650,
+        "available": true
+    },
+
+    {
+        "name": "Jacket",
+        "filename": "jacket",
+        "type": "cosmetics",
+        "rarity": "uncommon",
+        "desc": "'I was born with thick skin.'",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 500,
+        "available": true
+    },
+
+    {
+        "name": "Jinx Eyes",
+        "filename": "jinx_eyes",
+        "type": "cosmetics",
+        "rarity": "uncommon",
+        "desc": "Why is this a cosmetic? Who knows!",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 450,
+        "available": true
+    },
+
+    {
+        "name": "Mahoraga Wheel",
+        "filename": "mahoraga_wheel",
+        "type": "cosmetics",
+        "rarity": "legendary",
+        "desc": "With this sacred treasure, I summon...",
+        "tag": "ANIMATED BACK",
+        "class": "mahoraga",
+
+        "defaultZIndex": null,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 3500,
+        "available": true
+    },
+
+    {
+        "name": "Panda Ears",
+        "filename": "panda_ears",
+        "type": "cosmetics",
+        "rarity": "common",
+        "desc": "Panda!",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 400,
+        "available": true
+    },
+
+    {
+        "name": "Pirate Hat",
+        "filename": "pirate_hat",
+        "type": "cosmetics",
+        "rarity": "uncommon",
+        "desc": "A fitting addition to the eyepatch!",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 500,
+        "available": true
+    },
+
+    {
+        "name": "Happiness Bundle",
+        "type": "bundle",
+        "filename": "happiness_bundle",
+        "rarity": "uncommon",
+        "desc": "A bundle of pure happiness!",
+        "tag": "BUNDLE",
+
+        "price": 500,
+        "available": true,
+        "items": ["propeller_hat", "rainbow_lollipop"]
+    },
+
+    {
+        "name": "Propeller Hat",
+        "filename": "propeller_hat",
+        "type": "cosmetics",
+        "rarity": "uncommon",
+        "desc": "Part of the 'Happiness' bundle.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 200,
+        "available": false
+    },
+    {
+        "name": "Rainbow Lollipop",
+        "filename": "rainbow_lollipop",
+        "type": "cosmetics",
+        "rarity": "uncommon",
+        "desc": "Part of the 'Happiness' bundle.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 200,
+        "available": false
+    },
+
+    {
+        "name": "Rad Shades",
+        "filename": "rad_shades",
+        "type": "cosmetics",
+        "rarity": "uncommon",
+        "desc": "Stay cool!",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 700,
+        "available": true
+    },
+
+    {
+        "name": "TV Head",
+        "filename": "tv_head",
+        "type": "cosmetics",
+        "rarity": "uncommon",
+        "desc": "Is this thing on!?",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 500,
+        "available": true
+    },
+
+    {
+        "name": "World Slash",
+        "filename": "world_slash",
+        "type": "cosmetics",
+        "rarity": "legendary",
+        "desc": "I'll show you what real Jujutsu is.",
+        "tag": "ANIMATED OVERLAY",
+        "class": "",
+
+        "defaultZIndex": 9999,
+        "defaultXpos": null,
+        "defaultYpos": null,
+        "defaultScale": 107,
+
+
+        "price": 3750,
+        "available": true
+    },
+
+    {
+        "name": "Education Bundle",
+        "type": "bundle",
+        "filename": "education_bundle",
+        "rarity": "rare",
+        "desc": "For those who just can't wait to keep learning!",
+        "tag": "BUNDLE",
+
+        "price": 950,
+        "available": true,
+        "items": ["baldi_hair_strand", "baldi_ruler", "grade_a_student"]
+    },
+
+    {
+        "name": "Hair Strand",
+        "filename": "baldi_hair_strand",
+        "type": "cosmetics",
+        "rarity": "uncommon",
+        "desc": "Part of the 'Education' bundle.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 200,
+        "available": false
+    },
+    {
+        "name": "Ruler",
+        "filename": "baldi_ruler",
+        "type": "cosmetics",
+        "rarity": "uncommon",
+        "desc": "Part of the 'Education' bundle.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 200,
+        "available": false
+    },
+    {
+        "name": "Grade A+",
+        "filename": "grade_a_student",
+        "type": "cosmetics",
+        "rarity": "uncommon",
+        "desc": "Part of the 'Education' bundle.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 200,
+        "available": false
+    },
+
+
+    {
+        "name": "Legally Distinct Plumber",
+        "filename": "mario",
+        "type": "cosmetics",
+        "rarity": "rare",
+        "desc": "Wahar!",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 675,
+        "available": true
+    },
+
+
+    {
+        "name": "Ranger's Coat",
+        "filename": "ranger_coat",
+        "type": "cosmetics",
+        "rarity": "epic",
+        "desc": "I just lost a month's worth of caps.",
+        "tag": "",
+
+        "defaultZIndex": 0,
+        "defaultXpos": 0,
+        "defaultYpos": 0,
+        "defaultScale": 0,
+
+
+        "price": 750,
+        "available": true
+    }
+
+
+]

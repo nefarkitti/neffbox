@@ -18,21 +18,38 @@
 PADORU PADORU!!!!
 */
 
-const DEVELOPMENT = (process.env.PRODUCTION != 1);
+/*
+CREATE TABLE "users" (
+	"user_id"	INTEGER NOT NULL DEFAULT 0,
+	"username"	TEXT NOT NULL DEFAULT 'User',
+	"password"	TEXT NOT NULL,
+	"salt"	TEXT NOT NULL,
+	"createdIn"	INTEGER DEFAULT 0,
+    "points" INTEGER,
+	PRIMARY KEY("user_id")
+);
+*/
 
 import path from 'path';
 import express from 'express';
-import http from 'http';
-const app = express();
-const server = http.createServer(app);
 import rateLimit from 'express-rate-limit';
 import validator from 'express-validator';
 import cors from 'cors';
-import crypto from 'crypto';
-import imageType from 'image-type';
 import url from 'url';
 import util from 'util';
-//import sharp from 'sharp'
+import betterSqlite from 'better-sqlite3'
+const db = betterSqlite('../data/database.sqlite', {
+    verbose: console.log
+});
+import { getRoom, rooms, sio, app, server, calculateUserHash, sha512, simpleRandom, shuffle, shuffleNoCollide, allRounds } from './constants.js'
+const systemName = "SERVER"
+const roomTimeouts = {};
+const submitTimeouts = {};
+const voteTimeouts = {};
+const submitTimer = 60;
+
+import 'dotenv/config';
+const DEVELOPMENT = (process.env.PRODUCTION != 1);
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -42,14 +59,7 @@ if (DEVELOPMENT) {
 }
 // simple fix
 
-const usernameLimit = 10;
 
-import { Server } from 'socket.io'
-const sio = new Server(server, {
-    cors: {
-        origin: "*"
-    }
-});
 app.set("trust proxy", 1);
 
 if (!DEVELOPMENT) {
@@ -85,7 +95,21 @@ app.use(
 
 app.use(express.raw({ limit: '100mb' })); // , type: 'image/*'
 
-const sha512 = (str) => crypto.createHash('sha512').update(str).digest('hex');
+import jwtRouter from './routers/jwt.js'
+import { router as authRouter } from './routers/auth.js'
+import { router as apiRouter } from './routers/api.js'
+
+app.use(jwtRouter);
+app.use(authRouter(db));
+app.use(apiRouter(db));
+
+app.post("/crash", validator.body('response').notEmpty().isString(), validator.body('route').notEmpty().isString(), (req, res) => {
+    const result = validator.validationResult(req);
+    if (!result.isEmpty()) return res.status(400).json({ errors: result.array() })
+    if (!req.user) return res.sendStatus(403);
+    console.warn(`${req.user.user_id} had an error on ${req.body.route} -`, req.body.response)
+    res.sendStatus(200);
+})
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -93,101 +117,9 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function shuffleNoCollide(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * i); // no +1 here!
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    return array;
-}
 
-function shuffle(array) {
-    return shuffleNoCollide(array);
-    //let currentIndex = array.length-1,  randomIndex;
-    let currentIndex = array.length, randomIndex;
-
-    // While there remain elements to shuffle.
-    while (currentIndex > 0) {
-
-        // Pick a remaining element.
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-
-        // And swap it with the current element.
-        [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
-    }
-
-    return array;
-}
-
-function genUser(username, userToken, ip) {
-    return {
-        id: null,
-        name: username,
-        token: userToken,
-        points: 0,
-        finished: false,
-        topic2: null,
-        topic2user: null,
-        response1: null,
-        response2: null,
-        votedFor: null,
-        ipAddr: sha512(ip)
-    }
-}
 
 // TODO: give each user a "token" when joining a room, that they keep
-
-function randomID(length = 16) {
-    var text = "";
-    //var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    const chars = "0123456789"
-    for (var i = 0; i < length; i++) {
-        text += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return text;
-}
-
-let rooms = [];
-
-function getRoom(id) {
-    if (!id) return null;
-    return rooms.find(room => room.id.toString() == id.toString());
-}
-
-function generateUniqueRoomID() {
-    let roomId;
-    let attempts = 0;
-    const maxAttempts = 100;
-
-    while (attempts < maxAttempts) {
-        roomId = randomID(5);
-
-        // Check if the generated roomId is unique
-        if (!getRoom(roomId)) {
-            return roomId; // Return the unique roomId
-        }
-        // neff do you realize how bad this is1?!?! well realistically we wouldnt reach that many people but brUH
-        // what the hell why do you do it like this LMAO
-        console.log(`Attempt ${attempts} at finding available room ID`);
-
-
-        attempts++;
-    }
-    return -1;
-}
-
-const uniqueKey = crypto.randomBytes(16).toString('hex');
-
-function calculateUserHash(ip, username, id) {
-    const evenMoreUniqueKey = crypto.randomBytes(32).toString('hex');
-    // best security
-    //return sha512(`${uniqueKey}${ip}${req.headers['user-agent']}${username}${id}`)
-    return sha512(`${uniqueKey}${ip}${username}${id}${evenMoreUniqueKey}`)
-}
 
 function getValidUser(roomData, username, token, ip) {
     if (username == null) {
@@ -205,236 +137,61 @@ app.get("/myhash", validator.query('username').notEmpty().isString(), (req, res)
     res.send(calculateUserHash(req.query.username, '00000', ip))
 })
 if (!DEVELOPMENT) {
-    app.use('/create', rateLimit({
+    app.use('/rooms/create', rateLimit({
         windowMs: 3 * 60 * 1000,
         max: 10,
         standardHeaders: true,
         message: "Too many requests are being sent! Please try again later.",
     }))
-    app.use('/join', rateLimit({
+    app.use('/rooms/:room/join', rateLimit({
         windowMs: 3 * 60 * 1000,
         max: 30,
         standardHeaders: true,
         message: "Too many requests are being sent! Please try again later.",
     }))
-    app.use('/upload', rateLimit({
-        windowMs: 1 * 60 * 1000,
+    app.use('/rooms/:room/upload', rateLimit({
+        windowMs: 2 * 60 * 1000,
         max: 4,
         standardHeaders: true,
         message: "Too many requests are being sent! Please try again later.",
     }))
-    app.use('/capture', rateLimit({
-        windowMs: 8 * 60 * 1000,
+    app.use('/rooms/:room/capture', rateLimit({
+        windowMs: 3 * 60 * 1000,
+        max: 3,
+        standardHeaders: true,
+        message: "Too many requests are being sent! Please try again later.",
+    }))
+    app.use('/user/@me/username', rateLimit({
+        windowMs: 2 * 60 * 1000,
         max: 2,
         standardHeaders: true,
         message: "Too many requests are being sent! Please try again later.",
     }))
+    app.use('/user/@me/password', rateLimit({
+        windowMs: 3 * 60 * 1000,
+        max: 3,
+        standardHeaders: true,
+        message: "Too many requests are being sent! Please try again later.",
+    }))
+    app.use('/user/:username', rateLimit({
+        windowMs: 1 * 60 * 1000,
+        max: 10,
+        standardHeaders: true,
+        message: "Too many requests are being sent! Please try again later.",
+    }))
+    app.use('/admin', rateLimit({
+        windowMs: 1 * 60 * 1000,
+        max: 60,
+        standardHeaders: true,
+        message: "Too many requests are being sent! Please try again later.",
+    }))
+    app.use('/marketplace', rateLimit({
+        windowMs: 1 * 60 * 1000,
+        max: 30,
+        standardHeaders: true,
+        message: "Too many requests are being sent! Please try again later.",
+    }))
 }
-
-function simpleRandom(max) {
-    return Math.floor(Math.random() * max);
-}
-
-app.post('/create', validator.body('username').notEmpty().isString(), (req, res) => {
-    const result = validator.validationResult(req);
-    if (!result.isEmpty()) return res.status(400).json({ errors: result.array() })
-    const username = req.body.username;
-    if (!username || typeof username != 'string') res.status(400).send("Give a valid username!");
-    if (username.length > usernameLimit) return res.status(413).send("Username is too long!");
-    if (!username.length) return res.status(400).send("whar");
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    const userExists = rooms.find(room => room.users.find(user => user.token == calculateUserHash(ip, username, room.id)))
-    if (userExists) return res.status(400).send("you are already in a room!");
-    const roomID = generateUniqueRoomID().toString();
-    if (roomID == -1) return res.sendStatus(500);
-    const userToken = calculateUserHash(ip, username, roomID);
-
-    let allPossibleRounds = ["RATINGS", "NEWS", "TRAVELLING", "SHOPPING", "GOFUNDME", "VIDEO"] // im sorry if this change breaks something @firee
-    let actualChosenRounds = []
-
-    for (let i = 0; i < 3; i++) { // 3 times hopefully i cant test rn
-        const rolled = allPossibleRounds[simpleRandom(allPossibleRounds.length)]
-        actualChosenRounds.push(rolled)
-        allPossibleRounds.splice(allPossibleRounds.indexOf(rolled), 1)
-        // support for multiple different rounds
-        // im sorry if this breaks something
-    }
-
-    rooms.push({
-        id: roomID,
-        host: username,
-        round: 0,
-        topicRound: 1,
-        started: false,
-        voting: false,
-        users: [genUser(username, userToken, ip)],
-        rounds: [...shuffle(actualChosenRounds), "IMAGE"],
-        imgs: new Map(),
-        banUsernames: [],
-        banIPs: [] // hashed! don't worry!
-    })
-    return res.send({
-        id: roomID,
-        token: userToken
-    });
-})
-
-const maxPlayers = 6;
-
-const systemName = "SERVER"
-
-const roomTimeouts = {};
-const submitTimeouts = {};
-const voteTimeouts = {};
-const submitTimer = 60;
-
-app.post(
-    '/join',
-    validator.body('roomID').notEmpty().isInt(),
-    validator.body('username').notEmpty().isString(),
-    (req, res) => {
-        const result = validator.validationResult(req);
-        if (!result.isEmpty()) return res.status(400).json({ errors: result.array() })
-        const roomID = req.body.roomID;
-        const username = req.body.username;
-        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        if (!roomID || !username) res.sendStatus(400);
-        if (typeof roomID != "string" || typeof username != "string") res.sendStatus(400);
-        if (username.length > usernameLimit) return res.status(413).send("Username too long!");
-        if (!username.length) return res.status(400).send("whar");
-        const roomData = getRoom(roomID)
-        if (!roomData) return res.status(404).send("could not find room");
-        if (roomData.users.length >= maxPlayers) return res.status(403).send(`there are too many players (${maxPlayers}) in the room`)
-        if (roomData.started) return res.status(403).send("the room has already started a round");
-        const userExists = roomData.users.find(user => user.name == username);
-        if (userExists) return res.status(403).send("someone has the same username in that room!");
-        const userInRoom = rooms.find(room => room.users.find(user => user.token == calculateUserHash(ip, username, room.id)))
-        if (userInRoom) return res.status(400).send("you are already in a room!");
-        if (roomData.banUsernames.includes(username)) return res.status(403).send("your username is banned from joining the room!");
-        if (roomData.banIPs.includes(sha512(ip))) return res.status(403).send("you are banned from this room.");
-        const userToken = calculateUserHash(ip, username, roomID);
-        roomData.users.push(genUser(username, userToken, ip));
-        return res.json({
-            users: roomData.users.map(user => {
-                return { name: user.name, points: user.points, idHash: sha512(user.name) }
-            }),
-            host: roomData.host,
-            token: userToken
-        })
-    }
-)
-
-function isValidBase64(str) {
-    if (typeof str !== 'string') return false;
-    const regex = /^(data:image\/[a-zA-Z]+;base64,)/;
-    return regex.test(str);
-}
-
-function uploadImage(req, res, capture) {
-    // probably should impl some auth, will do later
-    // neffi the neffi
-    const roomID = req.query.roomID;
-    const roomData = getRoom(roomID);
-    if (!roomData) return res.status(404).send("Couldn't find room.");
-    const file = req.body.file;
-    const extension = req.body.ext;
-    const username = req.body.username;
-    if (!file || file.length === 0) return res.status(400).send('Invalid file');
-    if (!roomID || !file || !username) return res.status(400).send("Some parameters aren't set!");
-    if (!extension && !capture) return res.status(400).send("Give an extension.");
-    if (!isValidBase64(file)) return res.status(400).send("Invalid base64.")
-    if (!file.startsWith("data")) return res.status(400).send("Invalid base64. (Doesn't start with data)");
-    let base64ImageData = file.replace(/^data:image\/\w+;base64,/, '')
-    const buffer = Buffer.from(base64ImageData, 'base64');
-    imageType(buffer).then(async type => {
-        if (!type) return res.status(400).send('Invalid image file');
-        if (!type.mime || !type.mime.startsWith('image')) return res.status(400).send('Invalid image file');
-        if (extension != type.mime && !capture) return res.status(400).send("Extensions do not match!");
-        if (type && type.ext && !['png', 'jpeg', 'gif', 'jpg'].includes(type.ext)) {
-            // convert image
-            try {
-                if (!DEVELOPMENT) {
-                    const pngBuffer = await sharp(buffer).toFormat('png').toBuffer();
-                    base64ImageData = pngBuffer.toString('base64');
-                }
-            } catch (e) {
-                console.error(e)
-                return res.status(500).send("Couldn't convert image.")
-            }
-        }
-        const hash = sha512(base64ImageData)
-        console.debug(`/upload - ${roomID} - ${hash} - ${capture}`);
-        const findUser = roomData.users.find(user => {
-            return user.name == username
-        })
-        if (!findUser) return res.status(403).send("you tried uploading a file, but you dont have access to the room");
-        if (capture) {
-            roomData.imgs.set(hash, {
-                buffer: base64ImageData,
-                extension: "image/png"
-            });
-            sio.to(roomID).emit('message', {
-                username,
-                content: hash,
-                image: true
-            });
-        } else {
-            findUser.file = hash;
-            roomData.imgs.set(hash, {
-                buffer: base64ImageData,
-                extension: type.mime
-            });
-        }
-        res.send(hash);
-    }).catch(e => {
-        res.sendStatus(500);
-        console.error(e);
-    });
-}
-
-app.post('/upload', validator.query('roomID').notEmpty().isInt(), validator.body('username').notEmpty().isString(), validator.body('ext').notEmpty().isString(), validator.body('file').notEmpty().isString(), (req, res) => {
-    const result = validator.validationResult(req);
-    if (!result.isEmpty()) return res.status(400).json({ errors: result.array() })
-    uploadImage(req, res, false)
-})
-
-function calculateBase64Size(base64String) {
-    // Remove header information from the base64 string
-    const base64WithoutHeader = base64String.split(',')[1];
-    // Convert Base64 string to a binary array
-    const binaryString = Buffer.from(base64WithoutHeader, 'base64');
-    // Get the length of the binary array
-    const bytes = binaryString.length;
-    // Convert bytes to megabytes
-    const megabytes = bytes / (1024 * 1024);
-    return megabytes;
-}
-
-
-app.post('/capture', validator.query('roomID').notEmpty().isInt(), validator.body('username').notEmpty().isString(), validator.body('file').notEmpty().isString(), (req, res) => {
-    const result = validator.validationResult(req);
-    if (!result.isEmpty()) return res.status(400).json({ errors: result.array() })
-    const file = req.body.file;
-    if (file && calculateBase64Size(file) > 2) return res.status(400).send("File too large!")
-    uploadImage(req, res, true)
-})
-
-app.get('/imgs/:room/:hash', validator.query("room").notEmpty().isInt(), validator.query("hash").notEmpty().isString(), (req, res) => {
-    const hash = req.params.hash;
-    const room = req.params.room;
-    const roomData = getRoom(room);
-    if (!roomData) return res.status(404).send("Room not found.");
-
-    // Check if the hash exists in the storage
-    if (!roomData.imgs.has(hash)) return res.status(404).send('Image not found');
-
-    // Retrieve the image buffer from storage
-    const { buffer, extension } = roomData.imgs.get(hash);
-
-    // Set the appropriate content type and send the image buffer
-    res.set('Content-Type', extension); // Change the content type according to your image type
-    res.send(Buffer.from(buffer, 'base64'));
-});
 
 function getTopics(topic) {
     // minimum of 6 because 6 players
@@ -459,7 +216,6 @@ function getTopics(topic) {
             return ["Uhh! Something went wrong!"]
     }
 }
-
 if (!DEVELOPMENT) { // because neff doesn't want to update nodejs!
     navigator.product = "ReactNative"
 }
@@ -676,10 +432,10 @@ sio.on('connection', socket => {
                     // assume that rounds ended
                     updatedRoomData.voting = false;
                     updatedRoomData.started = false;
-                    let allPossibleRounds = ["RATINGS", "NEWS", "TRAVELLING", "SHOPPING", "GOFUNDME", "VIDEO"] // im sorry if this change breaks something @firee
+                    let allPossibleRounds = JSON.parse(JSON.stringify(allRounds)) // im sorry if this change breaks something @firee
                     let actualChosenRounds = []
 
-                    for (let i = 0; i < 3; i++) { // 3 times hopefully i cant test rn
+                    for (let i = 0; i < updatedRoomData.maxRounds; i++) { // 3 times hopefully i cant test rn
                         const rolled = allPossibleRounds[simpleRandom(allPossibleRounds.length)]
                         actualChosenRounds.push(rolled)
                         allPossibleRounds.splice(allPossibleRounds.indexOf(rolled), 1)
@@ -687,10 +443,23 @@ sio.on('connection', socket => {
                         // im sorry if this breaks something
                     }
                     updatedRoomData.rounds = [...shuffle(actualChosenRounds), "IMAGE"];
-                    const winner = updatedRoomData.users.reduce((prevUser, currentUser) => {
-                        return (prevUser.points > currentUser.points) ? prevUser : currentUser;
-                    });
-                    sio.to(roomData.id).emit('roomEvent', { event: "gameend", username: winner.name, points: winner.points })
+                    const [winner, secondPlaceWinner] = updatedRoomData.users.slice().sort((a, b) => b.points - a.points);
+                    sio.to(roomData.id).emit('roomEvent', {
+                        event: "gameend",
+                        winner: {
+                            username: winner.name,
+                            equipped: winner.equipped,
+                            points: winner.points
+                        },
+                        second: {
+                            username: secondPlaceWinner.name,
+                            equipped: secondPlaceWinner.equipped,
+                            points: secondPlaceWinner.points
+                        }
+                    })
+                    updatedRoomData.users.forEach(user => {
+                        db.prepare('UPDATE users SET points = points + ? WHERE username = ?').run(user.points, user.name);
+                    })
                     updatedRoomData.users = updatedRoomData.users.map(user => {
                         return {
                             id: user.id,
@@ -806,12 +575,14 @@ return {
         socket.emit("addme", {
             name: userData.name,
             points: userData.points,
+            equipped: userData.equipped,
             idHash: sha512(userData.name)
         });
         if (!userData.joined) {
             userData.joined = true;
             sio.to(roomData.id).emit('join', {
                 username: userData.name,
+                equipped: userData.equipped,
                 idHash: sha512(userData.name)
             });
             broadcast(roomData.id, `${userData.name} has joined!`);
@@ -819,6 +590,7 @@ return {
             roomData.users.forEach(user => {
                 socket.emit("join", {
                     username: user.name,
+                    equipped: user.equipped,
                     idHash: sha512(user.name),
                     reconnect: true,
                     host: roomData.host == user.name
@@ -972,7 +744,8 @@ return {
         if (content.startsWith("/") && commandHandler(splitContent[0], splitContent.slice(1))) return;
         sio.to(roomData.id).emit('message', {
             username: userData.name,
-            content
+            content,
+            equipped: userData.equipped
         });
     })
 
@@ -1034,3 +807,31 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, async () => {
     console.log(`Server Listening on port @${PORT}`)
 })
+/*
+⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣤⣿⣿⣿⣤⡀⢀⣤⣤⠀⢀⣠⣴⣶⣦⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣾⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣻⣿⣿⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⡿⠟⠉⠉⠉⠉⠙⠛⠿⣿⣿⣿⣿⣟⣶⣾⡏⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⡿⣻⡿⠔⠒⠓⠀⠀⠀⠀⠒⠒⢼⣿⣿⣿⢹⣟⣿⡄⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⢁⣠⣀⣤⡀⠀⠀⠀⠄⣀⣀⡟⢿⣿⣾⣿⣿⣷⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠀⢸⣿⣯⠟⣁⣈⡙⠇⠀⠀⠐⠛⢫⠙⠻⣾⣿⣿⣽⡷⣽⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣨⣿⡿⢾⣷⣶⣿⠀⠀⠀⢠⣿⣤⣽⡄⠸⣿⡿⠿⢇⠈⢳⣆
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣗⢻⡇⠈⠛⠛⠁⠀⠀⠀⠈⠛⠻⠟⠁⢠⣿⣷⣴⡈⡇⠀⠁
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢯⣹⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⡗⣱⠃⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⡟⣦⠀⠀⠀⠀⠲⠀⠀⠀⠀⠀⣰⣿⢿⣿⣿⠁⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣧⣿⣷⢦⡀⠀⠀⠀⢀⣀⡤⢚⣿⣿⣾⠋⣿⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⠁⢿⡿⣿⣷⣌⡓⠒⠊⢉⣀⣴⣿⣿⡟⢿⠀⠈⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⠃⣸⣿⣿⣿⠀⣾⣿⣿⣿⣿⡿⣄⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡔⢁⣿⣿⡿⣴⣿⣿⣿⣯⡾⠀⠈⢷⡄⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠋⠀⣸⢿⣽⡿⠻⣿⣿⣿⣿⠇⠀⠀⠀⡿⣆⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠇⠀⣠⣿⣸⣿⣤⣴⣿⣿⣿⣿⠀⠀⠀⢰⠀⠘⡆⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⠋⢀⣴⣿⣿⢿⣿⣿⣿⣿⠀⣀⡏⠀⠀⠀⢸⠀⠀⢸⡀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡏⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣤⣤⡇⠀⠀⠀⡜⠀⣠⠋⣧⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⠁⢿⣿⣿⣿⣿⣇⢀⣯⣿⣿⣿⣿⠀⠀⠀⠀⡇⡴⡇⠀⢸⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠎⡞⠀⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⢀⠏⢀⠇⠀⢸⡄⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡎⢀⡷⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⡎⠀⢸⠀⠀⠀⡇⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠀⢸⠑⢀⣾⣧⣿⣿⣿⣿⡀⢨⣿⣿⣿⣿⠃⠀⡜⠀⠀⡸⠀⠀⠀⣿⡄
+*/

@@ -15,6 +15,448 @@
 </head>
 
 <body class="">
+
+    <div class="modal-overlay show-" style="z-index: 9999;"> <!-- ARE YOU SURE YOU WANT TO PURCHASE -->
+        <div class="modal marketplaceConfirm">
+            <span class="closebtn"><i class="fa-solid fa-x"></i></span>
+            <div class="flexcenter confirmPurchase">
+                <span style="filter: opacity(75%);font-size: 12px;margin-top: 5px;font-style: italic;">Items included within this bundle:</span> <!--ONLY DISPLAY FOR BUNDLES-->
+                <div class="marketplacecart">
+                    <div class="usericon">
+                        <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/propeller_hat.gif')"></div>
+                        <!--scale(-1) for mirroring-->
+                    </div>
+                    <div class="usericon">
+                        <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/rainbow_lollipop.gif')"></div>
+                        <!--scale(-1) for mirroring-->
+                    </div>
+                </div>
+                <h3>Are you sure you'd like to purchase the <b>Happiness Bundle</b>?</h3>
+                <span>for <b>200 points</b></span>
+                <div hidden>
+                    <h3><i>Insufficient funds.</i></h3>
+                    <button>BACK TO MARKETPLACE</button>
+                </div>
+                <div class="options">
+                    <button>PURCHASE</button>
+                    <button class="alt">CANCEL</button>
+                </div>
+                <div class="extra">
+                    <span style="filter: opacity(50%);font-size: 12px;margin-top: 5px;">Your balance after this purchase will be <b>0</b> points.</span><br>
+                    <span style="filter: opacity(50%);font-size: 12px;margin-top: 5px;">You currently have <b>0</b>.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay show-">
+        <div class="modal">
+            <span class="closebtn"><i class="fa-solid fa-x"></i></span>
+            <h1>MMMMMMMMMM's Profile</h1>
+            <div class="flexcenter">
+                <div class="settingsPanel marketContain profile">
+                    <div>
+                        <div class="usericon">
+                            <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                            <div style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                            <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                            <div style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+    
+                            <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/eyepatch.gif');transform: translateY(20%) translateX(15%);"></div>
+                            <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bandana.gif');transform: translateY(00%);"></div>
+                            <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/tophat.gif');transform: translateY(00%);z-index: 999;"></div>
+                            <!--scale(-1) for mirroring-->
+                        </div>
+                        <span>
+                            <span class="profileUsername">MMMMMMMMMM</span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                        </span><br>
+                        <button><i class="fa-solid fa-pencil"></i> EDIT</button>
+                        <span class="stats">
+                            wins: 0
+                            |
+                            rounds: 0
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay show-">
+        <div class="modal">
+            <span class="closebtn"><i class="fa-solid fa-x"></i></span>
+            <h1>Marketplace</h1>
+            <div style="text-align: right;margin: 0;">10 points</div>
+            <div class="flexcenter">
+                <div class="settingsPanel marketContain">
+                    <div class="topbar">
+                        <span class="searchbar">
+                            <input id="search-bar" type="text" placeholder="Search the marketplace">
+                            <i onclick="search()" id="search-btn" class="fa-solid fa-search"></i>
+                        </span>
+                    </div>
+                    <div class="shopGrid">
+
+                        <div class="shopItem uncommon">
+                            <div class="usericon">
+                                <div class="inventoryItem" style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
+                            </div>
+                            <span class="tag">ANIMATED OVERLAY</span>
+                            <span>Cleave</span>
+                            <span class="price">9000 points</span>
+                            <span class="itemDesc">"I'll Show You What Real Jujutsu Is."</span>
+                            <span>already owned!</span>
+                        </div>
+
+                        <div class="shopItem rare">
+                            <div class="usericon">
+                                <div class="inventoryItem" style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
+                            </div>
+                            <span class="tag">ANIMATED OVERLAY</span>
+                            <span>Cleave</span>
+                            <span class="price">9000 points</span>
+                            <span class="itemDesc">"I'll Show You What Real Jujutsu Is."</span>
+                            <button>PURCHASE</button>
+                        </div>
+
+                        <div class="shopItem epic">
+                            <div class="usericon">
+                                <div class="outline" style="background-image: url('../assets/icons/cosmetics/dialogue_box.gif');"></div>
+                            </div>
+                            <span class="tag">ANIMATED FACE</span>
+                            <span>Ravenous</span>
+                            <span class="price">2000 points</span>
+                            <span class="itemDesc">Shiny!</span>
+                            <button>PURCHASE</button>
+                        </div>
+
+                        <div class="shopItem legendary">
+                            <div class="usericon">
+                                <div class="inventoryItem" style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
+                            </div>
+                            <span class="tag">ANIMATED OVERLAY</span>
+                            <span>Cleave</span>
+                            <span class="price">9000 points</span>
+                            <span class="itemDesc">"I'll Show You What Real Jujutsu Is."</span>
+                            <button>PURCHASE</button>
+                        </div>
+
+                        <div class="shopItem">
+                            <div class="usericon">
+                                <div class="inventoryItem" style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
+                            </div>
+                            <span class="tag">ANIMATED OVERLAY</span>
+                            <span>Cleave</span>
+                            <span class="price">9000 points</span>
+                            <span class="itemDesc">"I'll Show You What Real Jujutsu Is."</span>
+                            <button>PURCHASE</button>
+                        </div>
+                        <div class="shopItem">
+                            <div class="usericon">
+                                <div class="inventoryItem" style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
+                            </div>
+                            <span class="tag">ANIMATED OVERLAY</span>
+                            <span>Cleave</span>
+                            <span class="price">9000 points</span>
+                            <span class="itemDesc">"I'll Show You What Real Jujutsu Is."</span>
+                            <button>PURCHASE</button>
+                        </div>
+                        <div class="shopItem">
+                            <div class="usericon">
+                                <div class="inventoryItem" style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
+                            </div>
+                            <span class="tag">ANIMATED OVERLAY</span>
+                            <span>Cleave</span>
+                            <span class="price">9000 points</span>
+                            <span class="itemDesc">"I'll Show You What Real Jujutsu Is."</span>
+                            <button>PURCHASE</button>
+                        </div>
+                        <div class="shopItem">
+                            <div class="usericon">
+                                <div class="inventoryItem" style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
+                            </div>
+                            <span class="tag">ANIMATED OVERLAY</span>
+                            <span>Cleave</span>
+                            <span class="price">9000 points</span>
+                            <span class="itemDesc">"I'll Show You What Real Jujutsu Is."</span>
+                            <button>PURCHASE</button>
+                        </div>
+
+                    </div>
+                    <button>customise your avatar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay show-">
+        <div class="modal">
+            <span class="closebtn"><i class="fa-solid fa-x"></i></span>
+            <h1>Settings</h1>
+            <nav>
+                <ul>
+                    <li>GENERAL</li>
+                    <li>AVATAR</li>
+                    <li id="roomtab">ROOM</li> <!--only the room host can see this tab-->
+                    <li>ACCOUNT</li>
+                </ul>
+            </nav>
+            <div id="settings-main" class="settingsPanel">
+                
+                <div id="settings-general" hidden>
+                    <p><b>GENERAL</b></p>
+                    <div class="general-settings settingsTab">
+                        <label for="themes">theme:</label>
+                        <select name="themes" id="themes" class="themes">
+                            <option value="light">light</option>
+                            <option value="dark">dark</option>
+                            <!--<option value="green">green</option>-->
+                        </select>
+                        <br>
+                        <span>
+                            <label for="volume">music:</label>
+                            <input type="range" name="volume" id="" min="1" max="100">
+                            <span>100%</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div id="settings-account" hidden>
+                    <p><b>ACCOUNT</b></p>
+                    <div class="general-settings settingsTab">
+                        <span>
+                            <label for="username">username:</label>
+                            <input type="text" name="username" placeholder="currentusername" maxlength="10">
+                            <button>save</button>
+                        </span>
+                        <br>
+                        <br>
+                        <span>- danger zone -</span><br>
+                        <button>change password</button><br>
+                        <button class="important">delete account</button>
+                    </div>
+                </div>
+
+                <div id="settings-room" hidden>
+                    <p><b>ROOM</b></p>
+                    <div class="general-settings settingsTab">
+                        <span>
+                            <label for="visibility">visibility:</label>
+                            <select name="visibility" id="themes" class="themes">
+                                <option value="classic">public</option>
+                                <option value="classic">unlisted</option>
+                                <option value="classic">private</option>
+                            </select>
+                            <br>
+                            <label for="roompass">room password:</label>
+                            <input type="text" name="roompass" placeholder="pass">
+                            <span style="font-size: 10px;margin-bottom: 10px;">(applies if private)</span>
+                        </span>
+                        <br>
+                        <span>
+                            <label for="roundcount">rounds:</label>
+                            <input type="range" name="roundcount" id="" min="1" max="10">
+                            <span>10 (max)</span>                        <span style="font-size: 10px;margin-bottom: 10px;">(excluding image round)</span>
+                        </span>
+                        <br>
+                        <label for="roundtype">round type:</label>
+                        <select name="roundtype" id="themes" class="themes">
+                            <option value="classic">classic</option>
+                            <option value="vote">vote (unimplemented)</option>
+                        </select>
+                    </div>
+                    <button>save</button>
+                </div>
+
+                <div id="settings-avatar">
+                    <p style="margin: 0;"><b>AVATAR</b></p>
+                    <div class="avatar-settings settingsTab">
+                        <div>
+                            <nav>
+                                <ul>
+                                    <li>mouths</li>
+                                    <li>cosmetics</li>
+                                    <li>equipped</li>
+                                </ul>
+                            </nav>
+                            <div id="inventory" class="inventoryContainer" style="display: none;">
+                                <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/none.gif');"></div>
+                                <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                                <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                                <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/bunny_ears.gif');"></div>
+                                <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/devil_horns.gif');"></div>
+                                <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/geto_scars.gif');"></div>
+                                <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/jinx_eyes.gif');"></div>
+                            </div>
+                            <div id="equipped" class="inventoryContainer">
+                                <span class="equippedItem">
+                                    <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                                    <span>mahoraga wheel</span>
+                                    <i class="fa-solid fa-caret-down dropdown"></i><i class="fa-solid fa-trash-can dropdown remove"></i>
+                                    <div id="cosmeticConfigidfkrenamethis" style="font-size: 12px;">
+                                        <br>
+                                        <span>
+                                            <label for="zindex">z index</label>
+                                            <input type="range" name="zindex" min="-10" max="10">
+                                            <span>value</span>
+                                        </span>
+                                        <br>
+                                        <span class="locked">
+                                            <label for="xpos">x offset</label>
+                                            <input type="range" name="xpos" min="-10" max="10">
+                                            <span>value</span>
+                                            <span><i class="fa-solid fa-lock"></i></span>
+                                        </span>
+                                        <br>
+                                        <span>
+                                            <label for="ypos">y offset</label>
+                                            <input type="range" name="ypos" min="-10" max="10">
+                                            <span>value</span>
+                                        </span>
+                                        <br>
+                                        <span>
+                                            <label for="ypos">scale</label>
+                                            <input type="range" name="ypos" min="-10" max="10">
+                                            <span>value</span>
+                                        </span>
+                                        <br>
+                                        <span class="locked">
+                                            <label for="ypos">flip</label>
+                                            <input class="chekmark" type="checkbox" name="ypos" min="0" max="1">
+                                            <span><i class="fa-solid fa-lock"></i></span>
+                                        </span>
+                                        <br>
+                                        <div class="reset">
+                                            <i class="fa-solid fa-rotate-right"></i>
+                                        </div>
+                                    </div>
+                                </span>
+
+                                <span class="equippedItem">
+                                    <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                                    <span>mahoraga wheel</span>
+                                    <i class="fa-solid fa-caret-up dropdown"></i>
+                                    <div id="cosmeticConfigidfkrenamethis" style="font-size: 12px;" hidden>
+                                        <br>
+                                        <span>
+                                            <label for="zindex">z index</label>
+                                            <input type="range" name="zindex" min="-10" max="10">
+                                            <span>value</span>
+                                        </span>
+                                        <br>
+                                        <span class="locked">
+                                            <label for="xpos">x offset</label>
+                                            <input type="range" name="xpos" min="-10" max="10">
+                                            <span>value</span>
+                                            <span><i class="fa-solid fa-lock"></i></span>
+                                        </span>
+                                        <br>
+                                        <span>
+                                            <label for="ypos">y offset</label>
+                                            <input type="range" name="ypos" min="-10" max="10">
+                                            <span>value</span>
+                                        </span>
+                                        <br>
+                                        <span>
+                                            <label for="ypos">scale</label>
+                                            <input type="range" name="ypos" min="-10" max="10">
+                                            <span>value</span>
+                                        </span>
+                                        <br>
+                                        <span class="locked">
+                                            <label for="ypos">flip</label>
+                                            <input class="chekmark" type="checkbox" name="ypos" min="0" max="1">
+                                            <span><i class="fa-solid fa-lock"></i></span>
+                                        </span>
+                                        <br>
+                                        <div class="reset">
+                                            <i class="fa-solid fa-rotate-right"></i>
+                                        </div>
+                                    </div>
+                                </span>
+                            </div>
+                            <button style="font-size: 10px;">BUY MORE</button>
+                        </div>
+                        <div>
+                            <div class="usericon">
+                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div style="background-image: url('../assets/icons/bases/purpleheart_neck_base.gif');z-index: 1;"></div>
+                                <div class="outline" style="background-image: url('../assets/icons/bases/square_outline.gif');"></div>
+                                <div style="background-image: url('../assets/icons/bases/purpleheart_square_base.gif');z-index: 1;"></div>
+
+                                <div class="outline accessory" style="background-image: url('../assets/icons/faces/eye/robotic.gif');z-index: 99;"></div>
+                                <div class="outline accessory" style="background-image: url('../assets/icons/faces/mouth/colon_three.gif');z-index: 99;"></div>
+
+                                <!--scaleX(-1) scale(150%);"-->
+                            </div>
+                            <div class="colours"> <!--FOR SHAPES-->
+                                <div data-shape-name="circle" class="colour" style="background-image: url('../assets/icons/bases/circle_outline.gif');background-size: 100%;image-rendering: pixelated;"></div>
+                                <div data-shape-name="square" class="colour" style="background-image: url('../assets/icons/bases/square_outline.gif');background-size: 100%;image-rendering: pixelated;"></div>
+                                <div data-shape-name="triangle" class="colour" style="background-image: url('../assets/icons/bases/triangle_outline.gif');background-size: 100%;image-rendering: pixelated;"></div>
+                                <!--<div data-shape-name="diamond" class="colour" style="background-image: url('../assets/icons/bases/diamond_outline.gif');background-size: 100%;image-rendering: pixelated;"></div>-->
+                            </div>
+                            <hr>
+                            <div class="colours">
+                                <!--
+                                    caribbeangreen
+                                    crimson
+                                    dodgerblue
+                                    orange
+                                    pizazz
+                                    purpleheart
+                                    redorange
+                                    white
+                                -->
+                                <div data-colour-name="caribbeangreen" style="background: #00D084;" class="colour"></div>
+                                <div data-colour-name="crimson" style="background: #EB144C;" class="colour"></div>
+                                <div data-colour-name="dodgerblue" style="background: #2196F3;" class="colour"></div>
+                                <div data-colour-name="orange" style="background: #FF5722;" class="colour"></div>
+                                <div data-colour-name="pizazz" style="background: #FF9307;" class="colour"></div>
+                                <div data-colour-name="purpleheart" style="background: #673AB7;" class="colour"></div>
+                                <div data-colour-name="redorange" style="background: #FF3A3A;" class="colour"></div>
+                                <div data-colour-name="white" style="background: #fff;" class="colour"></div>
+
+                                <!--purchasable/unlockable-->
+                                <div data-colour-name="gold" style="background: url('/assets/icons/bases/gold_colour.gif');" class="colour"></div>
+                                <div data-colour-name="rainbow" style="background: url('/assets/icons/bases/rainbow_colour.gif');" class="colour"></div>
+                                <div data-colour-name="flesh" style="background-image: url('/assets/icons/bases/flesh_colour.gif');" class="colour"></div>
+
+                            </div>
+                            <hr>
+                            <div class="colours">
+                                <!--
+                                    BADGES
+                                -->
+                                <div data-badge-name="none" style="background-color: white;background-image: url('../assets/icons/cosmetics/none.gif');background-size: 100%;" class="colour"></div>
+                                <div data-badge-name="verified" style="background-color: white;background-image: url('../assets/icons/badges/verified.gif');background-size: 100%;" class="colour"></div>
+                                <div data-badge-name="artist" style="background-color: white;background-image: url('../assets/icons/badges/artist.gif');background-size: 100%;" class="colour unobtained">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat previewMessage">
+                        <div class="chat-list">
+                            <div class="chat-message">
+                                <div class="usericon">
+                                    <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                    <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
+                                    <div class="outline" style="background-image: url('../assets/icons/bases/circle_outline.gif');"></div>
+                                    <div style="background-image: url('../assets/icons/bases/red_circle_base.gif');"></div>
+        
+                                    <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                    <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                                </div>
+                                <span class="username you">oswald</span>
+                                <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                                <span>: preview!</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button>save</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <div class="sorry">
         sorry this does not support mobile
     </div>
@@ -22,6 +464,7 @@
     <span class="btn"><i class="fa-solid fa-gear"></i></span>
     <span class="btn"><i class="fa-solid fa-user"></i></span>
     <span class="btn"><i class="fa-solid fa-shopping-cart"></i></span>
+    <span class="btn"><i class="fa-solid fa-screwdriver-wrench"></i></span> <!--debugging admin stuff?-->
     <button onclick="create('news')">news</button>
     <button onclick="create('ratings')">ratings</button>
     <button onclick="create('travelling')">travelling</button>
@@ -29,12 +472,19 @@
     <button onclick="create('gofundme')">gofundme</button>
     <button onclick="create('video')">video</button>
     <button onclick="create('image')">image</button>
+    <button onclick="document.getElementById('burninggatesofhell').classList.toggle(`showgates`)">OPEN THE GATES OF HELL</button>
+    <button onclick="document.getElementById('winnericon').classList.toggle(`thrown2hell`)">THROW INTO HELL</button>
+    <button onclick="document.getElementById('sacrificeIcon').classList.toggle(`revealSacrifice`)">REVEAL SACRIFICE</button>
+    <button onclick="document.getElementById('wonPoints').classList.toggle(`show`)">SHOW POINTS</button>
+    <button onclick="document.getElementById('winnerReveal').classList.toggle(`show`)">SHOW WINNER</button>
+    <button onclick="begin()">PLAY</button>
     <main>
         <div class="roomLayout">
             <div class="roomItem hidemobile">
                 <h3>- LOBBY -</h3>
                 <div class="lobbyList" id="lobbyList">
-                    <div class="host">
+
+                    <div class="lobbyListItem host">
                         <div class="usericon">
                             <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
                             <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
@@ -43,18 +493,42 @@
 
                             <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
                             <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                            <div class="state"><i class="fa-solid fa-skull"></i></div>
                         </div>
-                        <span class="user-item"><div class="state"><i class="fa-solid fa-hourglass-half"></i></div>MMMMMMMMMM (HOST)<br></span>
-                        <span class="points">100</span>
+                        <span class="user-item">MMMMMMMMMM (HOST)<br></span>
+                        <span class="points">100 <i class="fa-solid fa-coins"></i></span>
                     </div>
-                    <div class="you">
-                        <div class="state"><i class="fa-solid fa-hourglass-half"></i></div>neff<br>
-                        <span class="points">100</span>
+
+                    <div class="lobbyListItem you">
+                        <div class="usericon">
+                            <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                            <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
+                            <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                            <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');"></div>
+
+                            <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                            <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                            <div class="state"><i class="fa-solid fa-hourglass-half"></i></div>
+                        </div>
+                        <span class="user-item">MMMMMMMMMM (HOST)<br></span>
+                        <span class="points">100 <i class="fa-solid fa-coins"></i></span>
                     </div>
-                    <div class="">
-                        <div class="state"><i class="fa-solid fa-hourglass-half"></i></div>f1<br>
-                        <span class="points">100</span>
+                    
+                    <div class="lobbyListItem">
+                        <div class="usericon">
+                            <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                            <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
+                            <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                            <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');"></div>
+
+                            <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                            <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                            <div class="state"><i class="fa-solid fa-hourglass-half"></i></div>
+                        </div>
+                        <span class="user-item">MMMMMMMMMM (HOST)<br></span>
+                        <span class="points">100 <i class="fa-solid fa-coins"></i></span>
                     </div>
+
                 </div>
             </div>
             <div class="roomItem gameItem">
@@ -64,45 +538,91 @@
                         <p class="prompt">You're the host!</p><br><br>
                         <button>Start the game</button>
                     </div>-->
-                    <div class="promptBox show" id="promptBox"> <!--dont comment the id part thingy ok thank you!-->
+                    <div class="promptBox endingv2" id="promptBox"> <!--dont comment the id part thingy ok thank you!-->
                         <!--<h3>Please wait.</h3>-->
                         <!--<h3>5.. 4... 3.. 2... 1..</h3>-->
                         <!--<h1 class="round-number">Round (numbre)</h1>
                         <h2 class="round-topic">NEWS</h2>-->
                         <!--<h1>ROUND END!</h1>-->
-                        <div class="result news youtube">
-                            <span class="header"><i class="fa-solid fa-play"></i>NEFFTUBE</span>
-                            <div class="title">
-                                <div class="youtube-box">
-                                    <div class="youtube-timeline">
-                                        <i class="fa-solid fa-play"></i>
-                                        <div class="youtube-bar">
-                                            <div class="youtube-fill">
-                                                <div class="youtube-thumb">
-                                                    <div class="youtube-inner-thumb"></div>
-                                                </div>
-                                            </div>
-                                        </div>
+
+                        <!--<div class="finals">
+                            <p>CAST YOUR VOTES!</p>
+                            <div class="finals-wrap">
+                                <div class="result news selected">
+                                    <div class="tick">
+                                        <i class="fa-solid fa-circle-check revealcheck"></i>
+                                        <i class="fa-solid fa-circle-check revealcheck"></i>
+                                        <i class="fa-solid fa-circle-check revealcheck"></i>
+                                        <i class="fa-solid fa-circle-check revealcheck"></i>
+                                        <i class="fa-solid fa-circle-check revealcheck"></i>
                                     </div>
-                                    <span class="youtube-box-content">
-                                        palworld part 2
-                                    </span>
-                                    <span class="youtube-box-content">
-                                        <span class="news-box-addition" style="font-weight: 500;">Business | 9 hours
-                                            ago</span><br>
-                                        <span class="gofundme-box-addition" style="font-style: normal;">
-                                            <i class="fa-solid fa-thumbs-up"></i>2
-                                            <i class="fa-solid fa-thumbs-down"></i>2
-                                        </span>
-                                    </span>
+                                    <span class="header">TOP NEWS TODAY</span><br>
+                                    <div class="title">
+                                        <span>JEREMIAH ROWBOTTOM DIES IN HORRIFIC CAR CRASH, EXPLODES! IT WAS ABSOLUTELY HORRIFIC! ABSOLUTELY HORRIFIC!</span>
+                                    </div>
+                                    <div class="message">
+                                        <span class="username">Jeremiah</span><br>
+                                        <span class="contents">I DO NOT HATE JEREMIAH ROWBOTTOM! I DO NOTTTT!!</span>
+                                    </div>
                                 </div>
+                                <div class="result news selected">
+                                    <div class="tick">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                    </div>
+                                    <span class="header">TOP NEWS TODAY</span><br>
+                                    <div class="title">
+                                        <span>JEREMIAH ROWBOTTOM DIES IN HORRIFIC CAR CRASH, EXPLODES! IT WAS ABSOLUTELY HORRIFIC! ABSOLUTELY HORRIFIC!</span>
+                                    </div>
+                                    <div class="message">
+                                        <span class="username">Jeremiah</span><br>
+                                        <span class="contents">I DO NOT HATE JEREMIAH ROWBOTTOM! I DO NOTTTT!!</span>
+                                    </div>
+                                </div>
+                                <div class="result news selected">
+                                    <div class="tick">
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                    </div>
+                                    <span class="header">TOP NEWS TODAY</span><br>
+                                    <div class="title">
+                                        <span>JEREMIAH ROWBOTTOM DIES IN HORRIFIC CAR CRASH, EXPLODES! IT WAS ABSOLUTELY HORRIFIC! ABSOLUTELY HORRIFIC!</span>
+                                    </div>
+                                    <div class="message">
+                                        <span class="username">Jeremiah</span><br>
+                                        <span class="contents">I DO NOT HATE JEREMIAH ROWBOTTOM! I DO NOTTTT!!</span>
+                                    </div>
+                                </div>
+
                             </div>
-                            <span class="flavour">1 comment</span>
-                            <div class="message">
-                                <span class="username">Jeremiah</span><br>
-                                <span class="contents">I DO NOT HATE JEREMIAH ROWBOTTOM! I DO NOTTTT!!</span>
+                        </div>-->
+
+                        <h1 id="winnerTitle">And the winner is...</h1>
+
+                        <div class="winnerReveal">
+                            <div id="winnericon" class="usericon winnericon">
+                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
+                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');"></div>
+    
+                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
                             </div>
+                            <div id="sacrificeIcon" class="usericon winnericon sacrifice revealSacrifice">
+                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
+                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');"></div>
+    
+                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                            </div>
+                        
                         </div>
+                        <h2 id="winnerName">Oswald!</h2>
+                        <h3 id="wonPoints" class="show">with 3000 points</h3>
+
+                        <img id="burninggatesofhell" class="burninggatesofhell" src="../assets/fire.gif" alt="">
+
                     </div>
                     <!--
                     FIRST ROUND PROMPT BOX
@@ -342,6 +862,96 @@
                             <div class="usericon">
                                 <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
                                 <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div class="base" style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+
+                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory mahoraga" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                            </div>
+                            <span class="username you">triangle</span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span>: i am a god dang triangle!</span>
+                        </div>
+
+                        <div class="chat-message">
+                            <div class="usericon">
+                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div class="base" style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+
+                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory mahoraga" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                            </div>
+                            <span class="username you">triangle</span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span>: i am a god dang triangle!</span>
+                        </div>
+
+                        <div class="chat-message">
+                            <div class="usericon">
+                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div class="base" style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+
+                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory mahoraga" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                            </div>
+                            <span class="username you">triangle</span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span>: i am a god dang triangle!</span>
+                        </div>
+
+                        <div class="chat-message">
+                            <div class="usericon">
+                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div class="base" style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+
+                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory mahoraga" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                            </div>
+                            <span class="username you">triangle</span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span>: i am a god dang triangle!</span>
+                        </div>
+
+                        <div class="chat-message">
+                            <div class="usericon">
+                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div class="base" style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+
+                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');transform:translateY(50%);"></div>
+                            </div>
+                            <span class="username you">triangle</span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span>: i am a god dang triangle!</span>
+                        </div>
+
+                        <div class="chat-message">
+                            <div class="usericon">
+                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div class="base" style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+
+                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory mahoraga" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                            </div>
+                            <span class="username you">triangle</span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span>: i am a god dang triangle!</span>
+                        </div>
+
+                        <div class="chat-message">
+                            <div class="usericon">
+                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
                                 <div class="outline" style="background-image: url('../assets/icons/bases/circle_outline.gif');"></div>
                                 <div class="base" style="background-image: url('../assets/icons/bases/white_circle_base.gif');"></div>
 
@@ -426,6 +1036,53 @@
     <div id="contain-icons">
     </div>
     <script>
+
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+        function begin() {
+
+            /*
+                <button onclick="document.getElementById('burninggatesofhell').classList.toggle(`showgates`)">OPEN THE GATES OF HELL</button>
+    <button onclick="document.getElementById('winnericon').classList.toggle(`thrown2hell`)">THROW INTO HELL</button>
+    <button onclick="document.getElementById('sacrificeIcon').classList.toggle(`revealSacrifice`)">REVEAL SACRIFICE</button>
+    <button onclick="document.getElementById('wonPoints').classList.toggle(`show`)">SHOW POINTS</button>
+    <button onclick="document.getElementById('winnerReveal').classList.toggle(`show`)">SHOW WINNER</button>
+            */
+
+            const promptBox = document.getElementById("promptBox")
+            const gates = document.getElementById('burninggatesofhell')
+            const winnerIcon = document.getElementById('winnericon')
+            const winnerName = document.getElementById('winnerName')
+            const sacrificeIcon = document.getElementById('sacrificeIcon')
+            const pointsWon = document.getElementById('wonPoints')
+            const winnerTitle = document.getElementById("winnerTitle")
+
+            sacrificeIcon.style.display = `none`
+            winnerIcon.style.display = `none`
+            pointsWon.style.display = `none`
+            winnerName.style.display = `none`
+
+            promptBox.classList.add("show")
+
+            sleep(2000).then(() => { winnerIcon.style.display = ``;winnerIcon.classList.add("show");winnerTitle.style.display = `none`});
+            sleep(2500).then(() => { winnerName.style.display = ``;winnerName.classList.add("show"); })
+
+            sleep(3500).then(() => { pointsWon.style.display = ``;pointsWon.classList.add("show");pointsWon.innerHTML = `with 4000 points` })
+
+            sleep(5000).then(() => { sacrificeIcon.style.display = ``;sacrificeIcon.style.animationName = `revealSacrifice` })
+            sleep(5000).then(() => { winnerName.innerHTML  = `and <b>Jeremy</b>` })
+            sleep(5000).then(() => { pointsWon.innerHTML  = `sacrificing for 200 points` })
+
+            sleep(7000).then(()=>{ pointsWon.style.display = `none`;winnerName.style.display = `none`;sacrificeIcon.style.animationName = `hideSacrifice`;gates.classList.add(`showgates`) })
+        
+            sleep(8200).then(()=> { winnerIcon.classList.remove("show");winnerIcon.classList.add("thrown2hell") })
+
+            sleep(9000).then(()=> {gates.classList.remove(`showgates`)})
+        }
+
         // for testing purposes
         const promptBox = document.getElementById("promptBox")
         const boxName = document.getElementById("boxName")
@@ -1046,37 +1703,60 @@
 
 </html>
 <!--
-   ___________              __________ 
-  [_ \\       \            /      // _]
-  [_ //   \_   \_        _/   __  \\ _]
-  [_ \\     \    \      /    /    // _]
-   [_//      '-._ \_  _/ _.-'     \\_]
-   [_\\       __=':>[]<:'=_       //_]
-    [//    .-"_.-'"""""'-._'-._   \\]
-     ""--...-"             "-...--""
-       /[."                   ".]\
-      /[/                       \]\
-    _/[/       _        __       \]\_
-   /[  |      / \_     /  \      |  ]\
-  /[   |    _/____\_  |____\_    |   ]\
- /[    |   / _____  \ |_____ \   |    ]\
-'-._   | _/| |°  |   \/|°  | |\_ |   _.-'
-    '-.|/|=| \___/     \___/ |=|\|.-'
-         [ ]                 [ ]
-         |=|.       _       .|=|
-        // \ "-._       _.-" / \\
-       _\  |__/  '"""""'  \__|  /_
-  .-"""  \_| |\____/ \____/| |_/  """-.
-  | |         |/   \_/   \|         | |
-  \  |        /    /^\    \        |  /
-   |  |      /    // \\    \      |  |
-    \  |   _/    |_____|    \_   |  /
- _.-"\_.-"' '"--.._____..--"' '"-._/"-._
-\ \                                   / /
- \  \                               /  /
-  '._ \ __                     __ / _.'
-     '-._ \ __ __ __ __ __ __ / _.-'
-       / """---....___....---""" \
-       \      /           \      /
-        '-..-'             '-..-'
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡟⠀⢸⡏⠀⠀⠀⠀⠀⢸⡀⠀⠹⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠁⠀⠈⣷⠀⠀⠀⠀⠀⣸⠃⠀⠀⢹⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⣿⠀⠀⠀⠀⠀⣾⠀⠀⠀⠘⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠁⠀⠀⢰⡟⠋⠉⠙⠛⠉⢹⡀⠀⠀⠀⣿⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡿⠀⠀⢀⣸⣇⠀⠀⠀⢀⣤⣿⣃⠀⠀⠀⢹⡀⠉⠛⠶⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠞⢛⣧⠴⠛⠉⠁⠁⠀⠀⠀⠀⠀⠀⠋⠉⠛⠲⠼⣇⠀⠀⠀⠈⠙⢶⡄⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠞⡁⠀⠈⠁⢀⡠⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠦⣄⡀⠀⠀⠑⠀⠀⠀⠀⠀⠹⣦⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡾⣣⠞⠁⠀⣠⠖⠉⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢦⣀⠙⠦⡀⠀⠀⠀⠀⠀⠀⠀⠈⢷⡀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⢏⡼⠁⠀⢀⡴⠁⠀⢀⡞⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢳⡀⠈⢢⡀⠀⠀⠀⠀⠀⠀⠀⢻⡇⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡼⢃⡞⠀⠀⢀⡞⠀⠀⠀⡜⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣄⠀⠹⣄⠀⠀⠀⠀⠀⠀⠀⠱⡀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡾⢁⡎⠀⠀⠀⣈⠀⠀⠀⡼⢁⡄⠀⠀⠀⠀⡏⠀⣦⢀⡀⠀⠀⠀⠀⠀⠈⢦⡀⠘⣆⠀⠀⠀⠀⠀⠀⠀⢳⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠃⡞⠀⠀⠀⢰⠃⠀⠀⣰⢁⣼⠃⠀⠀⠀⠀⡇⢠⡟⣦⢧⠀⠀⠀⠀⠀⠀⠀⢳⡀⠘⢆⠀⠀⠀⠀⠀⢢⠈⣇
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡏⡼⠀⠀⠀⢀⡏⠀⠀⡰⢣⠞⡿⠀⠀⠀⠀⢠⠇⢸⡇⠈⢿⣧⠀⠀⠀⠀⠀⠀⠀⢹⣀⠘⣆⠀⠀⠀⠀⢸⡀⢹
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⢳⠇⠀⠀⠀⡸⠀⠀⣼⡷⠋⠀⡇⠀⠀⠀⠀⢸⠀⣼⠃⠀⠀⠙⢦⠀⠀⠀⠀⠀⠀⠀⢻⣧⠸⡄⠀⠀⠀⠀⡇⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡟⠀⠀⠀⢀⡇⠀⣠⣞⡁⠀⠀⡇⠀⠀⠀⠀⡞⢀⠇⠀⢀⣀⣀⣈⡳⡀⡲⢦⡀⠀⠀⠀⢿⣇⢳⠀⠀⠀⠀⢧⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡇⢀⠀⠀⠀⢸⢁⡴⠟⠀⠈⠙⢻⠇⠀⠀⠀⢠⠃⡞⠀⠚⢉⣉⣀⣀⣀⡙⢿⣶⣭⣷⢤⣀⠀⠘⣾⡆⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠇⡏⠀⠀⠀⣾⣯⣶⣼⣯⣭⣷⣾⠄⠀⠀⠀⡶⣸⠁⢠⣍⣭⣬⣤⣶⣾⣧⣖⣉⡿⠿⢿⣿⠛⣉⣩⣧⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⢠⡇⠀⠀⠀⡿⢿⡟⠋⢙⣿⣿⣿⠀⠀⠀⢰⣱⠃⠀⢼⠟⣿⣿⣿⣿⡄⠈⠉⣿⡟⠃⢸⠃⡰⠛⣿⣿⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⢸⠀⠀⠀⠀⣧⠘⢧⡀⠸⣿⣿⣿⠀⠀⢀⣿⠏⠀⠀⠀⠀⠹⣯⣙⡿⠃⢀⡤⠉⠁⠀⠋⢘⠳⣆⡼⣻⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠘⠀⠀⠀⠀⣿⡄⠈⠙⠳⠞⠿⡇⠀⠀⣾⠃⠀⠀⠀⠀⠀⠉⠙⠳⠞⠛⠉⠁⠀⠀⠀⢀⡞⣀⡼⣰⡿⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣞⠀⠀⠀⠀⣿⢷⠀⠀⠀⠀⢰⠃⠀⢰⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠁⣴⢻⡇⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡿⠇⠀⠀⠀⣿⡌⣇⠀⠀⠀⡼⠀⠀⡎⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣤⣴⡞⠁⢸⡇⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡿⡆⠀⠀⠀⢻⡇⢹⡀⠀⠀⡇⠀⢸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡾⠀⣿⠀⠀⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣷⡇⠀⠀⠀⢸⡇⠀⣷⡀⠀⡇⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⡇⠀⣿⠀⠀⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⡇⠀⠀⠀⢸⣇⠀⡏⢹⣦⡃⠀⢸⠀⠒⠒⠒⠒⠒⠂⠀⠀⠀⠀⠀⠀⣀⣴⢿⣿⡇⠀⣿⠀⢰⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⠻⡇⠀⠀⠀⢸⣻⠀⣷⢸⣮⢷⠀⠈⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠞⠁⣼⢸⣿⡇⠀⣿⠀⢸⠃⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⡟⢸⠇⠀⠀⠀⢸⢸⡄⣿⢰⣿⠘⣇⠀⢳⡀⠀⠀⠀⠀⠀⢀⣠⠔⠋⠀⠀⠀⢿⠛⠛⢷⣄⣿⠀⣾⡇⢀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⢃⡟⢀⣦⠀⠀⢸⠀⣇⣿⢸⣿⣄⡾⣶⡀⡏⠒⠤⠤⠴⠒⠉⠀⠀⠀⠀⠀⠀⢸⣀⡴⠋⢹⣿⠀⣹⠀⡼⠀⢰⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢼⣿⡿⠁⣼⢸⠀⠀⢸⠀⢿⣿⡾⠟⠁⡴⠋⣇⡇⠀⠀⠀⠀⠀⣀⣀⡤⠤⠔⠒⠚⠉⠉⠀⠀⠀⣿⢤⡟⢠⠇⠀⣷⡆⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠃⣼⡇⢸⠀⠀⣾⣄⣸⢿⡇⣤⣼⡄⠀⣿⠃⠀⠀⢰⡞⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⠃⡼⠀⠀⣿⠇⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⢇⡾⢹⡇⡏⠀⢠⣷⣿⣿⣾⣵⠃⡄⠙⢶⠋⠀⠀⠉⢸⡏⢣⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠃⢰⡇⠀⢰⣿⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣏⣾⡁⢸⢷⡇⠀⢸⣽⢻⣿⡏⠀⢰⣇⠀⠈⡇⠀⢀⡴⠋⠀⣼⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠃⢠⣿⠀⠀⢸⣿⠀⠀⣼
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⡿⢿⣧⣸⣾⠀⠀⢸⣿⢾⣿⡇⠀⢸⣿⣄⡖⠛⠒⠋⠀⢀⣾⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⣠⢾⠇⢀⣏⡇⠀⠀⡿⠇⠀⣸⠛
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⢻⡇⠘⣿⣿⠇⠀⢀⣾⠋⠈⡿⣷⠋⠈⢿⣿⣶⣶⣶⣶⣤⣿⣿⣿⢷⠀⠀⠀⠀⠀⢀⡤⠚⢁⡏⢀⣾⠏⠀⠀⢰⠇⠀⣰⠏⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⢸⠷⠚⢻⡏⠀⢀⡏⢸⠀⠀⣿⡇⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⡏⠀⠀⡇⠀⠀⢀⡴⠋⠀⢀⡞⣰⠋⠀⠀⠀⠀⡾⠀⣰⠏⠀⣀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡞⠋⠙⡸⠄⠀⡼⠀⠀⡼⠀⡆⢀⣠⢿⠃⠀⠀⢸⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⢹⠀⢠⠎⠀⠀⠀⡜⣰⠃⠀⠀⠀⠀⢠⠇⣴⠏⣠⡼⠋
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠋⠸⠀⠀⡇⡆⣸⠁⠀⢰⠃⡼⢗⣉⡤⠎⠀⠀⠀⢸⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠸⠶⠃⠀⠀⠀⣼⣵⠇⠀⠀⠀⠀⢀⣾⣼⣧⠞⠉⠀⢀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⡾⠁⠀⠀⡇⠀⢱⣹⠃⠀⢠⠏⣰⡟⠉⠀⠀⠀⠀⠀⠀⣼⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⡟⠀⠀⠀⠀⠀⣼⡿⠋⣁⡄⢀⣴⠟
+⠀⠀⠀⠀⠀⠀⣠⣴⠶⠟⠛⣿⠀⠀⠀⠀⢸⠀⣸⠃⠀⢀⡞⣰⡿⠁⢠⡀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⡀⢰⡿⢻⠁⠀⠀⠀⠀⠈⣩⡶⠟⣡⡴⠋⠁⠀
+⠀⠀⠀⠀⠀⠀⣿⠁⠀⢸⣿⠃⠀⠀⠀⠀⠘⡾⠁⠀⢀⡞⣰⡿⠁⠀⠀⠱⡄⠀⠀⢀⣿⣿⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⢀⡴⠊⠁⣿⣃⡇⠀⠀⠀⠀⢠⣾⣫⡴⠛⠁⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣿⡀⠀⣾⡏⠀⠀⠀⠀⠀⡼⠁⠀⢀⡞⣰⡿⠁⠀⠀⢀⠀⠙⣆⠀⣼⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⣀⠔⠋⠀⠀⢸⢻⡹⠀⠀⠀⠀⢀⣿⠋⠁⠀⠀⠀⠀⠀⢀⣠
+⠀⠀⠀⠀⠀⢀⣿⠇⠀⣿⠁⠀⠀⠀⠀⣸⠁⠀⢀⡞⠰⡿⠁⠀⠀⠀⠈⢷⡄⠈⣿⣿⣿⣿⣿⣿⣿⠃⢀⡠⣶⠞⠁⠀⠀⠀⠀⡼⢺⡇⠀⠀⠀⠀⣾⡏⠀⠀⠀⠀⠀⢀⡴⠋⠁
+⠀⠀⠀⠀⢰⣿⢻⡄⢸⡇⠀⠀⠀⠀⢀⣿⠀⠀⡼⢀⡞⠀⠀⠀⠀⠀⠀⠈⢧⣠⣿⣿⣿⣿⣿⣿⣿⠖⣩⠞⠁⠀⠀⠀⠀⠀⠀⣷⠈⠁⠀⠀⠀⣸⣿⠀⠀⠀⠀⢀⡴⠟⠁⠀⠀
+⠀⠀⠀⢸⣿⠁⢸⡇⠘⣧⠀⠀⠀⠀⢸⡟⠀⢠⢇⡞⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣧⠞⠁⠀⠀⠀⠀⠀⠀⠀⢀⡇⠀⠀⠀⠀⢠⡏⡟⠀⠀⢀⡶⠋⠀⠀⠀⠀⠀
+⠀⠀⠀⣾⡏⠀⠈⣿⠀⠘⣦⠀⠀⠀⣾⡇⠀⢸⡼⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡗⠀⠀⠀⠀⡼⢰⡇⠀⢀⡾⠀⠀⠀⠀⠀⣠⡴
+⠀⠀⠀⣿⠁⠀⠀⢻⡄⠀⠘⢧⡀⠀⣿⣇⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠁⠀⠀⠀⢠⠃⣸⠇⠀⣾⠁⠀⠀⢀⣤⠞⠉⠀
+⠀⠀⠀⢻⠀⠀⠀⠘⣷⠀⠀⠈⢷⡀⢻⣿⡀⣿⠁⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠇⠀⠀⠀⠀⡞⠀⣿⠀⡾⠁⠀⣀⡶⠋⠀⠀⠀⠀
+⠀⠀⢀⢾⡇⠀⠀⠀⠹⣇⠀⠀⠀⢳⣌⣿⡁⢏⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⡞⢠⠀⠀⠀⢠⠇⢠⣧⡾⠁⢀⡴⠋⠀⠀⠀⠀⠀⠀
+⠀⠀⠂⠀⣧⠀⠀⠀⠀⠻⠆⠀⠀⠀⡿⠀⣇⠘⣆⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⢡⡟⠀⠀⠀⣸⢠⣿⡇⢀⡴⠋⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢹⡀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠘⣄⠸⣦⣀⡀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⢀⣯⣿⠇⠀⠀⢀⡁⣸⢸⠇⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠
+⠀⠀⠀⠀⠘⡇⠀⠀⠀⠀⠀⠀⠀⠀⣷⠀⠀⠈⠓⠿⢦⣁⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⢸⡿⣼⠀⠀⠀⢸⣀⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡴⠋
+⠀⢠⣆⠀⠀⢷⠀⠀⠀⠀⠀⠀⠀⠀⢻⠀⠀⠀⠀⠀⠀⠈⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⢹⣷⡏⠀⠀⠀⢸⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠁⠀
+⠐⠁⢹⡄⠀⠸⡄⠀⠀⠀⠀⠀⠀⠀⠸⡇⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡗⣄⠀⠀⠀⠀⠀⠀⠀⣼⣿⠁⡏⠀⠀⢸⣿⡟⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢷⡀⠀⠹⣦⡀⠀⠀⠀⠀⠀⠀⢿⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠘⣆⠀⠀⠀⠀⠀⢸⣿⢿⢸⡇⠀⠀⢸⣿⡇⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠘⠳⣄⠀⠈⠻⣦⡀⠀⠀⠀⠀⠸⡇⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠸⡄⠀⠀⠀⠀⢸⣿⠈⣼⡇⠀⠀⢸⣿⡇⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⣀⣀⡀⠈⠙⢶⣤⡈⠻⣦⣀⠀⠀⠀⢿⡀⠀⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢠⠀⠹⡀⠀⠀⠀⡿⣿⠀⣿⡇⠀⠀⢸⢻⡇⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 -->

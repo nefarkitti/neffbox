@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://db.onlinewebfonts.com/c/975a5a4b60d2801c3382561ee634109b?family=Hypermarket+W00+Regular');
+/*@import url('https://db.onlinewebfonts.com/c/975a5a4b60d2801c3382561ee634109b?family=Hypermarket+W00+Regular');*/ /* uncomment when release */
 @import url('https://fonts.googleapis.com/css2?family=Linefont:wght@4..1000&display=swap');
 
 :root {
@@ -15,6 +15,10 @@
     --thing: 2px;
 
     --menu-bg: rgb(246, 246, 246);
+    --menu-bg-darker: rgb(242, 242, 242);
+    --inventory-bg: rgb(220, 220, 220);
+    --inventory-item-hover: rgb(197, 197, 197);
+    --important-bg: rgb(183, 55, 55);
     --room-item: white;
     --font-colour: black;
 
@@ -23,6 +27,179 @@
     --result-bg: url("assets/dots.png");
 
     --border: grey;
+}
+
+nav ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+ul li {
+    list-style: none;
+    background-color: var(--menu-bg);
+    margin: 2px;
+    padding: 5px;
+    font-weight: 900;
+    border-radius: 5px;
+    border-bottom: 2px solid black;
+}
+ul li:hover {
+    cursor: pointer;
+    background-color: var(--accent);
+    color: white;
+}
+li.highlighted {
+    background-color: var(--accent);
+    color: white;
+}
+
+.important {
+    background-color: var(--important-bg);
+}
+
+.settingsTab {
+    text-align: left;
+    padding: 10px;
+    font-weight: 600;
+}
+.settingsPanel {
+    background-color: var(--menu-bg-darker);
+    padding: 5px;
+    margin: 5px;
+    margin-top: 10px;
+    padding-top: 0.2px;
+    border-radius: 10px;
+    border: var(--border) 1px solid;
+    box-shadow: 0px 2px 2px black;
+}
+.settingsPanel input[type=text] {
+    vertical-align: middle;
+}
+.settingsPanel button {
+    margin-top: 7px;
+}
+input {
+    vertical-align: middle;
+}
+
+.avatar-settings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+.avatar-settings .usericon {
+    background-color: white;
+    border: 2px black solid;
+    width: 65px;
+    height: 65px;
+}
+#settings-avatar nav {
+    font-size: 11px;
+}
+.avatar-settings .usericon div {
+    width: 65px !important;
+    height: 65px !important;
+    grid-row-start: 1;
+    grid-column-start: 1;
+}
+div.inventoryContainer {
+    width: 300px;
+    height: 150px;
+    background-color: var(--menu-bg);
+    border-radius: 5px;
+    margin-right: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: scroll;
+    padding: 5px;
+    align-content: baseline;
+}
+div#equipped {
+    flex-direction: row;
+}
+#equipped.inventoryContainer {
+    height: 250px;
+    padding: 5px;
+    border-radius: 2px;
+    background-color: var(--inventory-bg);
+}
+.equippedItem {
+    width: 100%;
+    padding: 5px;
+    height: fit-content;
+    margin-bottom: 5px;
+    box-shadow: 0px 0px 5px black;
+}
+.equippedItem .inventoryItem {
+    float: left;
+}
+.equippedItem:hover {
+    background-color: var(--inventory-item-hover);
+    cursor: pointer;
+}
+.dropdown {
+    float: right;
+    margin: 5px;
+    filter: opacity(50%);
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 100%;
+}
+.dropdown:hover {
+    background-color: var(--inventory-bg);
+    filter: brightness(110%);
+}
+.shopItem .usericon {
+    background-color: white;
+    border: solid black 2px;
+}
+.marketplacecart .inventoryItem {
+    border: none;
+    background-color: unset;
+}
+.shopItem .inventoryItem {
+    border: none;
+    background-color: none;
+}
+div.inventoryItem {
+    width: 25px;
+    height: 25px;
+    border: solid black 2px;
+    background-color: white;
+    background-size: 100%;
+    margin: 1.8px;
+    image-rendering: pixelated;
+}
+div.inventoryItem:hover {
+    cursor: pointer;
+}
+div.colours {
+    display: flex;
+    max-width: 65px;
+    flex-wrap:wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+}
+div.colour {
+    width: 12px;
+    height: 12px;
+    margin: 2px;
+    border: solid 2px black;
+    background-color: white;
+    background-size: 100%;
+    image-rendering: pixelated;
+}
+div.colour:hover {
+    cursor: pointer;
+}
+
+.unobtained {
+    filter: grayscale(100%);
 }
 
 body {
@@ -39,6 +216,8 @@ body {
 
 body.dark {
     --menu-bg: rgb(46, 46, 46) !important;
+    --menu-bg-darker: rgb(42, 42, 42) !important;
+    --important-bg: rgb(88, 29, 29) !important;
     --room-item: rgb(22, 22, 22) !important;
     --font-colour: rgb(240, 240, 240) !important;
     
@@ -47,6 +226,9 @@ body.dark {
     --result-bg: url('assets/dots.png') !important;
 
     --border: #303030;
+
+    --inventory-bg: rgb(38, 38, 38);
+    --inventory-item-hover: rgb(45, 45, 45);
 }
 body.dark main {
     color: var(--font-colour);
@@ -106,7 +288,7 @@ body.green * {
     border-radius: 100% !important;
     -webkit-text-stroke: 0.5px red !important;
     overflow: hidden !important;
-    filter: brightness(110%);
+    filter: invert(110%);
 }
 body.green script {
     display: none !important;
@@ -142,6 +324,14 @@ h3.title {
     border-radius: 5px;
     border: var(--border) 1px solid;
     box-shadow: 0px 2px 2px black;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+main .menu input {
+    margin: 6px;
 }
 
 input {
@@ -176,17 +366,16 @@ input:focus-visible {
     width: 210px;
     text-align: left;
 }
+.lobbyListItem {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 
 .lobbyList div {
-    display: inline;
     float: left;
     clear: both;
     vertical-align: middle;
-    margin: 1px 0px;
-}
-
-.lobbyList div i {
-    margin-right: 3px;
 }
 
 .lobbyList .points {
@@ -240,6 +429,7 @@ input:focus-visible {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     overflow: hidden;
+    border: 2px solid var(--inventory-bg);
 }
 
 .promptBox {
@@ -276,9 +466,6 @@ input:focus-visible {
 .marquee .finals {
     flex-direction: row;
     display: flex;
-}
-.marquee .finals .result {
-
 }
 
 .show {
@@ -347,7 +534,7 @@ input:focus-visible {
 }
 
 .promptBox .message {
-    background-color: white;
+    background-color: var(--inventory-bg);
     border: 3px solid black;
     box-shadow: 4px 4px 0px black;
     text-align: left;
@@ -357,10 +544,16 @@ input:focus-visible {
     border-radius: 4px;
 }
 
+.usericon {
+    overflow: hidden !important;
+    display: inline-grid;
+    grid-template-columns: 1fr;
+}
 .chat .usericon {
     width: 25px;
     height: 25px;
-    display: inline-block;
+    display: inline-grid;
+    grid-template-columns: 1fr;
     vertical-align:middle;
     border: solid black 2px;
     background-color: white;
@@ -368,21 +561,49 @@ input:focus-visible {
 .usericon div {
     image-rendering: pixelated;
     background-size: 100%;
-    position: absolute;
     width: 25px !important;
     height: 25px !important;
+    grid-row-start: 1;
+    grid-column-start: 1;
+}
+.menu .usericon {
+    width: 50px !important;
+    height: 50px !important;
+}
+.menu .usericon div {
+    width: 50px !important;
+    height: 50px !important;
+    grid-row-start: 1;
+    grid-column-start: 1;
 }
 .lobbyList .usericon {
     float: left;
     width: 25px !important;
     height: 25px !important;
     border: solid black 2px;
+    background-color: white;
+    display: inline-grid;
+    margin-right: 2px;
+}
+.lobbyList .usericon div {
+    grid-row-start: 1;
+    grid-column-start: 1;
+}
+.usericon .state {
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    color: white;
+    -webkit-text-stroke: black 1px;
 }
 .outline {
-    z-index: 10;
+    z-index: 20;
 }
 .accessory {
-    z-index: 12;
+    z-index: 30;
 }
 .base {
     z-index: 1;
@@ -657,6 +878,44 @@ img {
     background-color: white;
     padding: 3px 10px;
     border-radius: 10px;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+body.dark .waitingFor span {
+    background-color: rgb(37, 37, 37);
+}
+.waitingFor span .usericon {
+    border: 2px solid black;
+    background-color: white;
+    width: 40px;
+    height: 40px;
+}
+.waitingFor span .usericon div {
+    width: 40px !important;
+    height: 40px !important;
+    grid-row-start: 1;
+    grid-column-start: 1;
+}
+.pencil {
+    z-index: 99999;
+    transform: rotate(80deg);
+    animation-name: pencilSpin;
+    animation-duration: 0.2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19) ease-in-out;
+}
+@keyframes pencilSpin {
+    0% {
+        transform: translate(50%,40%) scale(70%) rotate(90deg);
+    }
+    50% {
+        transform: translate(50%,40%) scale(70%) rotate(70deg);
+    }
+    100% {
+        transform: translate(50%,40%) scale(70%) rotate(90deg);
+    }
 }
 
 .timer {
@@ -668,6 +927,22 @@ img {
     position: absolute;
     transform: translate(0%, 0%);
     display: none;
+    width: 100%;
+    height: 100%;
+}
+.tick .revealcheck {
+    animation-name: revealCheck;
+    animation-fill-mode: forwards;
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes revealCheck {
+    0% {
+        transform: scale(0%);
+    }
+    100% {
+        transform: scale(100%);
+    }
 }
 
 .loading-img {
@@ -677,7 +952,6 @@ img {
 
 .tick i {
     font-size: 60px !important;
-    transform: rotate(-20deg);
     background-color: white;
     border-radius: 100%;
     color: var(--accent);
@@ -744,8 +1018,10 @@ img {
 }
 
 .selected .tick {
-    display: unset;
     z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .selected .tick i {
     font-size: 40px;
@@ -767,14 +1043,27 @@ button {
     background-color: var(--accent);
     border: none;
     padding: 5px;
-    border-radius: 5px;
+    border-radius: 3px;
     font-weight: bold;
     color: white;
     border: solid black 2px;
-    box-shadow: 4px 4px 0px black;
+    box-shadow: 3px 3px 0px black;
+}
+
+button.alt {
+    background:none;
+    outline: solid 2px var(--accent);
+    border: none;
+    color: var(--accent);
+    background-color: var(--room-item);
+    box-shadow: 3px 3px 0px var(--accent);
 }
 
 button:hover {
+    cursor: pointer;
+    filter: brightness(110%);
+}
+button.alt:hover {
     cursor: pointer;
     filter: brightness(110%);
 }
@@ -797,7 +1086,7 @@ button:hover {
 }
 
 .chat-message {
-    width: 99% !important;
+    width: 95% !important;
     font-size: 12px;
     word-break: break-word;
     overflow: hidden;
@@ -829,7 +1118,12 @@ button.gofundme {
 .ignore {
     filter: opacity(100%) !important;
 }
-
+.locked {
+    filter: opacity(25%);
+}
+.locked input {
+    pointer-events: none;
+}
 .capture {
     filter: opacity(50%);
     font-style: italic;
@@ -904,11 +1198,12 @@ button.gofundme {
     color: var(--font-colour);
     border-radius: 3px;
     padding: 5px;
-    border: var(--gr) 1px solid;
+    border: var(--border) 1px solid;
     box-shadow: 0px 2px 2px black;
     min-width: 30vw;
     text-align: center;
     padding-bottom: 15px;
+    max-width: 90%;
 }
 
 .show-modal {
@@ -933,8 +1228,7 @@ button.gofundme {
 }
 
 .closebtn {
-    float: right;
-    font-size: 15px;
+    font-size: 20px;
     width: 20px;
     height: 20px;
     display: flex;
@@ -942,15 +1236,14 @@ button.gofundme {
     align-items: center;
     padding: 5px;
     border-radius: 100%;
+    right: 5px;
+    top: 5px;
+    position: absolute;
 }
 
 .closebtn:hover {
     cursor: pointer;
-    background-color: #c9c9c9;
-}
-
-.settings-contain {
-
+    background-color: var(--inventory-bg);
 }
 .settings-sidebar {
     float: left;
@@ -1230,15 +1523,16 @@ button.gofundme {
 
 .rooms-tbl {
     margin-top: 20px;
+    margin-bottom: 10px;
     width: 100%;
-    background-color: rgb(240, 240, 240);
+    background-color: var(--inventory-bg);
     border-radius: 10px;
 }
 .rooms-tbl td {
     width: fit-content;
 }
 .rooms-tbl tr:hover {
-    background-color: rgb(235, 235, 235);
+    background-color: var(--inventory-item-hover);
     cursor: pointer;
 }
 .rooms-tbl button {
@@ -1259,4 +1553,485 @@ button.gofundme {
 }
 #contain-icons div {
     display: list-item !important;
+}
+.noshadow {
+    box-shadow: none;
+}
+
+.flexcenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.flexcenter.confirmPurchase {
+    flex-direction: column;
+    padding: 5px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 5px;
+    background-image: url("/assets/stripes-light.png");
+
+    animation-name: example;
+    animation-duration: 10s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: reverse;
+    box-shadow: 0px 0px 10px rgb(0, 0, 0);
+    width: 400px;
+}
+.marketplaceConfirm {
+    background:none;
+    border: none;
+    box-shadow: none;
+    max-width: fit-content !important;
+    width: 400px;
+    min-width: 0;
+}
+.marketplaceConfirm .closebtn {
+    right: 0;
+    top: 10px;
+}
+
+body.dark .confirmPurchase {
+    background-image: url("/assets/stripes-dark.png");
+}
+.confirmPurchase h3 {
+    margin: 0;
+}
+.options {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+.options button {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.marketContain {
+    width: 600px;
+    height: 360px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.searchbar {
+    background-color: var(--room-item);
+    padding: 5px;
+    border-radius: 5px;
+    vertical-align: middle;
+    border: var(--border) 1px solid;
+    box-shadow: 0px 2px 2px black;
+    display: block;
+}
+.searchbar input {
+    box-shadow: none;
+    border: none;
+    border: 0;
+    background-color: var(--lighter);
+    padding: 5px;
+    color: var(--darker);
+    width: 80%;
+}
+
+.searchbar input:focus-visible {
+    outline: none;
+}
+
+.searchbar i:hover {
+    cursor: pointer;
+}
+
+.searchbar i {
+    filter: opacity(50%);
+}
+
+.shopGrid {
+    width: 100%;
+    background-color: var(--menu-bg);
+    height: 280px;
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    flex-wrap: wrap;
+    display: flex;
+    overflow: scroll;
+    overflow-x: hidden !important;
+    justify-content: center;
+    flex-direction: row;
+}
+.shopItem {
+    background-color: var(--room-item);
+    padding: 5px;
+    border-radius: 5px;
+    width: 130px;
+    max-width: 130px;
+    height: fit-content;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 2px;
+
+    box-shadow: 0px 1px 2px black;
+    overflow: hidden;
+}
+.shopItem button {
+    font-size: 10px;
+    box-shadow: none;
+}
+.price {
+    font-size: 10px;
+    font-weight: 800;
+}
+.tag {
+    font-size: 10px;
+    font-weight: 900;
+    font-style: italic;
+}
+.shopItem .inventoryItem {
+    width: 50px;
+    height: 50px;
+}
+
+.previewMessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.previewMessage .chat-message {
+    width: 100% !important;
+}
+.equippedItem input {
+    box-shadow: none;
+}
+input[type=checkbox] {
+    width: fit-content;
+    accent-color: var(--accent);
+}
+input {
+    accent-color: var(--accent);
+}
+
+.reset {
+    float: right;
+    filter: opacity(50%);
+    margin: 5px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+
+}
+
+.profile {
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+    background-image: url("/assets/stripes-light.png");
+
+    animation-name: example;
+    animation-duration: 10s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: reverse;
+}
+body.dark .profile {
+    background-image: url("assets/stripes-dark.png");
+}
+.marketContain.profile {
+    height: fit-content;
+}
+.profileUsername {
+    font-size: 30px;
+    font-weight: 700;
+}
+.profile .badge {
+    display: inline-block;
+    vertical-align: baseline;
+    width: 20px !important;
+    height: 20px !important;
+    margin-left: 5px;
+}
+.profile .usericon {
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    border: 2px solid black;
+    float: left;
+    margin-right: 5px;
+}
+.profile .usericon div {
+    width: 100px !important;
+    height: 100px !important;
+    grid-row-start: 1;
+    grid-column-start: 1;
+}
+
+.stats {
+    margin-left: 5px;
+    background-color: var(--room-item);
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+.shopItem .usericon {
+    background-color: white;
+    width: 50px;
+    height: 50px;
+    position: relative;
+    overflow: unset !important;
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+.shopItem.rare {
+    background-image: linear-gradient(0deg, var(--images-accent) 0%, var(--room-item) 35%);
+    animation-name: animateGradientBG;
+    animation-iteration-count: infinite;
+    background-position: 0px 10px;
+    background-repeat: no-repeat;
+    border: 2px solid var(--images-accent);
+    color: var(--images-accent);
+}
+.rare button {
+    background-color: var(--images-accent);
+}
+.shopItem.uncommon {
+    background-image: linear-gradient(0deg, var(--gofundme-accent) 0%, var(--room-item) 35%);
+    animation-name: animateGradientBG;
+    animation-iteration-count: infinite;
+    background-position: 0px 10px;
+    background-repeat: no-repeat;
+    border: 2px solid var(--gofundme-accent);
+    color: var(--gofundme-accent);
+}
+.uncommon button {
+    background-color: var(--gofundme-accent);
+}
+.shopItem.epic {
+    background-image: linear-gradient(0deg, var(--accent) 0%, var(--room-item) 40%);
+    animation-name: animateGradientBG;
+    animation-iteration-count: infinite;
+    background-position: 0px 10px;
+    background-repeat: no-repeat;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+}
+.epic button {
+    background-color: var(--accent);
+}
+.shopItem.legendary {
+    background-image: linear-gradient(-20deg, var(--travelling-accent) 0%, var(--room-item) 50%);
+    animation-name: animateGradientBG;
+    animation-iteration-count: infinite;
+    background-position: 0px 10px;
+    background-repeat: no-repeat;
+    border: 2px solid var(--travelling-accent);
+    color: var(--travelling-accent);
+}
+.legendary button {
+    background-color: var(--travelling-accent);
+}
+
+.shopItem {
+    animation-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+    animation-duration: 4s;
+}
+
+@keyframes animateGradientBG {
+    0% {
+        background-position: 0px 20px;
+    }
+    50% {
+        background-position: 0px 40px;
+    }
+    100% {
+        background-position: 0px 20px;
+    }
+}
+
+.shopItem span.itemDesc {
+    font-size: 8px;
+    filter: opacity(50%);
+    font-style: italic;
+    color: var(--font-colour);
+}
+.shopItem .usericon div {
+    width: 50px !important;
+    height: 50px !important;
+    background: none;
+    background-size: 100%;
+    grid-row-start: 1;
+    grid-column-start: 1;
+}
+body.dark input {
+        background-color: var(--inventory-bg) !important;
+        color: var(--font-colour);
+}
+.marketplacecart {
+    display: flex;
+}
+.marketplacecart .usericon {
+    background-color: white;
+    border: 2px solid black;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+}
+.marketplacecart .usericon div {
+    width: 50px !important;
+    height: 50px !important; 
+    grid-row-start: 1;
+    grid-column-start: 1;
+}
+
+.endingv2 {
+    width: 100%;
+    height: 100%;
+}
+.endingv2 .usericon {
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    border: 2px solid black;
+}
+.endingv2 .usericon div {
+    width: 100% !important;
+    height: 100% !important;
+    grid-row-start: 1;
+    grid-column-start: 1;
+}
+.endingv2 h3,.endingv2 h2,.endingv2 h1 {
+    margin: 0;
+}
+.burninggatesofhell {
+    position: absolute;
+    bottom: -100%;
+    width: 100%;
+    height: 100%;
+    z-index: 9999999999;
+    animation-name: gatesClose;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+.showgates {
+    animation-name: gatesOpen;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+.thrown2hell {
+    animation-name: throwIntoHell;
+    animation-duration: 0.6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: 
+    cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+.winnerReveal {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.winnerReveal .winnericon {
+    margin: 10px;
+}
+.winnericon.sacrifice {
+    width: 0px;
+    height: 0px;
+    border: 0px;
+    margin: 0;
+
+    transform: rotate(5deg);
+
+    animation-name: hideSacrifice;
+    animation-fill-mode: forwards;
+    animation-duration: 0.3s;
+}
+.revealSacrifice {
+    animation-name: revealSacrifice;
+    animation-fill-mode: forwards;
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes revealSacrifice {
+    0% {
+        width: 0px;
+        height: 0px;
+        border: 0px;
+        margin: 0;
+    }
+    100% {
+        width: 70px;
+        height: 70px;
+        border: 2px solid black;
+        margin: 10px;
+    }
+}
+@keyframes hideSacrifice {
+    0% {
+        width: 70px;
+        height: 70px;
+        border: 2px solid black;
+        margin: 10px;
+    }
+    100% {
+        width: 0px;
+        height: 0px;
+        border: 0px;
+        margin: 0;
+    }
+}
+@keyframes gatesOpen {
+    from {
+        bottom: -100%;
+    }
+    to {
+        bottom: -40%;
+    }
+}
+@keyframes gatesClose {
+    from {
+        bottom: -40%;
+    }
+    to {
+        bottom: -100%;
+    }
+}
+@keyframes throwIntoHell {
+    0% {
+        transform: translate(0,0) rotate(0deg) scale(100%);
+    }
+    1% {
+        transform: translate(0,0) rotate(5deg) scale(100%);
+    }
+    100% {
+        transform: translate(0,600%) rotate(10deg) scale(100%);
+    }
+}
+
+.alreadyOwned {
+    border: 0;
+    background: none !important;
+    color: var(--font-colour);
+    font-style: italic;
+    height: fit-content;
+    width: fit-content;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.alreadyOwned:hover {
+    cursor: unset;
+}
+
+.remove {
+    color: var(--accent);
+}
+.shopItem .inventoryItem:hover {
+    cursor: unset;
 }

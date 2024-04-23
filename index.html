@@ -7,94 +7,151 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/d250854114.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
     <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/popup.js"></script>
     <script defer type="text/javascript" src="js/home.js"></script>
+    <script type="text/javascript" src="js/auth.js"></script>
     <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
 </head>
-<body class="dark">
-    <div class="modal-overlay">
+<body class="">
+    <!--
+    <div class="modal-overlay show">
         <div class="modal">
             <span class="closebtn"><i class="fa-solid fa-x"></i></span>
-            <h1>Settings</h1>
-            <div class="settings-contain">
-                <div class="settings-sidebar">
-                    <span>General</span>
-                    <span>Room</span>
-                </div>
-                <div class="settings-main">
-
-                    <div id="general-settings">
-                        <h3>GENERAL</h3>
-                        <span class="setting">
-                            <label for="colour">Dark Mode</label>
-                            <input type="checkbox" name="colour" id="">
-                        </span>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--
-        ROOMS POPUP
-        <div class="modal-overlay show-">
-        <div class="modal">
             <h1>Rooms</h1>
             <input type="text" name="roomid" id="roomid" placeholder="room id">
-            <button onclick="onJoinRoom()">join directly</button><br>
+            <button onclick="onJoinRoom()">join directly</button>
             <table class="rooms-tbl">
                 <tr>
                     <th>Host</th>
                     <th>Room ID</th>
                     <th class="room-players">Players</th>
                     </tr>
+
                     <tr>
-                    <td class="room-host">MMMMMMMMMM</td>
-                    <td class="room-code">32432</td>
-                    <td class="room-players">2/6</td>
-                    <td><button onclick="onJoinRoom()">Join</button></td>
+                        <td class="room-host">MMMMMMMMMM</td>
+                        <td class="room-code">32432</td>
+                        <td class="room-players">2/6</td>
+                        <td><button onclick="onJoinRoom()">Join</button></td>
                     </tr>
+                    <tr>
+                        <td class="room-host">MMMMMMMMMM</td>
+                        <td class="room-code">32432</td>
+                        <td class="room-players">2/6</td>
+                        <td><button onclick="onJoinRoom()">Join</button></td>
+                    </tr>
+                    <tr>
+                        <td class="room-host">MMMMMMMMMM</td>
+                        <td class="room-code">32432</td>
+                        <td class="room-players">2/6</td>
+                        <td><button onclick="onJoinRoom()">Join</button></td>
+                    </tr>
+                    <tr>
+                        <td class="room-host">MMMMMMMMMM</td>
+                        <td class="room-code">32432</td>
+                        <td class="room-players">2/6</td>
+                        <td><button onclick="onJoinRoom()">Join</button></td>
+                    </tr>
+                    <tr>
+                        <td class="room-host">MMMMMMMMMM</td>
+                        <td class="room-code">32432</td>
+                        <td class="room-players">2/6</td>
+                        <td><button onclick="onJoinRoom()">Join</button></td>
+                    </tr>
+                    <tr>
+                        <td class="room-host">MMMMMMMMMM</td>
+                        <td class="room-code">32432</td>
+                        <td class="room-players">2/6</td>
+                        <td><button onclick="onJoinRoom()">Join</button></td>
+                    </tr>
+                    <tr>
+                        <td class="room-host">MMMMMMMMMM</td>
+                        <td class="room-code">32432</td>
+                        <td class="room-players">2/6</td>
+                        <td><button onclick="onJoinRoom()">Join</button></td>
+                    </tr>
+                    <tr>
+                        <td class="room-host">MMMMMMMMMM</td>
+                        <td class="room-code">32432</td>
+                        <td class="room-players">2/6</td>
+                        <td><button onclick="onJoinRoom()">Join</button></td>
+                    </tr>
+                    <!-\-8 PER PAGE-\->
             </table>
+            <button class="noshadow"><i class="fa-solid fa-caret-left"></i></button><span style="margin: 0px 10px;">page 1 of 1</span><button class="noshadow"><i class="fa-solid fa-caret-right"></i></button><br>
+            <br>
+            <span>or <button>create one</button></span>
+        </div>
+    </div>
+    
+    <div class="modal-overlay">
+        <div class="modal">
+            <span class="closebtn"><i class="fa-solid fa-x"></i></span>
+            <h1>Account</h1>
+            <h2>login</h2>
+            <label for="username">username:</label>
+            <input type="text" name="username" id="">
+            <br>
+            <label for="password">password:</label>
+            <input type="password" name="password" id="">
+            <br>
+            <button>LOG IN</button><br><br>
+            <span>or <button>register</button></span>
+        </div>
+    </div>
+    <div class="modal-overlay show">
+        <div class="modal">
+            <span class="closebtn"><i class="fa-solid fa-x"></i></span>
+            <h1>Account</h1>
+            <h2>register</h2>
+            <label for="username">username:</label>
+            <input type="text" name="username" id="">
+            <br>
+            <label for="password">password:</label>
+            <input type="password" name="password" id="">
+            <br>
+            <label for="confirmpassword">confirm password:</label>
+            <input type="password" name="confirmpassword" id="">
+            <br>
+            <p style="font-size: 10px;">*make sure to save your password somewhere!</p>
+            <button>REGISTER</button><br><br>
         </div>
     </div>-->
-    <span class="btn"><i class="fa-solid fa-gear"></i></span>
-    <span class="btn"><i class="fa-solid fa-moon"></i></span>
+    <span class="btn" onclick="showSettings()"><i class="fa-solid fa-gear"></i></span>
+    <!--<span class="btn"><i class="fa-solid fa-user"></i></span>-->
+    <span class="btn" onclick="showMarketPlace()"><i class="fa-solid fa-shopping-cart"></i></span>
+    <span class="btn" onclick="showDebug()"><i class="fa-solid fa-screwdriver-wrench"></i></span> <!--debugging admin stuff?-->
     <main>
         <img class="logo" src="assets/favicon.png" alt="" height="75">
         <h3 class="title">neffbox</h3>
-        <div class="menu popAnim">
-            <h3 id="currentUser">Welcome, (username)</h3><br>
-            <!--SET USERNAME IS NOW A POPUP IF ITS NULL
-                        <input type="text" name="username" id="username" placeholder="username">
-            <button onclick="onSaveUser()">save</button>-->
-            <!--<button>Change username</button><br><br>POPUP-->
-            <input type="text" name="username" id="username" placeholder="username">
-            <button onclick="onSaveUser()">save</button><br>
-            <!--<button>Rooms</button>-->
-            <br>
+        <div class="menu popAnim" id="menu">
+            <!--<div class="usericon" style="border: solid black 2px;background-color: white;">
+                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                <div style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                <div class="outline" style="background-image: url('../assets/icons/bases/circle_outline.gif');"></div>
+                <div style="background-image: url('../assets/icons/bases/white_circle_base.gif');"></div>
+
+                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+            </div>
+            <h3 style="margin: 0;margin-bottom: 20px;" id="currentUser">Welcome, (username)</h3>
+            <button>view rooms</button>
+            <span>or</span>
             <input type="text" name="roomid" id="roomid" placeholder="room id">
-            <button onclick="onJoinRoom()">join</button><br>
-            <span id="errortextcreate" hidden>what</span>
-            <p>or</p>
-            <button onclick="onCreateRoom()">create a room</button><br>
-            <!--<input type="text" name="roomid" id="roomid" placeholder="room id">
-            <button onclick="onJoinRoom()">join</button><br>
-            <span id="notfoundroom" hidden>could not find room</span>
-            <span id="errortextjoin" hidden>what</span>
-            <br><br>
-            <button onclick="onCreateRoom()">create a room</button><br>
-            <span id="errortextcreate" hidden>what</span>-->
+            <button onclick="onJoinRoom()">join directly</button>-->
+
         </div>
         <p style="filter: opacity(50%);">a project by neffi & firee
-        <br><a href="credits.html">full credits</a>
+        <br><button onclick="window.location.href = `/credits.html`">FULL CREDITS</button>
     </p>
     </main>
     <script>
         window.onload = (event) => {
             let mainMenuSong = new Audio('assets/sounds/xbox-one-roblox-menu.mp3')
             mainMenuSong.loop = true
+            mainMenuSong.volume = (settings && settings.value != undefined) ? settings.volume / 100 : 1
             mainMenuSong.play()
+            checkAuth('main')
         }
     </script>
 </body>

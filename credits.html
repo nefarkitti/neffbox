@@ -8,9 +8,16 @@
     <script src="https://kit.fontawesome.com/d250854114.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/popup.js"></script>
+    <script defer type="text/javascript" src="js/home.js"></script>
+    <script type="text/javascript" src="js/auth.js"></script>
 </head>
 <body>
-    <span class="btn"><i class="fa-solid fa-gear"></i></span>
+    <span class="btn" onclick="showSettings()"><i class="fa-solid fa-gear"></i></span>
+    <!--<span class="btn"><i class="fa-solid fa-user"></i></span>-->
+    <span class="btn" onclick="showMarketPlace()"><i class="fa-solid fa-shopping-cart"></i></span>
+    <span class="btn" onclick="showDebug()"><i class="fa-solid fa-screwdriver-wrench"></i></span> <!--debugging admin stuff?-->
     <!--<div class="modal-overlay">
         <div class="modal">
             <span class="closebtn"><i class="fa-solid fa-x"></i></span>
@@ -21,32 +28,35 @@
         </div>
     </div>-->
     <main>
-        <div class="menu popAnim" style="text-align: left;">
-            <h3 style="text-align: center;">credits</h3>
-            <span>
-                <b>neffi</b> - frontend & a little backend
-            </span><br>
-            <span>
-                <b>firee</b> - backend
-            </span><br>
-            <span>
-                <b>b-build</b> - qa tester & advisor
-            </span><br>
-            <span>
-                <b>bruno</b> - dog
-            </span><br>
-            <span>
-                <b>f1</b> - secret new update
-            </span><br>
-            <span>
-                <b>some other people</b> - tester
-            </span><br>
-            <br>
-            <span style="text-align: center;">
-                dedidcated to our deceased friend keith
-            </span><br>
+        <div class="menu popAnim">
+            <h3 style="text-align: center;margin: 0;">credits</h3>
+            <div style="text-align: left;">
+                <span>
+                    <b>neffi</b> - frontend & a little backend
+                </span><br>
+                <span>
+                    <b>firee</b> - backend
+                </span><br>
+                <span>
+                    <b>b-build</b> - qa tester & advisor
+                </span><br>
+                <span>
+                    <b>bruno</b> - dog
+                </span><br>
+                <span>
+                    <b>f1</b> - cosmetics
+                </span><br>
+                <span>
+                    <b>some other people</b> - tester
+                </span><br>
+                <br>
+                <span style="text-align: center;">
+                    dedidcated to our deceased friend keith
+                </span><br>
+            </div>
         </div>
-        <p style="filter: opacity(80%);"><a href="index.html">back to main menu</a></p>
+        <br>
+        <button onclick="window.location.href = `/`">BACK</button>
     </main>
 </body>
 </html>

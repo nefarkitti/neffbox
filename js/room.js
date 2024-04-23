@@ -3,24 +3,24 @@ let promptBox = document.getElementById("promptBox");
 let timer = document.getElementById("timer")
 
 const tracks = [
-    new Audio('/assets/sounds/scp3008-sunday.mp3'),
-    new Audio('/assets/sounds/scp3008-friday.mp3'),
-    new Audio('/assets/sounds/scp3008-thursday.mp3'),
-    new Audio('/assets/sounds/super-bomb-survival-stinger6.mp3'),
-    new Audio('/assets/sounds/nicos-nextbots-safezone.mp3'),
-    new Audio('/assets/sounds/nicos-nextbots-8twelve.mp3')
+    new Audio('/assets/sounds/scp3008-sunday.mp3')
 ]
 
 tracks.forEach(element => {
     element.loop = true
 })
-
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 function changeTrack(index) { // surely there's a better way right
     tracks.forEach(element => {
         element.pause()
         element.currentTime = 0
-    }) 
-    tracks[index].play()
+    })
+    if (tracks[index]) {
+        tracks[index].volume = (settings && settings.value != undefined) ? settings.volume / 100 : 1
+        tracks[index].play()
+    }
 }
 function stopTracks() {
     tracks.forEach(element => {
@@ -31,8 +31,9 @@ function stopTracks() {
 function leaveGame() {
     if (socket != null) socket.emit("leave");
     const oldUsername = localStorage.getItem("username");
-    localStorage.clear();
-    localStorage.setItem("username", oldUsername);
+    localStorage.removeItem("secret");
+    localStorage.removeItem("host");
+    localStorage.removeItem("tempData")
     window.location.href = "/"
 }
 
@@ -41,31 +42,50 @@ let featuredPosts = []
 function setIcon(hash, className) {
     const getIcon = document.getElementById(`user-icon-${hash}`);
     if (getIcon) {
-        getIcon.classList.remove("fa-user");
+        //getIcon.classList.remove("fa-user");
         getIcon.classList.remove("fa-circle-check")
         getIcon.classList.remove("fa-hourglass-half");
+        if (className == "fa-user") return;
         getIcon.classList.add(className);
     }
 }
 
-function createUser(username, points, isHost, hash) {
+function createUser(username, points, isHost, hash, equipped) {
     /*
-<div class="host">
-    <div class="state">
-        <i class="fa-solid fa-hourglass-half"></i>
-    </div>
-    MMMMMMMMMM (HOST)<br>
-    <span class="points">100</span>
-</div>
-    */
+<div class="lobbyListItem host">
+                        <div class="usericon">
+                            <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                            <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
+                            <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                            <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');"></div>
+
+                            <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                            <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                            <div class="state"><i class="fa-solid fa-hourglass-half"></i></div>
+                        </div>
+                        <span class="user-item">MMMMMMMMMM (HOST)<br></span>
+                        <span class="points">100 <i class="fa-solid fa-coins"></i></span>
+                    </div>
+
+/*
+        
+*/
     const userDiv = document.createElement("div");
     userDiv.id = `user-${hash}`
     if (isHost) userDiv.classList.add("host");
+    if (equipped && equipped.length) {
+        const userIcon = generateIcon(equipped, equipped.filter(item => item.type == "bases")[0].filename, equipped.filter(item => item.type == "shape")[0].value);
+        userIcon.innerHTML += `<div class="state"><i id="user-icon-${hash}" class="fa-solid"></i></div>`
+        userDiv.appendChild(userIcon);
+        userDiv.innerHTML += "\n "
+    } else {
+        userDiv.innerHTML += `<div class="state"><i id="user-icon-${hash}" class="fa-solid"></i></div>`
+    }
     if (username == localStorage.getItem("username")) userDiv.classList.add("you");
     //userDiv.innerHTML += `<div class="state"><i class="fa-solid ${(username == localStorage.getItem("username")) ? "fa-circle-check" : "fa-hourglass-half"}"></i></div>`
-    userDiv.innerHTML += `<div class="state"><i id="user-icon-${hash}" class="fa-solid fa-user"></i></div>`
     const usernameSpan = document.createElement("span");
-    usernameSpan.innerText = username;
+    usernameSpan.innerText = `${username}`;
+    usernameSpan.classList.add("user-item");
     if (isHost) usernameSpan.innerText += " (HOST)";
     userDiv.appendChild(usernameSpan);
     userDiv.appendChild(document.createElement("br"));
@@ -97,7 +117,7 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function loadMessage(username, content, isImage) {
+function loadMessage(username, content, equipped, isImage) {
     const messages = document.getElementById('messages')
     const div = document.createElement('div');
     /*<div class="chat-message">
@@ -105,6 +125,11 @@ function loadMessage(username, content, isImage) {
                             <span>: How are you my dear friend Oswald?</span>
                         </div>*/
     div.classList.add('chat-message');
+    if (equipped && equipped.length) {
+        const userIcon = generateIcon(equipped, equipped.filter(item => item.type == "bases")[0].filename, equipped.filter(item => item.type == "shape")[0].value);
+        div.appendChild(userIcon);
+        div.innerHTML += "\n"
+    }
     const usernameSpan = document.createElement("span");
     usernameSpan.classList.add("username");
     usernameSpan.innerText = username;
@@ -112,7 +137,7 @@ function loadMessage(username, content, isImage) {
     if (isImage) {
         const img = document.createElement("img");
         img.alt = "Image Loading...";
-        img.src = `${URL}/imgs/${roomData.id}/${content}`
+        img.src = `${URL}/rooms/${roomData.id}/imgs/${content}`
         contentSpan.appendChild(img);
     } else {
         contentSpan.innerText = `: ${content}`;
@@ -148,9 +173,7 @@ function onSaveUser() {
 let receipt = []
 
 function updateReceipt() {
-
-    new Audio('/assets/sounds/cha-ching.mp3').play()
-
+    playAudio('/assets/sounds/cha-ching.mp3')
     const receiptDiv = document.getElementById("receiptDiv")
     const receiptLst = document.getElementById("receipt-list")
     const receiptTtl = document.getElementById("receipt-total")
@@ -209,7 +232,6 @@ function updateReceipt() {
 
 const root = document.getElementById("root");
 if (roomID) {
-    
     if (localStorage.getItem("username") == null || localStorage.getItem("secret") == null) {
         if (localStorage.getItem("username") == null) {
             const popDiv = document.createElement("div")
@@ -224,12 +246,70 @@ if (roomID) {
             }, 500);
         } else {
             (async function() {
-                if (localStorage.getItem("username") != null) {
+                if (localStorage.getItem("username") != null && localStorage.getItem("secret") == null) {
+                    axios.get(`${URL}/rooms/${roomID}`).then(async res => {
+                        async function actuallyJoin(roomID, password) {
+                            try {
+                                const response = await axios({
+                                    url: `${URL}/rooms/${roomID}/join`,
+                                    method: "POST",
+                                    headers: {
+                                        "authorization": session
+                                    },
+                                    data: {
+                                        password
+                                    },
+                                    timeout: 5000
+                                });
+                                localStorage.setItem("secret", response.data.token);
+                                localStorage.setItem("tempData", JSON.stringify(response.data))
+                                window.location.reload()
+                            } catch (e) {
+                                console.error(e)
+                                if (!e.response) {
+                                    alert("a network problem occured")
+                                } else {
+                                    alert(e.response.data)
+                                }
+                            }
+                        }
+                        if (res.data && res.data.visibility == "private") {
+                            const popDiv = document.createElement("div")
+                            popDiv.innerHTML = `<h1>Room ${parseInt(roomID)}</h1>
+                            <p>enter the room password!</p><input type="password" name="password" id="popup-roompass" placeholder="password">`
+                            const joinBtn = document.createElement("button");
+                            joinBtn.innerText = "join";
+                            joinBtn.onclick = function() {
+                                const roomPass = document.getElementById("popup-roompass")
+                                actuallyJoin(roomID, roomPass.value);
+                            }
+                            popDiv.appendChild(joinBtn);
+                            createPopup(popDiv);
+                        } else {
+                            actuallyJoin(roomID, "none");
+                        }
+                    }).catch(e => {
+                        if (!e.response) {
+                            console.error(e)
+                            alert("a network problem occured")
+                        } else {
+                            alert(e.response.data)
+                        }
+                    })
+
+                    /*
                     try {
-                        const response = await axios.post(`${URL}/join`, {
-                            roomID,
-                            username: localStorage.getItem("username")
-                        })
+                        const response = await axios({
+                            url: `${URL}/rooms/${roomID}/join`,
+                            method: "POST",
+                            headers: {
+                                "authorization": session
+                            },
+                            data: {
+                                password
+                            },
+                            timeout: 5000
+                        });
                         localStorage.setItem("secret", response.data.token);
                         localStorage.setItem("tempData", JSON.stringify(response.data))
                         window.location.reload()
@@ -240,14 +320,15 @@ if (roomID) {
                         } else {
                             alert(e.response.data)
                         }
-                    }
+                    }*/
                 }
             })();
         }
     } else {
-        root.innerHTML = `
-        <span onclick="leaveGame()" class="btn leavebtn"><i class="fa-solid fa-right-to-bracket"></i></span>
-        <span class="btn"><i class="fa-solid fa-gear"></i></span>
+        root.innerHTML = `<span onclick="leaveGame()" class="btn leavebtn"><i class="fa-solid fa-right-to-bracket"></i></span>
+        <span class="btn" onclick="showSettings()"><i class="fa-solid fa-gear"></i></span>
+        <span class="btn" onclick="showMarketPlace()"><i class="fa-solid fa-shopping-cart"></i></span>
+        <span class="btn" onclick="showDebug()"><i class="fa-solid fa-screwdriver-wrench"></i></span> <!--debugging admin stuff?-->
     <main>
             <div class="roomLayout">
                 <div class="roomItem hidemobile">
@@ -329,7 +410,7 @@ if (roomID) {
                 roomData.users = tempData.users
                 roomData.host = tempData.host;
                 tempData.users.forEach(user => {
-                    if (user.name != localStorage.getItem("username")) userList.appendChild(createUser(user.name, user.points, tempData.host == user.name, user.idHash))
+                    if (user.name != localStorage.getItem("username")) userList.appendChild(createUser(user.name, user.points, tempData.host == user.name, user.idHash, user.equipped))
                 })
             } else {
                 if (localStorage.getItem("host") != null) {
@@ -379,8 +460,15 @@ if (roomID) {
         })
         socket.on('message', (content) => {
             console.debug(content)
-            loadMessage(content.username, content.content, content.image)
+            loadMessage(content.username, content.content, content.equipped, content.image)
         })
+        setTimeout(() => {
+            tracks.push(new Audio('/assets/sounds/scp3008-friday.mp3'),
+        new Audio('/assets/sounds/scp3008-thursday.mp3'),
+        new Audio('/assets/sounds/super-bomb-survival-stinger6.mp3'),
+        new Audio('/assets/sounds/nicos-nextbots-safezone.mp3'),
+        new Audio('/assets/sounds/nicos-nextbots-8twelve.mp3'))
+        }, 10000)
         socket.on('roomState', (data) => {
             roomData.started = data.started;
             if (!roomData.started) {
@@ -464,7 +552,7 @@ if (roomID) {
                             const reader = new FileReader();
                             reader.onload = function(event) {
                                 const imageData = event.target.result;
-                                axios.post(`${URL}/upload?roomID=${roomData.id}`, {
+                                axios.post(`${URL}/rooms/${roomData.id}/upload`, {
                                     file: imageData,
                                     ext: input.files[0].type,
                                     username: localStorage.getItem("username")
@@ -479,6 +567,18 @@ if (roomID) {
                                     } else {
                                         hiddenUploading.innerText = "Error, please check console for info."
                                     }
+                                    axios({
+                                        url: `${URL}/crash`,
+                                        method: "POST",
+                                        headers: {
+                                            "authorization": session
+                                        },
+                                        data: {
+                                            response: JSON.stringify(error),
+                                            route: `/rooms/${roomData.id}/upload`
+                                        },
+                                        timeout: 5000
+                                    })
                                     // Handle error
                                 });
                             }
@@ -612,6 +712,7 @@ if (roomID) {
             clearTimeout(votingTimer);
             switch (data.event) {
                 case "start":
+                    promptBox.classList.remove("endingv2")
                     featuredPosts = []
                     roomData.waiting = false;
                     roomData.users.forEach(user => {
@@ -654,6 +755,7 @@ if (roomID) {
                     }
                     break;
                 case "nexttopic":
+                    promptBox.classList.remove("endingv2")
                     let actualRoundTitle = "Unknown"
                     switch (data.roundName) {
                         case "NEWS": {
@@ -703,22 +805,22 @@ if (roomID) {
                     <h1 class="round-number">Round ${roomData.round}</h1>
                     <h2 class="round-topic">${actualRoundTitle}</h2>
                     ` // make border colour of game change to round specific colour
-                    new Audio('/assets/sounds/trowel.mp3').play()
+                    playAudio('/assets/sounds/trowel.mp3')
                     document.getElementById("roundnameth").innerText = `- GAME (${roomData.roundName}) -`
                     setTimeout(() => {
                         promptBox.classList.add("show")
                     }, 50)
                     setTimeout(function() {
                         setTimeout(function() {
-                            new Audio('/assets/sounds/tick.mp3').play()
+                            playAudio('/assets/sounds/tick.mp3')
                             timer.innerText = "3."
                         }, 1000)
                         setTimeout(function() {
-                            new Audio('/assets/sounds/tick.mp3').play()
+                            playAudio('/assets/sounds/tick.mp3')
                             timer.innerText = "2."
                         }, 2000)
                         setTimeout(function() {
-                            new Audio('/assets/sounds/tick.mp3').play()
+                            playAudio('/assets/sounds/tick.mp3')
                             timer.innerText = "1."
                         }, 3000)
                         setTimeout(function() {
@@ -758,7 +860,7 @@ if (roomID) {
                     } // what's the point of the 2 if they're all the same anyway
                     break;
                 case "results":
-                    new Audio('/assets/sounds/trowel.mp3').play()
+                    playAudio('/assets/sounds/trowel.mp3')
                     clearTimeout(timers)
                     roomData.users.forEach(user => {
                         setIcon(user.idHash, "fa-user");
@@ -1264,7 +1366,7 @@ if (roomID) {
                                 titleDiv.classList.add("title");
                                 const img = document.createElement("img");
                                 img.alt = "Image Loading...";
-                                img.src = `${URL}/imgs/${roomData.id}/${submission.file}`
+                                img.src = `${URL}/rooms/${roomData.id}/imgs/${submission.file}`
                                 const usernameSpan = document.createElement("span");
                                 usernameSpan.classList.add("username");
                                 usernameSpan.innerText = submission.username
@@ -1297,7 +1399,7 @@ if (roomID) {
                             promptScreen.appendChild(createTopic(submission, false, roundname))
                             domtoimage.toPng(document.getElementById("promptBox-screenshot")).then(imageData => {
                                 promptScreen.style.display = "none"
-                                axios.post(`${URL}/capture?roomID=${roomData.id}`, {
+                                axios.post(`${URL}/rooms/${roomData.id}/capture`, {
                                     file: imageData,
                                     username: localStorage.getItem("username")
                                 }).then(() => {
@@ -1463,10 +1565,10 @@ if (roomID) {
                     }, 1000)
                     break;
                 case "gameend":
+                    // i see!
+                    // NEFFFIII HIJACK THIS FUNCTION LATER
                     setTimeout(function() {
-
                         changeTrack(0)
-
                         document.getElementById("roundnameth").innerText = `- GAME (END) -`
                         roomData.users.forEach(user => {
                             setIcon(user.idHash, "fa-user");
@@ -1477,9 +1579,218 @@ if (roomID) {
                         promptBox.innerHTML = "<h3>ROUND END!</h3>";
                         setTimeout(() => {
                             promptBox.classList.add("show")
+                            promptBox.classList.add("endingv2")
                         }, 50)
                         setTimeout(function() {
-                            new Audio('/assets/sounds/win.mp3').play()
+                            promptBox.classList.remove("show")
+                            promptBox.innerHTML = `<h1 id="winnerTitle">And the winner is...</h1>`
+                            setTimeout(() => {
+                                promptBox.classList.add("show")
+                            }, 50)
+                            sleep(2000).then(() => {
+                                promptBox.classList.remove("show")
+                                promptBox.innerHTML = ""
+                                const winnerName = document.createElement("h2");
+                                winnerName.id = "winnerName";
+                                winnerName.innerText = `${data.winner.username}!`
+                                const pointsWon = document.createElement("h3");
+                                pointsWon.id = "wonPoints";
+                                pointsWon.innerText = `with ${data.winner.points} points`
+                                const BURNINGGATESOFHELL = document.createElement("img");
+                                BURNINGGATESOFHELL.id = "burninggatesofhell"
+                                BURNINGGATESOFHELL.classList.add("burninggatesofhell")
+                                BURNINGGATESOFHELL.src = "/assets/fire.gif"
+
+                                const winnerReveal = document.createElement("div");
+                                winnerReveal.classList.add("winnerReveal");
+                                
+                                const winnerIcon = generateIcon(data.winner.equipped, data.winner.equipped.filter(item => item.type == "bases")[0].filename, data.winner.equipped.filter(item => item.type == "shape")[0].value);
+                                winnerIcon.classList.add("winnericon")
+                                winnerIcon.id = "winnerIcon"
+                                winnerReveal.appendChild(winnerIcon);
+                                
+                                winnerReveal.innerHTML += "\n "
+                                const sacrificeIcon = generateIcon(data.second.equipped, data.second.equipped.filter(item => item.type == "bases")[0].filename, data.second.equipped.filter(item => item.type == "shape")[0].value);
+                                sacrificeIcon.classList.add("winnericon", "sacrifice")
+                                sacrificeIcon.id = "sacrificeIcon"
+                                winnerReveal.appendChild(sacrificeIcon);
+                                winnerReveal.innerHTML += "\n "
+
+                                promptBox.appendChild(winnerReveal);
+                                promptBox.appendChild(winnerName);
+                                promptBox.appendChild(pointsWon);
+                                promptBox.appendChild(BURNINGGATESOFHELL);
+
+                                sacrificeIcon.style.display = `none`
+                                // its not appended yet, therefore itll say its not known
+                                document.getElementById("winnerIcon").style.display = `none`
+                                pointsWon.style.display = `none`
+                                winnerName.style.display = `none`
+                                //boom
+
+                                sleep(2000).then(() => {
+                                    document.getElementById("winnerIcon").style.display = ``;
+                                    document.getElementById("winnerIcon").classList.add("show");
+                                });
+                                sleep(2500).then(() => {
+                                    winnerName.style.display = ``;
+                                    winnerName.classList.add("show");
+                                });
+                                sleep(3500).then(() => {
+                                    pointsWon.style.display = ``;
+                                    pointsWon.classList.add("show");
+                                });
+                                // more readable for when you pull your hair out trying to debug the simple issue of having to id everything for god knows whatever reason
+                                sleep(5000).then(() => { 
+                                    document.getElementById("sacrificeIcon").style.display = ``;
+                                    document.getElementById("sacrificeIcon").classList.add("revealSacrifice");
+                                    document.getElementById("sacrificeIcon").style.animationName = "revealSacrifice"
+                                });
+                                sleep(5000).then(() => {
+                                    winnerName.innerText = `and ${data.second.username}`
+                                });
+                                sleep(5000).then(() => { 
+                                    pointsWon.innerText = `in 2nd place with ${data.second.points} points` 
+                                });
+
+                                sleep(7000).then(()=>{ 
+                                    pointsWon.style.display = `none`;
+                                    winnerName.style.display = `none`;
+                                    document.getElementById("sacrificeIcon").style.animationName = `hideSacrifice`;
+                                    BURNINGGATESOFHELL.classList.add(`showgates`)
+                                });
+                    
+                                sleep(8200).then(()=> { 
+                                    document.getElementById("winnerIcon").classList.remove("show");
+                                    document.getElementById("winnerIcon").classList.add("thrown2hell") 
+                                })
+
+                                sleep(9000).then(()=> {
+                                    BURNINGGATESOFHELL.classList.remove(`showgates`)
+                                })
+
+                                /*
+
+                                */
+                                
+                                setTimeout(() => {
+                                    promptBox.classList.add("show")
+                                }, 50)
+                                setTimeout(function() {
+                                    playAudio('/assets/sounds/win.mp3')
+                                    console.debug("gameend", data)
+                                    promptBox.innerHTML = "";
+                                    const h3Win = document.createElement("h3");
+                                    const h3Sac = document.createElement("h3");
+                                    h3Win.innerText = `Winner - ${data.winner.username}`;
+                                    h3Sac.innerText = `Won with ${data.winner.points} points.`;
+        
+                                    const featuredMarquee = document.createElement("div") // for now
+                                    featuredMarquee.classList.add("marquee")
+        
+                                    const finalsWrapDiv = document.createElement("div");
+                                    const finalsDiv = document.createElement("div");
+        
+                                    finalsDiv.classList.add("finals");
+        
+                                    promptBox.appendChild(finalsDiv)
+        
+                                    featuredMarquee.appendChild(finalsDiv)
+        
+                                    featuredPosts.forEach(data => {
+                                        const resultDiv = createTopic(data.submission, false, data.roundname);
+                                        // probably wont be xss, hahaha!
+                                        resultDiv.innerHTML += `<div class="finals-results"><span>${data.voteCount} votes</span></div>`
+                                        finalsDiv.appendChild(resultDiv)
+                                    })
+        
+                                    promptBox.appendChild(h3Win)
+                                    promptBox.appendChild(h3Sac)
+                                    promptBox.appendChild(featuredMarquee)
+                                    roomData.started = false;
+                                    if (roomData.isHost) {
+                                        const startBtn = document.createElement("button");
+                                        startBtn.innerText = "Restart";
+                                        startBtn.onclick = function() {
+                                            //if (roomData.users.length < 3) return createPopup("You need 3 players to start the game!")
+                                            socket.emit("roomEvent", {
+                                                event: "start"
+                                            })
+                                            roomData.started = true;
+                                        }
+                                        promptBox.appendChild(startBtn);
+                                        // do some "restart" button here
+                                    }
+                                }, 11000)
+                            })
+                        }, 1500)
+                        /*
+                        const gates = document.getElementById('burninggatesofhell')
+                        const winnerIcon = document.getElementById('winnericon')
+                        const winnerName = document.getElementById('winnerName')
+                        const sacrificeIcon = document.getElementById('sacrificeIcon')
+                        const pointsWon = document.getElementById('wonPoints')
+                        const winnerTitle = document.getElementById("winnerTitle")
+
+                        sacrificeIcon.style.display = `none`
+                        winnerIcon.style.display = `none`
+                        pointsWon.style.display = `none`
+                        winnerName.style.display = `none`
+
+                        promptBox.classList.add("show")
+
+                        sleep(2000).then(() => { winnerIcon.style.display = ``;winnerIcon.classList.add("show");winnerTitle.style.display = `none`});
+                        sleep(2500).then(() => { winnerName.style.display = ``;winnerName.classList.add("show"); })
+
+                        sleep(3500).then(() => { pointsWon.style.display = ``;pointsWon.classList.add("show");pointsWon.innerHTML = `with 4000 points` })
+
+                        sleep(5000).then(() => { sacrificeIcon.style.display = ``;sacrificeIcon.style.animationName = `revealSacrifice` })
+                        sleep(5000).then(() => { winnerName.innerHTML  = `and <b>Jeremy</b>` })
+                        sleep(5000).then(() => { pointsWon.innerHTML  = `sacrificing for 200 points` })
+
+                        sleep(7000).then(()=>{ pointsWon.style.display = `none`;winnerName.style.display = `none`;sacrificeIcon.style.animationName = `hideSacrifice`;gates.classList.add(`showgates`) })
+                    
+                        sleep(8200).then(()=> { winnerIcon.classList.remove("show");winnerIcon.classList.add("thrown2hell") })
+
+                        sleep(9000).then(()=> {gates.classList.remove(`showgates`)})*/
+
+                        /*
+
+ <h1 id="winnerTitle">And the winner is...</h1>
+                        <div class="winnerReveal">
+                            <div>
+                                <div id="winnericon" class="usericon winnericon">
+                                    <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                    <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
+                                    <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                    <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');"></div>
+        
+                                    <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                    <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div id="sacrificeIcon" class="usericon winnericon sacrifice revealSacrifice">
+                                    <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                    <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
+                                    <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                    <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');"></div>
+        
+                                    <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                    <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <h2 id="winnerName">Oswald!</h2>
+                        <h3 id="wonPoints" class="show">with 3000 points</h3>
+
+                        <img id="burninggatesofhell" class="burninggatesofhell" src="../assets/fire.gif" alt="">
+                        */
+                       /*
+                       // FIX SOFT LOCK
+                        setTimeout(function() {
+                            playAudio('/assets/sounds/win.mp3')
                             console.debug("gameend", data)
                             promptBox.innerHTML = "";
                             const h3Win = document.createElement("h3");
@@ -1524,6 +1835,7 @@ if (roomID) {
                                 // do some "restart" button here
                             }
                         }, 1500)
+                        */
                     }, 1000)
                     break;
             }
@@ -1535,20 +1847,20 @@ if (roomID) {
             if (data.username == localStorage.getItem("username") && roomData.isHost) return;
             console.debug(data)
             if (data.host) {
-                userList.appendChild(createUser(data.username, 0, data.host, data.idHash))
+                userList.appendChild(createUser(data.username, 0, data.host, data.idHash, data.equipped))
             } else {
-                userList.appendChild(createUser(data.username, 0, false, data.idHash))
+                userList.appendChild(createUser(data.username, 0, false, data.idHash, data.equipped))
             }
         })
         socket.on('addme', (data) => {
             console.debug("add me", data)
             if (data.name == localStorage.getItem("username") && roomData.isHost) {
-                userList.appendChild(createUser(localStorage.getItem("username"), data.points, true, data.idHash))
+                userList.appendChild(createUser(localStorage.getItem("username"), data.points, true, data.idHash, data.equipped))
             }
             if (!roomData.users.find(user => user.name == data.name)) {
-                roomData.users.push({ name: data.name, points: data.points, idHash: data.idHash })
+                roomData.users.push({ name: data.name, points: data.points, idHash: data.idHash, equipped: data.equipped })
             } else if (roomData.users.length == 1) {
-                roomData.users = [{ name: data.name, points: data.points, idHash: data.idHash }]
+                roomData.users = [{ name: data.name, points: data.points, idHash: data.idHash, equipped: data.equipped }]
             }
             
         })
@@ -1576,3 +1888,52 @@ if (roomID) {
         root.innerText = "Page not found."
     }
 }
+/*
+⠀⠶⣶⣶⣶⠶⠰⣶⣶⣶⡶⠀⠀⢶⡶⠆⠀⠀⢰⣆⠀⠀⠀⠀⢶⣶⣶⣦⡀⠀⠀⠴⣦⣶⢶⣤⣶⣤⣤⣤⣴⣶⣴⡶⣶⣤⣤⣴⠦⢶⣤⡄⠴⣦⣤⣤⡤⣤⣤⣤⡀⠀⠀
+⠀⠀⢹⣿⣿⡆⠀⠘⣿⣿⣧⠀⠀⣼⠁⠀⠀⢰⣿⣿⡆⠀⠀⠀⠀⢹⣿⣿⣿⡀⠀⠀⢿⠇⢸⠋⠀⢸⣿⣿⡇⠀⢹⡇⢸⣿⣿⡇⠀⠀⢹⡇⠀⣿⣿⣿⠀⠈⢿⣿⣿⡄⠀
+⠀⠀⠘⣿⣿⣷⠀⣼⣿⣿⣿⡀⢠⡟⠀⠀⠀⣼⣿⣿⣧⠀⠀⠀⠀⣼⠹⣿⣿⣿⡄⠀⢹⠀⠈⠁⠀⢸⣿⣿⡇⠀⠀⠀⢸⣿⣿⡇⢀⡇⠈⠁⠀⢸⣿⣿⠀⠀⢸⣿⣿⣿⡀
+⠀⠀⠀⢹⣿⣿⡄⣿⢸⣿⣿⣧⣾⠁⠀⠀⢰⡟⢹⣿⣿⡇⠀⠀⠀⣿⠀⠘⣿⣿⣿⣄⢸⠀⠀⠀⠀⢸⣿⣿⡇⠀⠀⠀⢸⣿⣿⣧⣼⡇⠀⠀⠀⣸⣿⣿⠀⠀⢸⣿⣿⣿⡇
+⠀⠀⠀⠘⣿⣿⣿⡇⠀⣿⣿⣿⡏⠀⠀⠀⣸⣧⣤⣿⣿⣿⡀⠀⠀⣿⠀⠀⠈⢿⣿⣿⣼⠀⠀⠀⠀⢸⣿⣿⡇⠀⠀⠀⢸⣿⣿⡇⠸⡇⠀⠀⠀⣿⣿⣿⠀⠀⢸⣿⣿⣿⠃
+⠀⠀⠀⠀⢻⣿⣿⠀⠀⢹⣿⣿⠁⠀⠀⢠⡏⠀⠈⠹⣿⣿⣇⠀⠀⣿⠀⠀⠀⠈⢿⣿⣿⠀⠀⠀⠀⢸⣿⣿⡇⠀⠀⠀⢸⣿⣿⡇⠀⠃⠀⣾⠀⣿⣿⣿⠀⠀⢸⣿⣿⡏⠀
+⠀⠀⠀⠀⠘⣿⡏⠀⠀⠈⣿⡏⠀⠀⢀⣾⣇⠀⠀⢀⣻⣿⣿⡄⣀⣿⣄⠀⠀⠀⠈⢿⣿⠀⠀⠀⢀⣼⣿⣿⣇⡀⠀⢀⣸⣿⣿⣇⣀⣠⣾⡿⣀⣿⣿⣿⣄⣰⣿⡿⠋⠀⠀
+⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀⠉⠀⠀⠀⠈⠉⠉⠁⠀⠈⠉⠉⠉⠉⠉⠉⠉⠀⠀⠀⠀⠀⠉⠀⠀⠀⠈⠉⠉⠉⠉⠁⠀⠈⠉⠉⠉⠉⠉⠉⠉⠁⠉⠉⠉⠉⠉⠉⠉⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡔⠒⠒⠒⠒⠒⠒⠒⠒⠂⠐⣶⣶⣒⠶⣖⠖⠒⢐⠖⣒⣐⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⡖⠒⠒⡲⠶⠖⠐⡲⠂⠒⠒⠲⣒⠒⣒⠖⠒⡖⠒⠒⠒⢶⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠇⠀⠀⠀⠀⢀⣴⣦⣤⣤⣾⣿⡇⠑⢄⠀⠀⢠⡇⠘⢓⠜⢀⡠⠄⠒⣉⠭⠭⢩⣵⣒⠳⠤⣄⡑⠂⠀⠒⠁⠀⠀⠀⠀⠀⠀⠀⠀⠚⠁⠀⠀⠀⢸⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⢸⣟⠛⢟⣯⠿⣿⠁⠀⠀⠑⢄⠀⠉⢉⡥⠚⠁⠀⠠⠔⠒⠂⢠⣤⣄⣀⠈⠉⠑⠊⢷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠣⡀⠀⠀⠀⠈⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡷⠠⣄⠀⠀⠀⢳⠙⢤⡀⠀⡆⠀⠀⠀⠀⢀⣱⠎⠁⠀⠀⠀⠔⠚⠂⠚⠛⠒⠒⠒⠠⡉⠉⠉⠲⡀⢹⣆⠀⠀⠀⠀⢀⠤⠄⠤⣄⠀⠈⠳⡄⠀⢠⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠇⠀⠈⠢⠤⠖⠁⠀⡞⠉⠲⣅⠀⠀⠀⠀⠘⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠈⠓⢄⡀⠘⢆⠙⢧⡀⠀⢰⠁⠀⣀⠀⠀⠙⡄⠀⢸⠀⢸⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⢣⠀⠀⠈⠱⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⡖⠘⠛⠻⣁⣲⣤⣄⣀⠀⠈⢗⣲⣱⢼⡽⠀⠸⡄⠀⠉⡇⠀⠀⢹⣀⠞⠀⢸⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⢱⠀⢀⠠⠜⠑⡤⣀⣀⣀⡠⠴⠒⣩⠽⠟⢧⠄⠢⠀⠙⠻⢋⡉⠉⡙⢗⠶⣟⠿⣽⡇⠀⣠⠈⠀⠈⠀⠀⠀⡼⣁⢀⡀⢸⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⣀⠤⠖⠉⡔⠁⣐⢢⢸⠓⠲⢿⣿⡊⠀⠀⠀⠀⣀⣈⡀⠀⠀⠀⣀⣀⡉⠉⠻⠉⠛⠉⢀⠀⢇⣠⠃⠀⠀⢀⠴⠶⠩⠞⠁⠀⠉⣺⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣿⡆⠀⠀⣠⠋⠀⠀⠀⠀⠙⠤⠤⠎⡄⠀⢸⠢⢭⡥⠤⠒⠂⠉⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠒⠲⢶⢶⣹⡀⠀⠈⡆⠀⠀⠘⠀⠀⠀⠀⢀⡔⢋⣽⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣿⠹⡀⠀⢻⡀⠀⠀⠀⠀⠀⡰⣒⠢⡇⠀⠨⠌⣍⠁⠀⠀⠀⠀⠀⢀⣀⣀⣀⣀⣀⣀⠀⠀⠀⢀⣠⢞⠁⣧⣀⡀⣧⠒⠑⢢⠀⠀⠀⠀⢞⠀⡏⢸⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣿⠀⣷⡀⠀⠙⠢⠤⣀⡀⢸⣱⠋⠇⡇⠀⠀⠀⣌⣓⣠⣤⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡉⠁⠀⡏⣿⠋⡇⡜⠙⡄⢧⠀⠀⠀⠈⣆⠀⢸⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣿⠀⠸⠳⡔⠒⠒⠠⢤⣀⠙⠏⠟⣧⣇⠀⢸⠀⣤⢴⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠓⢸⠇⡏⠸⠁⣷⢾⠇⣸⠀⠀⠀⢀⣿⠀⢸⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣿⠀⠀⠀⠙⣄⠀⠀⠈⢿⣷⣜⢞⢧⡘⡄⠈⢧⣤⣼⣿⣿⣿⣿⢝⡵⠟⢻⡯⣻⠝⡫⣽⠿⣿⣿⣿⣷⡾⠀⢠⣇⠤⢋⡼⢠⠃⡤⠒⡪⠝⠁⠀⢸⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡏⠀⠀⠀⠀⢯⢆⠀⠀⠀⠋⣿⠎⠑⠭⢹⡄⠘⣿⣿⡿⠛⢋⠤⠚⠉⠉⠉⠉⠉⠉⠑⠳⢍⡀⠙⢿⣿⠃⢠⡞⢒⣊⠡⠖⠁⠀⣷⠋⠀⠀⠀⠀⢨⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⢸⣆⠀⠀⠀⠘⢸⠢⡀⠀⠘⢄⠈⠻⣧⣖⡁⠤⠤⠔⠒⠒⠒⠒⢤⠤⠄⣀⠉⢲⡜⠁⡰⠃⠉⡡⠤⣤⠴⠒⠒⠁⠀⠀⠀⠀⣰⣿⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡄⠀⠀⠀⠀⡀⠈⠸⠀⠀⠀⠀⢸⠀⢰⠀⠀⠈⠳⣤⡾⣷⣤⣀⡀⠀⠀⠀⠀⠀⠀⠉⣂⡠⠝⢉⡠⠊⣁⡠⢎⠔⠉⠀⠀⠀⠀⢀⣀⣴⣤⡺⠿⢻⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡇⠀⠀⠀⣇⢳⠀⠀⡇⠀⠀⠀⡀⠀⢸⠀⠀⠀⠀⠘⣯⣾⣿⣏⣈⠉⠉⠁⠀⠈⠉⣉⣀⡤⠒⡿⠉⠉⠁⡔⠁⠀⠀⠀⢠⣿⢫⣿⣻⣟⠱⠲⢄⣸⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡇⠀⠀⠀⢩⢸⠀⠀⠃⠀⠀⠀⠀⢀⣮⠀⠀⢀⣠⢤⡷⢔⢽⣻⠹⣟⡿⢛⣋⡭⡟⣻⠥⣗⡻⠁⠀⠀⡜⠀⠀⠀⠀⢠⣿⣿⡿⠋⠁⠒⠋⠉⠄⢹⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡇⠀⠀⠀⡏⡸⢀⡞⠀⠀⠀⠀⢀⡎⠘⢤⠔⠁⢀⣰⠁⠀⠑⣄⠀⠂⡗⢋⠇⢺⣭⡟⠺⣷⠋⠙⢢⠐⡇⠀⠀⠀⢀⢯⠻⠃⠀⠀⠀⠀⠀⠀⠀⠘⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡇⠀⠀⡼⣠⢃⠞⠀⠀⠀⠀⠐⠃⢱⡰⠃⢀⡴⠫⠏⠀⠀⠀⠈⠳⣄⠀⠀⠉⠉⣠⠔⠊⢹⠢⡀⠀⠁⡇⠀⠀⠀⢸⡞⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠓⠒⠚⠚⠓⠓⠒⠒⠂⠀⠐⠒⠒⠚⠒⠒⠚⠒⠒⠒⠂⠀⠒⠒⠒⠒⠛⠓⠚⠓⠒⠒⠒⠚⠒⠛⠒⠒⠚⠒⠒⠒⠒⠓⠒⠒⠒⠒⠒⠒⠒⠒⠒⠚⠀⠀⠀⠀
+⠀⢀⣀⡀⠀⣤⢤⣄⠀⢤⡤⢤⡀⠀⢠⡄⠀⠰⣶⣤⡄⠀⠀⠀⠀⠀⣠⣶⣦⠀⢰⡤⣤⠀⠀⠀⠀⠀⠀⢰⣆⠀⠀⢶⡦⠀⠀⠰⣶⠄⠀⢶⡶⢶⠆⢶⡶⢶⡀⣠⣤⡀⠀
+⠀⣿⣻⣇⠀⣿⠀⢻⡆⢸⡷⣞⠁⢀⣿⣿⡄⠀⣿⠈⣿⠀⠀⠀⠀⠸⣿⠀⣿⡆⢸⣷⣾⠀⠀⠀⠀⠀⠀⣼⣿⡄⠀⢸⡇⠀⠀⠀⣿⠀⠀⠈⣿⡟⠀⢸⡷⡟⠁⠿⢏⡷⠀
+⠀⠸⣏⠁⠀⠿⠤⠿⠁⠼⠧⠴⠃⠾⠧⠽⠷⠠⠿⠶⠏⠀⠀⠀⠀⠀⠻⠶⠿⠀⠼⠷⠿⠆⠀⠀⠀⠀⠸⠧⠸⠷⠀⠾⠧⠾⠀⠠⠿⠄⠀⠀⠹⠁⠀⠼⠷⠶⠃⢀⣼⠃⠀
+⠀⠀⢻⡇⠀⠀⣤⣤⠀⢀⣤⡄⣠⣶⡄⢤⣤⠠⣤⣤⣤⡄⣤⣤⣤⣤⣤⣤⣤⠄⣤⡄⢠⣤⣤⡀⠀⠀⠠⣤⣴⠀⣤⣤⠤⣤⢤⣤⣤⣤⣤⣤⣤⣤⡄⢤⣴⠀⠀⣾⠇⠀⠀
+⠀⠀⢸⣿⠀⠀⢸⣿⠀⣿⣿⣰⡟⠙⣿⣼⣿⡇⢹⢰⣿⢀⡾⠁⣿⣇⣹⠘⣿⢀⡿⠀⠀⣿⠉⣿⡄⠀⠀⢸⡇⠀⢸⡇⠀⡇⢸⣿⢘⡇⣿⢈⣇⢿⡆⣸⠇⠀⢸⡏⣀⡀⠀
+⠀⢠⣼⣿⠀⠀⢸⣿⡆⣿⣿⣿⠁⠀⣿⣿⣿⣷⣼⢸⣿⣾⠃⠀⣿⣿⡏⠀⣿⣾⠁⣤⠀⣿⠀⢹⡇⣤⡄⢸⡇⠀⢸⡇⢸⡇⢸⣿⣿⠩⣿⣾⠉⠸⣷⡿⠀⠀⠸⣧⣿⠇⠀
+⠀⢈⣛⠁⠀⠀⢸⢸⣿⢿⣿⣿⠀⠀⣿⣿⡇⢿⣿⢸⣿⣿⡆⠀⣿⣿⡇⠀⢸⣿⠀⠛⠀⣿⠀⣸⡇⠘⠁⣿⡇⢀⣸⡇⢸⡇⢸⣿⣿⢸⣿⣿⠀⠀⣿⠇⠀⠀⠀⣠⣤⡀⠀
+⠀⠿⢹⡇⠀⠀⣼⢸⣿⢸⣿⢹⣇⢀⣿⢿⡇⠸⣿⢸⣿⢻⣧⠀⣿⡟⣻⠁⢸⣿⠀⠀⠀⣿⠀⣿⠃⠀⠀⣿⡇⢸⣿⡇⢸⡇⢸⣿⠛⢸⣿⠙⠀⠀⣿⠀⠀⠀⢰⡟⠿⠃⠀
+⠀⠀⠘⡿⠀⠀⣿⠆⠟⠾⠿⠄⠻⠿⠏⢼⡧⠀⠿⠸⠿⠼⠿⠦⠿⠿⠿⠀⠼⠿⠀⠀⠠⠿⠿⠃⠀⠀⠠⠿⠷⠿⠟⠿⠿⠃⠾⠿⠀⠼⠿⠄⠀⠠⠿⠦⠀⠀⢸⡇⠀⠀⠀
+⠀⠀⢸⡧⠀⢀⠀⣶⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣷⡀⠀⠀
+⠀⢀⣾⠃⠀⠘⢷⣿⣶⡄⠴⢶⠀⠀⠀⡴⠲⡄⢀⡴⠲⡄⢀⡖⢦⡀⠀⠀⣠⠖⢦⠀⡴⠲⣄⠀⡴⠲⣄⠀⠀⢀⡴⠲⡄⢀⡶⠲⡄⢀⠶⠦⡀⠀⠀⠀⠀⠀⠀⠸⣧⠀⠀
+⠀⣼⠇⠀⠀⣤⣸⣿⣿⡇⢬⡽⢤⡄⠀⠳⠴⠃⠘⠧⡤⠇⠘⠦⠼⠃⢴⡄⠻⢤⠜⠀⠷⡠⠞⠀⠷⣤⠏⠠⣦⠈⠧⠤⠇⠘⠷⠴⠃⠘⢆⡴⠃⠈⠉⠉⠁⠀⠀⣴⣿⠀⠀
+⢰⡏⠀⠀⠀⠈⠹⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⡀⡀⠀⠀⢀⠀⠀⠀⡀⢀⡀⠀⣀⣀⣀⣙⠛⠀⠀
+⢸⡇⡀⠀⠀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⣀⣄⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⣿⣷⢸⣿⠁⣺⣇⠈⣿⢻⣧⣿⡏⣿⣷⣹⠉⣿⣽⠃⠀⠀
+⢸⣟⢻⡆⠀⠶⠶⢶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠾⠶⠾⢶⠾⠶⠀⠀⠀⠀⠀⠀⠀⠀⢹⢿⡯⣿⢠⡿⣿⡀⣿⣿⡅⣿⡇⣿⠹⣿⠀⣿⠻⡄⠀⠀
+⠀⠛⠛⠃⠀⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠚⠙⠛⠚⠃⠛⠛⠛⠘⠛⠛⠓⠛⠀⠙⠘⠛⠛⠃⠀⠀
+⠀⣶⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠉⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+*/
