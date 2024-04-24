@@ -94,10 +94,8 @@ function uploadImage(req, res, capture) {
         if (type && type.ext && !['png', 'jpeg', 'gif', 'jpg'].includes(type.ext)) {
             // convert image
             try {
-                if (!DEVELOPMENT) {
-                    const pngBuffer = await sharp(buffer).toFormat('png').toBuffer();
-                    base64ImageData = pngBuffer.toString('base64');
-                }
+                const pngBuffer = await sharp(buffer).toFormat('png').toBuffer();
+                base64ImageData = pngBuffer.toString('base64');
             } catch (e) {
                 console.error(e)
                 return res.status(500).send("Couldn't convert image.")
