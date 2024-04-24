@@ -438,7 +438,7 @@ sio.on('connection', socket => {
                     let actualChosenRounds = []
 
                     for (let i = 0; i < updatedRoomData.maxRounds; i++) { // 3 times hopefully i cant test rn
-                        const rolled = allPossibleRounds[simpleRandom(allPossibleRounds.length)]
+                        const rolled = allPossibleRounds[simpleRandom(allPossibleRounds.length-1)] // you forgot the -1 it causes undefined lmayo
                         actualChosenRounds.push(rolled)
                         allPossibleRounds.splice(allPossibleRounds.indexOf(rolled), 1)
                         // support for multiple different rounds
