@@ -467,7 +467,8 @@ if (roomID) {
         new Audio('/assets/sounds/scp3008-thursday.mp3'),
         new Audio('/assets/sounds/super-bomb-survival-stinger6.mp3'),
         new Audio('/assets/sounds/nicos-nextbots-safezone.mp3'),
-        new Audio('/assets/sounds/nicos-nextbots-8twelve.mp3'))
+        new Audio('/assets/sounds/nicos-nextbots-8twelve.mp3'),
+        new Audio('/assets/sounds/beemyu-cloud-chiptune.mp3'))
         }, 10000)
         socket.on('roomState', (data) => {
             roomData.started = data.started;
@@ -1586,6 +1587,7 @@ if (roomID) {
                             promptBox.innerHTML = `<h1 id="winnerTitle">And the winner is...</h1>`
                             setTimeout(() => {
                                 promptBox.classList.add("show")
+                                playAudio('/assets/sounds/drumroll.mp3')
                             }, 50)
                             sleep(2000).then(() => {
                                 promptBox.classList.remove("show")
@@ -1677,6 +1679,7 @@ if (roomID) {
                                     promptBox.classList.add("show")
                                 }, 50)
                                 setTimeout(function() {
+                                    changeTrack(6)
                                     playAudio('/assets/sounds/win.mp3')
                                     console.debug("gameend", data)
                                     promptBox.innerHTML = "";
