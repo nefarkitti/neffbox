@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 /*@import url('https://db.onlinewebfonts.com/c/975a5a4b60d2801c3382561ee634109b?family=Hypermarket+W00+Regular');*/ /* uncomment when release */
 @import url('https://fonts.googleapis.com/css2?family=Linefont:wght@4..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
 :root {
     --accent: #eb144c;
@@ -2034,4 +2035,163 @@ body.dark input {
 }
 .shopItem .inventoryItem:hover {
     cursor: unset;
+}
+
+/*daily puzzl*/
+
+.gridoverlay {
+    display: grid;
+}
+.gridoverlay div {
+    grid-row-start: 1;
+    grid-column-start: 1;
+}
+.terminal {
+    border-radius: 4px;
+    background-color: black;
+    color: #00ff00;
+    width: 650px;
+    height: 410px;
+    text-align: left;
+    padding: 10px;
+    font-family: "VT323", monospace;
+    text-shadow: 0px 0px 3px #00ff00;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    z-index: 9;
+    overflow: hidden;
+}
+.square {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+.actualpuzzle {
+    display: flex;
+    flex-direction: row;
+}
+.actualpuzzle div {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+}
+.terminal *:not(.fa-solid) {
+    font-family: "VT323", monospace;
+    font-size: 24px;
+}
+.lineContainer .detail {
+    margin-right: 10px;
+}
+.line b {
+    font-weight: normal;
+}
+.character:hover {
+    background-color: #00ff00;
+    color: black;
+    text-shadow: none;
+    box-shadow: 0px 0px 3px #00ff00;
+    text-shadow: 0px 0px 2px black;
+}
+.results {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    width: 130px;
+}
+.actualpuzzle div.puzzleLogs {
+    display: flex;
+    flex-direction: column;
+    max-height: 180px;
+    overflow: hidden;
+    justify-content: flex-end;
+}
+div.puzzleLogs * {
+    font-size: 20px;
+}
+.overlay {
+    width: 100%;
+    height: 100%;
+    color: white;
+    border-radius: 4px;
+    z-index: 999;
+    background-image: url('assets/tvlines-better.png');
+    background-size: 400%;
+
+    animation-name: animateTVLines;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    pointer-events: none;
+}
+.screen {
+    width: 100%;
+    height: 100%;
+    color: white;
+    border-radius: 4px;
+    z-index: 99;
+    background-image: radial-gradient(rgba(51, 51, 51, 0.322) 20%, rgba(0, 128, 0, 0) 50%, rgba(0, 0, 255, 0) 100%);
+    background-position: 50px -100px;
+    pointer-events: none;
+} 
+@keyframes animateTVLines {
+    0% {
+        background-position: 0px 0px;
+    }
+    100% {
+        background-position: 0px 50px;
+    }
+}
+.marketplaceConfirm.terminal {
+    margin: 0;
+    padding: 0;
+}
+.marketplaceConfirm.terminal .closebtn {
+    color: #00ff00;
+    z-index: 999;
+    top: 5px;
+    right: 5px;
+}
+.marketplaceConfirm.terminal .closebtn:hover {
+    color: black;
+    border-radius: 5px;
+    background-color: #00ff00;
+    box-shadow: 0px 0px 3px #00ff00;
+}
+
+.caret {
+    height: 20px;
+    width: 10px;
+    display: inline-block;
+    vertical-align:middle;
+    background-color: #00ff00;
+    box-shadow: 0px 0px 3px #00ff00;
+    margin-left: 1px;
+
+    animation-name: caretAnim;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+@keyframes caretAnim {
+    0% {
+        background-color: #00ff00;
+        box-shadow: 0px 0px 3px #00ff00;
+    }
+    49% {
+        background-color: #00ff00;
+        box-shadow: 0px 0px 3px #00ff00;
+    }
+    50%{ 
+        background-color: #000000;
+        box-shadow: none;
+    }
+    99%{ 
+        background-color: #000000;
+        box-shadow: none;
+    }
+    100% {
+        background-color: #00ff00;
+        box-shadow: 0px 0px 3px #00ff00;
+    }
 }

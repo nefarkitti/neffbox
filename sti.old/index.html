@@ -12,22 +12,62 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src="/js/config.js"></script>
     <script defer type="text/javascript" src="/js/room.js"></script>
+    <script defer type="text/javascript" src="/js/caret.js"></script>
 </head>
 
 <body class="">
+
+    <div class="modal-overlay show-modal" style="z-index: 9999;"> <!-- ARE YOU SURE YOU WANT TO PURCHASE -->
+        <div class="modal marketplaceConfirm terminal">
+            <span class="closebtn"><i class="fa-solid fa-xmark"></i></span>
+            <div class="flexcenter gridoverlay">
+                <div class="terminal">
+                    <span>NYACO INDUSTRIES (TM) TERMLINK PROTOCOL</span>
+                    <span>ENTER PASSWORD NOW</span>
+                    <br>
+                    <span class="attempts" id="attempts">4 ATTEMPT(S) LEFT <span class="square">◼</span></span>
+                    <br>
+                    <div class="actualpuzzle" id="actualpuzzle">
+                        <div id="col1">
+                            <span class="lineContainer">
+                                <span class="detail">0xF670</span>
+                                <span class="line">MMMMMMMMMMMM</span>
+                            </span>
+                        </div>
+                        <div id="col2">
+                            <span>hello3</span>
+                            <span>hello4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="overlay">
+                    
+                </div>
+                <div class="screen">
+                </div>
+                <div class="pipboy">
+                </div>
+            </div>
+            <br>
+            <!--<button id="generate" onclick="generatePuzzle()">debug gen</button>-->
+        </div>
+    </div>
 
     <div class="modal-overlay show-" style="z-index: 9999;"> <!-- ARE YOU SURE YOU WANT TO PURCHASE -->
         <div class="modal marketplaceConfirm">
             <span class="closebtn"><i class="fa-solid fa-x"></i></span>
             <div class="flexcenter confirmPurchase">
-                <span style="filter: opacity(75%);font-size: 12px;margin-top: 5px;font-style: italic;">Items included within this bundle:</span> <!--ONLY DISPLAY FOR BUNDLES-->
+                <span style="filter: opacity(75%);font-size: 12px;margin-top: 5px;font-style: italic;">Items included
+                    within this bundle:</span> <!--ONLY DISPLAY FOR BUNDLES-->
                 <div class="marketplacecart">
                     <div class="usericon">
-                        <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/propeller_hat.gif')"></div>
+                        <div class="outline accessory"
+                            style="background-image: url('../assets/icons/cosmetics/propeller_hat.gif')"></div>
                         <!--scale(-1) for mirroring-->
                     </div>
-                    <div class="usericon">
-                        <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/rainbow_lollipop.gif')"></div>
+                        <div class="usericon">
+                        <div class="outline accessory"
+                            style="background-image: url('../assets/icons/cosmetics/rainbow_lollipop.gif')"></div>
                         <!--scale(-1) for mirroring-->
                     </div>
                 </div>
@@ -42,8 +82,10 @@
                     <button class="alt">CANCEL</button>
                 </div>
                 <div class="extra">
-                    <span style="filter: opacity(50%);font-size: 12px;margin-top: 5px;">Your balance after this purchase will be <b>0</b> points.</span><br>
-                    <span style="filter: opacity(50%);font-size: 12px;margin-top: 5px;">You currently have <b>0</b>.</span>
+                    <span style="filter: opacity(50%);font-size: 12px;margin-top: 5px;">Your balance after this purchase
+                        will be <b>0</b> points.</span><br>
+                    <span style="filter: opacity(50%);font-size: 12px;margin-top: 5px;">You currently have
+                        <b>0</b>.</span>
                 </div>
             </div>
         </div>
@@ -57,19 +99,28 @@
                 <div class="settingsPanel marketContain profile">
                     <div>
                         <div class="usericon">
-                            <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                            <div class="outline"
+                                style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
                             <div style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
-                            <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                            <div class="outline"
+                                style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
                             <div style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
-    
-                            <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/eyepatch.gif');transform: translateY(20%) translateX(15%);"></div>
-                            <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bandana.gif');transform: translateY(00%);"></div>
-                            <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/tophat.gif');transform: translateY(00%);z-index: 999;"></div>
+
+                            <div class="outline accessory"
+                                style="background-image: url('../assets/icons/cosmetics/eyepatch.gif');transform: translateY(20%) translateX(15%);">
+                            </div>
+                            <div class="outline accessory"
+                                style="background-image: url('../assets/icons/cosmetics/bandana.gif');transform: translateY(00%);">
+                            </div>
+                            <div class="outline accessory"
+                                style="background-image: url('../assets/icons/cosmetics/tophat.gif');transform: translateY(00%);z-index: 999;">
+                            </div>
                             <!--scale(-1) for mirroring-->
                         </div>
                         <span>
                             <span class="profileUsername">MMMMMMMMMM</span>
-                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');"
+                                class="badge"></span>
                         </span><br>
                         <button><i class="fa-solid fa-pencil"></i> EDIT</button>
                         <span class="stats">
@@ -99,7 +150,8 @@
 
                         <div class="shopItem uncommon">
                             <div class="usericon">
-                                <div class="inventoryItem" style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
+                                <div class="inventoryItem"
+                                    style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
                             </div>
                             <span class="tag">ANIMATED OVERLAY</span>
                             <span>Cleave</span>
@@ -110,7 +162,8 @@
 
                         <div class="shopItem rare">
                             <div class="usericon">
-                                <div class="inventoryItem" style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
+                                <div class="inventoryItem"
+                                    style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
                             </div>
                             <span class="tag">ANIMATED OVERLAY</span>
                             <span>Cleave</span>
@@ -121,7 +174,8 @@
 
                         <div class="shopItem epic">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/cosmetics/dialogue_box.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/cosmetics/dialogue_box.gif');"></div>
                             </div>
                             <span class="tag">ANIMATED FACE</span>
                             <span>Ravenous</span>
@@ -132,7 +186,8 @@
 
                         <div class="shopItem legendary">
                             <div class="usericon">
-                                <div class="inventoryItem" style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
+                                <div class="inventoryItem"
+                                    style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
                             </div>
                             <span class="tag">ANIMATED OVERLAY</span>
                             <span>Cleave</span>
@@ -143,7 +198,8 @@
 
                         <div class="shopItem">
                             <div class="usericon">
-                                <div class="inventoryItem" style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
+                                <div class="inventoryItem"
+                                    style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
                             </div>
                             <span class="tag">ANIMATED OVERLAY</span>
                             <span>Cleave</span>
@@ -153,7 +209,8 @@
                         </div>
                         <div class="shopItem">
                             <div class="usericon">
-                                <div class="inventoryItem" style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
+                                <div class="inventoryItem"
+                                    style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
                             </div>
                             <span class="tag">ANIMATED OVERLAY</span>
                             <span>Cleave</span>
@@ -163,7 +220,8 @@
                         </div>
                         <div class="shopItem">
                             <div class="usericon">
-                                <div class="inventoryItem" style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
+                                <div class="inventoryItem"
+                                    style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
                             </div>
                             <span class="tag">ANIMATED OVERLAY</span>
                             <span>Cleave</span>
@@ -173,7 +231,8 @@
                         </div>
                         <div class="shopItem">
                             <div class="usericon">
-                                <div class="inventoryItem" style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
+                                <div class="inventoryItem"
+                                    style="background-image: url('../assets/icons/cosmetics/world_slash.gif');"></div>
                             </div>
                             <span class="tag">ANIMATED OVERLAY</span>
                             <span>Cleave</span>
@@ -201,7 +260,7 @@
                 </ul>
             </nav>
             <div id="settings-main" class="settingsPanel">
-                
+
                 <div id="settings-general" hidden>
                     <p><b>GENERAL</b></p>
                     <div class="general-settings settingsTab">
@@ -255,7 +314,8 @@
                         <span>
                             <label for="roundcount">rounds:</label>
                             <input type="range" name="roundcount" id="" min="1" max="10">
-                            <span>10 (max)</span>                        <span style="font-size: 10px;margin-bottom: 10px;">(excluding image round)</span>
+                            <span>10 (max)</span> <span style="font-size: 10px;margin-bottom: 10px;">(excluding image
+                                round)</span>
                         </span>
                         <br>
                         <label for="roundtype">round type:</label>
@@ -279,19 +339,30 @@
                                 </ul>
                             </nav>
                             <div id="inventory" class="inventoryContainer" style="display: none;">
-                                <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/none.gif');"></div>
-                                <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
-                                <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
-                                <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/bunny_ears.gif');"></div>
-                                <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/devil_horns.gif');"></div>
-                                <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/geto_scars.gif');"></div>
-                                <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/jinx_eyes.gif');"></div>
+                                <div class="inventoryItem outline"
+                                    style="background-image: url('../assets/icons/cosmetics/none.gif');"></div>
+                                <div class="inventoryItem outline"
+                                    style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');">
+                                </div>
+                                <div class="inventoryItem outline"
+                                    style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                                <div class="inventoryItem outline"
+                                    style="background-image: url('../assets/icons/cosmetics/bunny_ears.gif');"></div>
+                                <div class="inventoryItem outline"
+                                    style="background-image: url('../assets/icons/cosmetics/devil_horns.gif');"></div>
+                                <div class="inventoryItem outline"
+                                    style="background-image: url('../assets/icons/cosmetics/geto_scars.gif');"></div>
+                                <div class="inventoryItem outline"
+                                    style="background-image: url('../assets/icons/cosmetics/jinx_eyes.gif');"></div>
                             </div>
                             <div id="equipped" class="inventoryContainer">
                                 <span class="equippedItem">
-                                    <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                                    <div class="inventoryItem outline"
+                                        style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');">
+                                    </div>
                                     <span>mahoraga wheel</span>
-                                    <i class="fa-solid fa-caret-down dropdown"></i><i class="fa-solid fa-trash-can dropdown remove"></i>
+                                    <i class="fa-solid fa-caret-down dropdown"></i><i
+                                        class="fa-solid fa-trash-can dropdown remove"></i>
                                     <div id="cosmeticConfigidfkrenamethis" style="font-size: 12px;">
                                         <br>
                                         <span>
@@ -332,7 +403,9 @@
                                 </span>
 
                                 <span class="equippedItem">
-                                    <div class="inventoryItem outline" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                                    <div class="inventoryItem outline"
+                                        style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');">
+                                    </div>
                                     <span>mahoraga wheel</span>
                                     <i class="fa-solid fa-caret-up dropdown"></i>
                                     <div id="cosmeticConfigidfkrenamethis" style="font-size: 12px;" hidden>
@@ -378,20 +451,36 @@
                         </div>
                         <div>
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
-                                <div style="background-image: url('../assets/icons/bases/purpleheart_neck_base.gif');z-index: 1;"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/square_outline.gif');"></div>
-                                <div style="background-image: url('../assets/icons/bases/purpleheart_square_base.gif');z-index: 1;"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div
+                                    style="background-image: url('../assets/icons/bases/purpleheart_neck_base.gif');z-index: 1;">
+                                </div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/square_outline.gif');"></div>
+                                <div
+                                    style="background-image: url('../assets/icons/bases/purpleheart_square_base.gif');z-index: 1;">
+                                </div>
 
-                                <div class="outline accessory" style="background-image: url('../assets/icons/faces/eye/robotic.gif');z-index: 99;"></div>
-                                <div class="outline accessory" style="background-image: url('../assets/icons/faces/mouth/colon_three.gif');z-index: 99;"></div>
+                                <div class="outline accessory"
+                                    style="background-image: url('../assets/icons/faces/eye/robotic.gif');z-index: 99;">
+                                </div>
+                                <div class="outline accessory"
+                                    style="background-image: url('../assets/icons/faces/mouth/colon_three.gif');z-index: 99;">
+                                </div>
 
                                 <!--scaleX(-1) scale(150%);"-->
                             </div>
                             <div class="colours"> <!--FOR SHAPES-->
-                                <div data-shape-name="circle" class="colour" style="background-image: url('../assets/icons/bases/circle_outline.gif');background-size: 100%;image-rendering: pixelated;"></div>
-                                <div data-shape-name="square" class="colour" style="background-image: url('../assets/icons/bases/square_outline.gif');background-size: 100%;image-rendering: pixelated;"></div>
-                                <div data-shape-name="triangle" class="colour" style="background-image: url('../assets/icons/bases/triangle_outline.gif');background-size: 100%;image-rendering: pixelated;"></div>
+                                <div data-shape-name="circle" class="colour"
+                                    style="background-image: url('../assets/icons/bases/circle_outline.gif');background-size: 100%;image-rendering: pixelated;">
+                                </div>
+                                <div data-shape-name="square" class="colour"
+                                    style="background-image: url('../assets/icons/bases/square_outline.gif');background-size: 100%;image-rendering: pixelated;">
+                                </div>
+                                <div data-shape-name="triangle" class="colour"
+                                    style="background-image: url('../assets/icons/bases/triangle_outline.gif');background-size: 100%;image-rendering: pixelated;">
+                                </div>
                                 <!--<div data-shape-name="diamond" class="colour" style="background-image: url('../assets/icons/bases/diamond_outline.gif');background-size: 100%;image-rendering: pixelated;"></div>-->
                             </div>
                             <hr>
@@ -406,7 +495,8 @@
                                     redorange
                                     white
                                 -->
-                                <div data-colour-name="caribbeangreen" style="background: #00D084;" class="colour"></div>
+                                <div data-colour-name="caribbeangreen" style="background: #00D084;" class="colour">
+                                </div>
                                 <div data-colour-name="crimson" style="background: #EB144C;" class="colour"></div>
                                 <div data-colour-name="dodgerblue" style="background: #2196F3;" class="colour"></div>
                                 <div data-colour-name="orange" style="background: #FF5722;" class="colour"></div>
@@ -416,9 +506,15 @@
                                 <div data-colour-name="white" style="background: #fff;" class="colour"></div>
 
                                 <!--purchasable/unlockable-->
-                                <div data-colour-name="gold" style="background: url('/assets/icons/bases/gold_colour.gif');" class="colour"></div>
-                                <div data-colour-name="rainbow" style="background: url('/assets/icons/bases/rainbow_colour.gif');" class="colour"></div>
-                                <div data-colour-name="flesh" style="background-image: url('/assets/icons/bases/flesh_colour.gif');" class="colour"></div>
+                                <div data-colour-name="gold"
+                                    style="background: url('/assets/icons/bases/gold_colour.gif');" class="colour">
+                                </div>
+                                <div data-colour-name="rainbow"
+                                    style="background: url('/assets/icons/bases/rainbow_colour.gif');" class="colour">
+                                </div>
+                                <div data-colour-name="flesh"
+                                    style="background-image: url('/assets/icons/bases/flesh_colour.gif');"
+                                    class="colour"></div>
 
                             </div>
                             <hr>
@@ -426,9 +522,15 @@
                                 <!--
                                     BADGES
                                 -->
-                                <div data-badge-name="none" style="background-color: white;background-image: url('../assets/icons/cosmetics/none.gif');background-size: 100%;" class="colour"></div>
-                                <div data-badge-name="verified" style="background-color: white;background-image: url('../assets/icons/badges/verified.gif');background-size: 100%;" class="colour"></div>
-                                <div data-badge-name="artist" style="background-color: white;background-image: url('../assets/icons/badges/artist.gif');background-size: 100%;" class="colour unobtained">
+                                <div data-badge-name="none"
+                                    style="background-color: white;background-image: url('../assets/icons/cosmetics/none.gif');background-size: 100%;"
+                                    class="colour"></div>
+                                <div data-badge-name="verified"
+                                    style="background-color: white;background-image: url('../assets/icons/badges/verified.gif');background-size: 100%;"
+                                    class="colour"></div>
+                                <div data-badge-name="artist"
+                                    style="background-color: white;background-image: url('../assets/icons/badges/artist.gif');background-size: 100%;"
+                                    class="colour unobtained">
                                 </div>
                             </div>
                         </div>
@@ -437,16 +539,25 @@
                         <div class="chat-list">
                             <div class="chat-message">
                                 <div class="usericon">
-                                    <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
-                                    <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
-                                    <div class="outline" style="background-image: url('../assets/icons/bases/circle_outline.gif');"></div>
-                                    <div style="background-image: url('../assets/icons/bases/red_circle_base.gif');"></div>
-        
-                                    <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                    <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                                    <div class="outline"
+                                        style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                    <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');">
+                                    </div>
+                                    <div class="outline"
+                                        style="background-image: url('../assets/icons/bases/circle_outline.gif');">
+                                    </div>
+                                    <div style="background-image: url('../assets/icons/bases/red_circle_base.gif');">
+                                    </div>
+
+                                    <div class="outline"
+                                        style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                    <div class="outline accessory"
+                                        style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');">
+                                    </div>
                                 </div>
                                 <span class="username you">oswald</span>
-                                <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                                <span style="background-image: url('../assets/icons/badges/verified.gif');"
+                                    class="badge"></span>
                                 <span>: preview!</span>
                             </div>
                         </div>
@@ -472,9 +583,11 @@
     <button onclick="create('gofundme')">gofundme</button>
     <button onclick="create('video')">video</button>
     <button onclick="create('image')">image</button>
-    <button onclick="document.getElementById('burninggatesofhell').classList.toggle(`showgates`)">OPEN THE GATES OF HELL</button>
+    <button onclick="document.getElementById('burninggatesofhell').classList.toggle(`showgates`)">OPEN THE GATES OF
+        HELL</button>
     <button onclick="document.getElementById('winnericon').classList.toggle(`thrown2hell`)">THROW INTO HELL</button>
-    <button onclick="document.getElementById('sacrificeIcon').classList.toggle(`revealSacrifice`)">REVEAL SACRIFICE</button>
+    <button onclick="document.getElementById('sacrificeIcon').classList.toggle(`revealSacrifice`)">REVEAL
+        SACRIFICE</button>
     <button onclick="document.getElementById('wonPoints').classList.toggle(`show`)">SHOW POINTS</button>
     <button onclick="document.getElementById('winnerReveal').classList.toggle(`show`)">SHOW WINNER</button>
     <button onclick="begin()">PLAY</button>
@@ -486,13 +599,17 @@
 
                     <div class="lobbyListItem host">
                         <div class="usericon">
-                            <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                            <div class="outline"
+                                style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
                             <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
-                            <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                            <div class="outline"
+                                style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
                             <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');"></div>
 
-                            <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                            <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                            <div class="outline"
+                                style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                            <div class="outline accessory"
+                                style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
                             <div class="state"><i class="fa-solid fa-skull"></i></div>
                         </div>
                         <span class="user-item">MMMMMMMMMM (HOST)<br></span>
@@ -501,28 +618,36 @@
 
                     <div class="lobbyListItem you">
                         <div class="usericon">
-                            <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                            <div class="outline"
+                                style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
                             <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
-                            <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                            <div class="outline"
+                                style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
                             <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');"></div>
 
-                            <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                            <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                            <div class="outline"
+                                style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                            <div class="outline accessory"
+                                style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
                             <div class="state"><i class="fa-solid fa-hourglass-half"></i></div>
                         </div>
                         <span class="user-item">MMMMMMMMMM (HOST)<br></span>
                         <span class="points">100 <i class="fa-solid fa-coins"></i></span>
                     </div>
-                    
+
                     <div class="lobbyListItem">
                         <div class="usericon">
-                            <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                            <div class="outline"
+                                style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
                             <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
-                            <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                            <div class="outline"
+                                style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
                             <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');"></div>
 
-                            <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                            <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                            <div class="outline"
+                                style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                            <div class="outline accessory"
+                                style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
                             <div class="state"><i class="fa-solid fa-hourglass-half"></i></div>
                         </div>
                         <span class="user-item">MMMMMMMMMM (HOST)<br></span>
@@ -599,24 +724,34 @@
 
                         <div class="winnerReveal">
                             <div id="winnericon" class="usericon winnericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
                                 <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
-                                <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');"></div>
-    
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');">
+                                </div>
+
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory"
+                                    style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
                             </div>
                             <div id="sacrificeIcon" class="usericon winnericon sacrifice revealSacrifice">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
                                 <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
-                                <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');"></div>
-    
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');">
+                                </div>
+
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory"
+                                    style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
                             </div>
-                        
+
                         </div>
                         <h2 id="winnerName">Oswald!</h2>
                         <h3 id="wonPoints" class="show">with 3000 points</h3>
@@ -767,229 +902,340 @@
                     <div class="chat-list" id="messages">
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
                                 <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/square_outline.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/square_outline.gif');"></div>
                                 <div style="background-image: url('../assets/icons/bases/red_square_base.gif');"></div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
                             </div>
                             <span class="username">patrick</span>
                             <span>: How are you my dear friend Oswald?</span>
                         </div>
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
                                 <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/circle_outline.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/circle_outline.gif');"></div>
                                 <div style="background-image: url('../assets/icons/bases/red_circle_base.gif');"></div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
                             </div>
                             <span class="username you">oswald</span>
                             <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
                         </div>
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
                                 <div style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
-                                <div style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div style="background-image: url('../assets/icons/bases/white_triangle_base.gif');">
+                                </div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory"
+                                    style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
                             </div>
                             <span class="username you">triangle</span>
                             <span>: i am a god dang triangle!</span>
                         </div>
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
                                 <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/square_outline.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/square_outline.gif');"></div>
                                 <div style="background-image: url('../assets/icons/bases/red_square_base.gif');"></div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory"
+                                    style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
                             </div>
                             <span class="username">patrick</span>
                             <span>: How are you my dear friend Oswald?</span>
                         </div>
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
                                 <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/circle_outline.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/circle_outline.gif');"></div>
                                 <div style="background-image: url('../assets/icons/bases/red_circle_base.gif');"></div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory"
+                                    style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
                             </div>
                             <span class="username you">oswald</span>
                             <span>: FLOWERS ARE BLOOMING IN VOLKSWAGEN</span>
                         </div>
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
                                 <div style="background-image: url('../assets/icons/bases/red_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
-                                <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div style="background-image: url('../assets/icons/bases/red_triangle_base.gif');">
+                                </div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory"
+                                    style="background-image: url('../assets/icons/cosmetics/bucket_hat.gif');"></div>
                             </div>
                             <span class="username you">triangle</span>
-                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');"
+                                class="badge"></span>
                             <span>: i am a god dang triangle!</span>
                         </div>
 
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_triangle_base.gif');">
+                                </div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory mahoraga" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory mahoraga"
+                                    style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');">
+                                </div>
                             </div>
                             <span class="username you">triangle</span>
-                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');"
+                                class="badge"></span>
                             <span>: i am a god dang triangle!</span>
                         </div>
 
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_triangle_base.gif');">
+                                </div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory mahoraga" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory mahoraga"
+                                    style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');">
+                                </div>
                             </div>
                             <span class="username you">triangle</span>
-                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');"
+                                class="badge"></span>
                             <span>: i am a god dang triangle!</span>
                         </div>
 
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_triangle_base.gif');">
+                                </div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory mahoraga" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory mahoraga"
+                                    style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');">
+                                </div>
                             </div>
                             <span class="username you">triangle</span>
-                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');"
+                                class="badge"></span>
                             <span>: i am a god dang triangle!</span>
                         </div>
 
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_triangle_base.gif');">
+                                </div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory mahoraga" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory mahoraga"
+                                    style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');">
+                                </div>
                             </div>
                             <span class="username you">triangle</span>
-                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');"
+                                class="badge"></span>
                             <span>: i am a god dang triangle!</span>
                         </div>
 
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_triangle_base.gif');">
+                                </div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory mahoraga" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory mahoraga"
+                                    style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');">
+                                </div>
                             </div>
                             <span class="username you">triangle</span>
-                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');"
+                                class="badge"></span>
                             <span>: i am a god dang triangle!</span>
                         </div>
 
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_triangle_base.gif');">
+                                </div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');transform:translateY(50%);"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory"
+                                    style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');transform:translateY(50%);">
+                                </div>
                             </div>
                             <span class="username you">triangle</span>
-                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');"
+                                class="badge"></span>
                             <span>: i am a god dang triangle!</span>
                         </div>
 
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_triangle_base.gif');">
+                                </div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory mahoraga" style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory mahoraga"
+                                    style="background-image: url('../assets/icons/cosmetics/mahoraga_wheel.gif');">
+                                </div>
                             </div>
                             <span class="username you">triangle</span>
-                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');"
+                                class="badge"></span>
                             <span>: i am a god dang triangle!</span>
                         </div>
 
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/circle_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_circle_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/circle_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_circle_base.gif');"></div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory back" style="background-image: url('../assets/icons/cosmetics/bunny_ears.gif');"></div>
-                                <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/geto_scars.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory back"
+                                    style="background-image: url('../assets/icons/cosmetics/bunny_ears.gif');"></div>
+                                <div class="outline accessory"
+                                    style="background-image: url('../assets/icons/cosmetics/geto_scars.gif');"></div>
                             </div>
                             <span class="username you">triangle</span>
-                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');"
+                                class="badge"></span>
                             <span>: i am a god dang triangle!</span>
                         </div>
 
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_triangle_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/triangle_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_triangle_base.gif');">
+                                </div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/jinx_eyes.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory"
+                                    style="background-image: url('../assets/icons/cosmetics/jinx_eyes.gif');"></div>
                             </div>
                             <span class="username you">BIGFOOTJIN</span>
-                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');"
+                                class="badge"></span>
                             <span>: I can be trusted near nuclear waste.</span>
                         </div>
                         <div class="chat-message">
                             <div class="usericon">
-                                <div class="outline" style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
-                                <div class="outline" style="background-image: url('../assets/icons/bases/square_outline.gif');"></div>
-                                <div class="base" style="background-image: url('../assets/icons/bases/white_square_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/neck_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_neck_base.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/bases/square_outline.gif');"></div>
+                                <div class="base"
+                                    style="background-image: url('../assets/icons/bases/white_square_base.gif');"></div>
 
-                                <div class="outline" style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
-                                <div class="outline accessory" style="background-image: url('../assets/icons/cosmetics/devil_horns.gif');"></div>
+                                <div class="outline"
+                                    style="background-image: url('../assets/icons/faces/mouth/smile.gif');"></div>
+                                <div class="outline accessory"
+                                    style="background-image: url('../assets/icons/cosmetics/devil_horns.gif');"></div>
                             </div>
                             <span class="username you">BIGFOOTJIN</span>
-                            <span style="background-image: url('../assets/icons/badges/verified.gif');" class="badge"></span>
+                            <span style="background-image: url('../assets/icons/badges/verified.gif');"
+                                class="badge"></span>
                             <span>: I can be trusted near nuclear waste.</span>
                         </div>
                     </div>
@@ -1038,9 +1284,307 @@
     <script>
 
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+        function generatePuzzle() {
+
+            // <span class="attempts" id="attempts">4 ATTEMPT(S) LEFT <span class="square">◼</span></span>
+
+            const words = ["NEFFBOX", "NYALVE", "RATTS", "FAMILY", "DINER", "BURGERS", "FALLOUT", "NEFFTUBE", "NEFFITIMES", "BELL", "GONEFFME", "NEFFMART", "PATRICK", "OSWALD", "JEREMIAH", "PIRATE", "HELL", "RESCRYBED", "WEST", "BABU", "BEST", "BUBBLE", "ALPHA", "OMEGA", "BETA"]
+            const usedWords = []
+            const randomCharacters = ["?", ".", "*", "<", ":", "(", "[", "-", "^", "/", "#", "%", `'`, '"', "=", "!", ":", ";", "+", "£", "_", "{", "~", ",", "&", "\\"]
+            const randomCharactersHelper = ["?", ".", "*", ":", "-", "^", "/", "#", "%", `'`, '"', "=", "!", ":", ";", "+", "$", "_", "~", ",", "&", "\\"]
+
+            let attempts = 4
+            let PASSWORD = ""
+
+            const puzzle = document.getElementById("actualpuzzle")
+            puzzle.innerHTML = `<div id="col1"></div><div id="col2"></div>
+            <div class="results">
+                        <div class="puzzleLogs" id="puzzleLogs">
+                            <span>INCORRECT1</span>
+                            <span>INCORRECT2</span>
+                            <span>INCORRECT3</span>
+                        </div>
+                        <span id="result">></span>
+                    </div>
+            `
+
+            const attemptsContainer = document.getElementById("attempts")
+            attemptsContainer.innerHTML = `4 ATTEMPT(S) LEFT <span class="square">◼</span><span class="square">◼</span><span class="square">◼</span><span class="square">◼</span>`
+            const result = document.getElementById("result")
+            result.innerHTML = `> FALLOUT<span id="caret" class="caret"></span>`
+            const logs = document.getElementById("puzzleLogs")
+            logs.innerHTML = ``
+
+            function succeed() {
+                puzzle.innerHTML = `
+                    <div>
+                        <span>YOU SUCCEEDED IN CRACKING THE PASSWORD.</span></br>
+                        <span>YOU HAVE BEEN AWARDED: 1234 POINTS.</span></br>
+                        <span>YOU CAN TRY AGAIN IN: NEVER.</span>    
+                    </div>
+                    `
+            }
+
+            //document.getElementById("generate").style.display = "none"
+
+            function updateAttempts() {
+
+                let squares = ""
+                for (let i = 0; i < attempts; i++) {
+                    squares += `<span class="square">◼</span>`
+                }
+
+                attemptsContainer.innerHTML = `${attempts} ATTEMPT(S) LEFT ${squares}`
+
+                if (attempts == 0) {
+                    puzzle.innerHTML = `
+                    <div>
+                        <span>YOU FAILED TO CRACK THE PASSWORD.</span></br>
+                        <span>YOU CAN TRY AGAIN IN: NEVER.</span>    
+                    </div>
+                    `
+                }
+
+            }
+
+            function createLog(txt) {
+                const span = document.createElement("span")
+                span.innerHTML = txt
+                logs.appendChild(span)
+            }
+
+            for (let i = 0; i < 2; i++) {
+                const col = document.getElementById(`col${i + 1}`)
+                console.log(i + 1)
+                /*
+                            <span class="lineContainer">
+                                <span class="detail">0xF670</span>
+                                <span class="line">MMMMMMMMMMMM</span>
+                            </span>
+                */
+                for (let i = 0; i < 12; i++) {
+
+                    let wordCount = 0
+                    let characterCount
+
+                    const lineContainer = document.createElement("span")
+                    lineContainer.classList.add("lineContainer")
+
+                    const detail = document.createElement("span")
+                    detail.classList.add("detail")
+                    detail.innerHTML = `0xF${String(getRandomInt(1, 100)).padStart(3, '0')}`
+
+                    const line = document.createElement("span")
+                    line.classList.add("line")
+
+                    for (let i = 0; i < 13; i++) {
+                        let index = i + 1
+
+                        let rollWord = getRandomInt(0, 100)
+                        if (rollWord <= 15) {
+                            if (words.length >= 1) {
+                                let rollHelper = getRandomInt(0, 100)
+                                let randomWord = words[getRandomInt(0, words.length - 1)]
+
+                                if (rollHelper <= 15) {
+                                    const helperLength = getRandomInt(0, 3)
+                                    if (index + helperLength + 2 < 12 && wordCount < 1) {
+                                        const starter = ["<", "{", "[", "("]
+                                        const ender = [">", "}", "]", ")"]
+                                        const randomIndex = getRandomInt(0, 3)
+
+                                        let helperSTRING = starter[randomIndex]
+                                        for (let i = 0; i < helperLength; i++) {
+                                            helperSTRING += randomCharactersHelper[getRandomInt(0, randomCharactersHelper.length - 1)]
+                                        }
+                                        helperSTRING += ender[randomIndex]
+
+                                        const character = document.createElement("b")
+                                        character.classList.add("character")
+                                        character.innerHTML = helperSTRING
+                                        character.onclick = function () {
+                                            if (!character.dataset.used) {
+
+                                                let roll = getRandomInt(1, 3)
+
+                                                function removeDud() {
+                                                    let wordPool = [...usedWords]
+                                                    wordPool.splice(wordPool.indexOf(PASSWORD), 1)
+
+                                                    if (wordPool.length < 1) return;
+
+                                                    let randomWord2Remove = wordPool[getRandomInt(0, wordPool.length - 1)]
+                                                    let word = document.getElementById(`PASSWORD-${randomWord2Remove}`)
+
+                                                    word.dataset.removed = 1
+                                                    word.outerHTML = `<span id="dud-${randomWord2Remove}"></span>`
+                                                    for (let i = 0; i < randomWord2Remove.length; i++) {
+                                                        const b = document.createElement("b")
+                                                        b.classList.add("character")
+                                                        b.innerText = "."
+
+                                                        b.onmouseenter = function () {
+                                                            result.innerHTML = `> .<span id="caret" class="caret"></span>`
+                                                        }
+                                                        b.onmouseleave = function () {
+                                                            result.innerHTML = `> <span id="caret" class="caret"></span>`
+                                                        }
+
+                                                        document.getElementById(`dud-${randomWord2Remove}`).appendChild(b)
+                                                    }
+                                                    usedWords.splice(usedWords.indexOf(randomWord2Remove), 1)
+                                                    character.dataset.used = 1
+
+                                                    createLog("DUD REMOVED")
+                                                    createLog(helperSTRING)
+                                                }
+                                                function replenish() {
+
+                                                    if (attempts + 1 > 4) return removeDud();
+
+                                                    attempts++
+
+                                                    updateAttempts()
+                                                    createLog("ALLOWANCE REPLENISHED")
+                                                    createLog(helperSTRING)
+                                                }
+
+                                                if (roll > 1) {
+                                                    removeDud()
+                                                } else {
+                                                    replenish()
+                                                }
+                                            }
+                                        }
+                                        characterCount += helperLength + 2
+                                        i = index + (helperLength + 2) - 3
+                                        wordCount++
+
+                                        character.onmouseenter = function () {
+                                            result.innerHTML = `> ${helperSTRING}<span id="caret" class="caret"></span>`
+                                        }
+                                        character.onmouseleave = function () {
+                                            result.innerHTML = `> <span id="caret" class="caret"></span>`
+                                        }
+                                        line.appendChild(character)
+                                    }
+                                } else {
+                                    if (index + randomWord.length < 12 && wordCount < 1) {
+                                        const character = document.createElement("b")
+                                        character.classList.add("character")
+                                        character.innerHTML = randomWord
+                                        character.id = `PASSWORD-${randomWord}`
+                                        usedWords.push(randomWord)
+                                        i = index + randomWord.length - 2
+                                        words.splice(words.indexOf(randomWord), 1)
+                                        characterCount += randomWord.length
+                                        wordCount++
+
+                                        character.onclick = function () {
+                                            if (PASSWORD == undefined) {
+                                                PASSWORD = usedWords[getRandomInt(0, usedWords.length)]
+                                                // why doesnt this just work
+                                            }
+                                            if (randomWord == PASSWORD) {
+                                                createLog(randomWord)
+                                                createLog("CORRECT!")
+                                                createLog(`100% SIM`)
+                                                succeed()
+                                            } else {
+                                                let characterSTORE = []
+                                                attempts -= 1
+                                                updateAttempts()
+                                                createLog(randomWord)
+                                                createLog("INCORRECT")
+                                                // similarity
+                                                let similarity = 0
+                                                //createLog(PASSWORD)
+                                                console.log(PASSWORD)
+
+                                                for (let i = 0; i < PASSWORD.length - 1; i++) {
+
+                                                    if (randomWord.split("").includes(PASSWORD[i]) && !characterSTORE.includes(PASSWORD[i])) {
+                                                        similarity++
+                                                        characterSTORE.push(PASSWORD[i])
+                                                    }
+
+                                                }
+                                                createLog(`${Math.ceil((similarity / PASSWORD.length) * 100)}% SIM`)
+                                            }
+                                        }
+
+
+                                        character.onmouseenter = function () {
+                                            result.innerHTML = `> ${character.innerText}<span id="caret" class="caret"></span>`
+                                        }
+                                        character.onmouseleave = function () {
+                                            result.innerHTML = `> <span id="caret" class="caret"></span>`
+                                        }
+                                        line.appendChild(character)
+                                    } else {
+                                        const character = document.createElement("b")
+                                        character.classList.add("character")
+                                        let randomCharacter = randomCharacters[getRandomInt(0, randomCharacters.length - 1)]
+                                        character.innerHTML = randomCharacter
+
+                                        character.onmouseenter = function () {
+                                            result.innerHTML = `> ${randomCharacter}<span id="caret" class="caret"></span>`
+                                        }
+                                        character.onmouseleave = function () {
+                                            result.innerHTML = `> <span id="caret" class="caret"></span>`
+                                        }
+                                        line.appendChild(character)
+                                        characterCount++
+                                    }
+                                }
+                            } else {
+                                const character = document.createElement("b")
+                                character.classList.add("character")
+                                let randomCharacter = randomCharacters[getRandomInt(0, randomCharacters.length - 1)]
+                                character.innerHTML = randomCharacter
+
+                                character.onmouseenter = function () {
+                                    result.innerHTML = `> ${randomCharacter}<span id="caret" class="caret"></span>`
+                                }
+                                character.onmouseleave = function () {
+                                    result.innerHTML = `> <span id="caret" class="caret"></span>`
+                                }
+                                line.appendChild(character)
+                                characterCount++
+                            }
+                        } else {
+                            const character = document.createElement("b")
+                            character.classList.add("character")
+                            let randomCharacter = randomCharacters[getRandomInt(0, randomCharacters.length - 1)]
+                            character.innerHTML = randomCharacter
+
+                            character.onmouseenter = function () {
+                                result.innerHTML = `> ${randomCharacter}<span id="caret" class="caret"></span>`
+                            }
+                            character.onmouseleave = function () {
+                                result.innerHTML = `> <span id="caret" class="caret"></span>`
+                            }
+                            line.appendChild(character)
+                            characterCount++
+                        }
+                    }
+
+                    lineContainer.appendChild(detail)
+                    lineContainer.appendChild(line)
+
+                    col.appendChild(lineContainer)
+                }
+            }
+
+            PASSWORD = usedWords[getRandomInt(0, usedWords.length)]
+        }
+
+        generatePuzzle()
+
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
 
         function begin() {
 
@@ -1067,20 +1611,20 @@ function sleep(ms) {
 
             promptBox.classList.add("show")
 
-            sleep(2000).then(() => { winnerIcon.style.display = ``;winnerIcon.classList.add("show");winnerTitle.style.display = `none`});
-            sleep(2500).then(() => { winnerName.style.display = ``;winnerName.classList.add("show"); })
+            sleep(2000).then(() => { winnerIcon.style.display = ``; winnerIcon.classList.add("show"); winnerTitle.style.display = `none` });
+            sleep(2500).then(() => { winnerName.style.display = ``; winnerName.classList.add("show"); })
 
-            sleep(3500).then(() => { pointsWon.style.display = ``;pointsWon.classList.add("show");pointsWon.innerHTML = `with 4000 points` })
+            sleep(3500).then(() => { pointsWon.style.display = ``; pointsWon.classList.add("show"); pointsWon.innerHTML = `with 4000 points` })
 
-            sleep(5000).then(() => { sacrificeIcon.style.display = ``;sacrificeIcon.style.animationName = `revealSacrifice` })
-            sleep(5000).then(() => { winnerName.innerHTML  = `and <b>Jeremy</b>` })
-            sleep(5000).then(() => { pointsWon.innerHTML  = `sacrificing for 200 points` })
+            sleep(5000).then(() => { sacrificeIcon.style.display = ``; sacrificeIcon.style.animationName = `revealSacrifice` })
+            sleep(5000).then(() => { winnerName.innerHTML = `and <b>Jeremy</b>` })
+            sleep(5000).then(() => { pointsWon.innerHTML = `sacrificing for 200 points` })
 
-            sleep(7000).then(()=>{ pointsWon.style.display = `none`;winnerName.style.display = `none`;sacrificeIcon.style.animationName = `hideSacrifice`;gates.classList.add(`showgates`) })
-        
-            sleep(8200).then(()=> { winnerIcon.classList.remove("show");winnerIcon.classList.add("thrown2hell") })
+            sleep(7000).then(() => { pointsWon.style.display = `none`; winnerName.style.display = `none`; sacrificeIcon.style.animationName = `hideSacrifice`; gates.classList.add(`showgates`) })
 
-            sleep(9000).then(()=> {gates.classList.remove(`showgates`)})
+            sleep(8200).then(() => { winnerIcon.classList.remove("show"); winnerIcon.classList.add("thrown2hell") })
+
+            sleep(9000).then(() => { gates.classList.remove(`showgates`) })
         }
 
         // for testing purposes
@@ -1090,10 +1634,10 @@ function sleep(ms) {
         const iconContainer = document.getElementById("contain-icons")
 
         function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
 
         function createRandomIcon() {
             const iconBase = document.createElement("div")
@@ -1105,10 +1649,10 @@ function sleep(ms) {
             const smiles = ["smile"]
             const cosmetics = ["bucket_hat", "devil_horns", "geto_scars", "jinx_eyes"]
 
-            const shape = shapes[getRandomInt(0, shapes.length-1)]
-            const colour = colours[getRandomInt(0, colours.length-1)]
-            const smile = smiles[getRandomInt(0, smiles.length-1)]
-            const cosmetic = cosmetics[getRandomInt(0, cosmetics.length-1)]
+            const shape = shapes[getRandomInt(0, shapes.length - 1)]
+            const colour = colours[getRandomInt(0, colours.length - 1)]
+            const smile = smiles[getRandomInt(0, smiles.length - 1)]
+            const cosmetic = cosmetics[getRandomInt(0, cosmetics.length - 1)]
 
             let neckOutline = document.createElement("div")
             neckOutline.classList.add("outline")
@@ -1157,25 +1701,25 @@ function sleep(ms) {
             const randomTopics = ["Business", "Politics", "Environment", "Health", "Family", "Entertainment", "War", "Technology"]
 
             let submission = {
-                    username: "test",
-                    title: "title",
-                    desc: "desc",
-                    file: "file",
-                    /*extra stuff to make extra deets the same for everyone*/
-                    newsGenre: randomTopics[getRandomInt(0, randomTopics.length-1)],
-                    newsHours: getRandomInt(1, 12),
-                    newsBreaking: getRandomInt(0,1),
-                    gofundmeRaised: getRandomInt(5000, 10000),
-                    gofundmeFill: Math.round(Math.random() * 100),
-                    gofundmeBacking: getRandomInt(500, 5000),
-                    ratingsStars: getRandomInt(0, 4),
-                    shoppingStars: getRandomInt(0, 4),
-                    travellingUsers: getRandomInt(2, 18),
-                    travellingLikes: getRandomInt(2, 30),
-                    travellingDislikes: getRandomInt(2, 30)
-                }
+                username: "test",
+                title: "title",
+                desc: "desc",
+                file: "file",
+                /*extra stuff to make extra deets the same for everyone*/
+                newsGenre: randomTopics[getRandomInt(0, randomTopics.length - 1)],
+                newsHours: getRandomInt(1, 12),
+                newsBreaking: getRandomInt(0, 1),
+                gofundmeRaised: getRandomInt(5000, 10000),
+                gofundmeFill: Math.round(Math.random() * 100),
+                gofundmeBacking: getRandomInt(500, 5000),
+                ratingsStars: getRandomInt(0, 4),
+                shoppingStars: getRandomInt(0, 4),
+                travellingUsers: getRandomInt(2, 18),
+                travellingLikes: getRandomInt(2, 30),
+                travellingDislikes: getRandomInt(2, 30)
+            }
 
-                let animate = false
+            let animate = false
 
             switch (n.toUpperCase()) {
                 case "NEWS": {
