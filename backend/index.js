@@ -689,6 +689,8 @@ return {
 
         content = emoji.replace_colons(content);
         content = content.replaceAll("/shrug", "¯\\_(ツ)_/¯")
+        content = content.replaceAll("freaky", "𝓯𝓻𝓮𝓪𝓴𝔂")
+        content = content.replaceAll("freak", "𝓯𝓻𝓮𝓪𝓴")
         console.log(`[${roomData.id}] ${userData.name} > ${content}`);
         switch (content.split(" ")[0]) {
             case "/fumomote":
