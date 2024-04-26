@@ -517,6 +517,8 @@ sio.on('connection', socket => {
 
         const updatedUserData = updatedRoomData.users.find(user => user.name == userData.name);
         content = emoji.replace_colons(content);
+        content = content.replaceAll("freaky", "𝓯𝓻𝓮𝓪𝓴𝔂")
+        content = content.replaceAll("freak", "𝓯𝓻𝓮𝓪𝓴")
         updatedUserData[`response${updatedRoomData.topicRound}`] = content;
         updatedUserData.finished = true;
         userData = updatedUserData;
