@@ -1352,16 +1352,6 @@ if (roomID) {
                                 break;
                             }
                             case "IMAGE": {
-                                /*
-                        <div class="result news">
-                                <span class="header"><i class="fa-solid fa-image"></i>IMAGE SHOWCASE</span>
-                                <div class="title">
-                                    <img src="../assets/RED SNAPO.jpeg" alt="">
-                                    <span class="username">Jeremiah</span><br>
-                                    <span class="opinion">It sucked there. Never again.</span>
-                                </div>
-                        </div>
-                                */
                                 resultDiv.innerHTML = `<span class="header"><i class="fa-solid fa-image"></i>NEFFIGRAM</span>`
                                 const titleDiv = document.createElement("div");
                                 titleDiv.classList.add("title");
