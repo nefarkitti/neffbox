@@ -44,7 +44,7 @@ function setIcon(hash, className) {
     if (getIcon) {
         //getIcon.classList.remove("fa-user");
         getIcon.classList.remove("fa-circle-check")
-        getIcon.classList.remove("fa-hourglass-half");
+        getIcon.classList.remove("fa-pencil");
         if (className == "fa-user") return;
         getIcon.classList.add(className);
     }
@@ -498,7 +498,7 @@ if (roomID) {
         let countdown = 60;
         function handleRound(topic, round, player, resp) { // last 2 are for round 2
             roomData.users.forEach(user => {
-                setIcon(user.idHash, "fa-hourglass-half");
+                setIcon(user.idHash, "fa-pencil");
             })
             clearTimeout(timers)
             countdown = 60;
