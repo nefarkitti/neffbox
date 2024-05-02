@@ -317,6 +317,27 @@ main h3 {
 h3.title {
     margin: 0;
     margin-bottom: 30px;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 25px;
+    text-shadow: 1px 1px 0px black;
+
+    animation-name: rotateText;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes rotateText {
+    0% {
+        transform: rotate(-5deg);
+    }
+    50% {
+        transform: rotate(5deg);
+    }
+    100% {
+        transform: rotate(-5deg);
+    }
 }
 
 .menu {
@@ -1055,7 +1076,7 @@ body.dark .waitingFor span {
 }
 
 .logo {
-    filter: drop-shadow(2px 2px 1px #000000);
+
 }
 
 .finals.v2 .result .overlay {
@@ -1227,20 +1248,29 @@ button.gofundme {
 .leavebtn {
     color: var(--accent);
 }
+.btn i.fa-gear {
+    margin-left: 10px;
+}
 .btn i {
     width: max-content;
     height: max-content;
-    background-color: white;
+    background-color: var(--menu-bg);
+    color: var(--font-colour);
     padding: 10px;
+    margin-top: 10px;
     font-size: 15px;
-    margin: 10px;
+    margin-left: 8px;
     border-radius: 100%;
+    transition: 0.2s;
+    border: 1px solid var(--border);
+    box-shadow: 0px 2px 1px black;
 }
 
 .btn i:hover {
     cursor: pointer;
     color: white;
     background-color: var(--accent);
+    transition: 0.2s;
 }
 
 .modal-overlay {
@@ -2285,5 +2315,103 @@ div.puzzleLogs * {
     }
     100% {
         transform: rotate(360deg);
+    }
+}
+
+div.newbtn { 
+    background-color: var(--menu-bg);
+    border-radius: 5px;
+    overflow: hidden;
+    display: inline-grid;
+    grid-template-columns: 1fr;
+    font-weight: 900;
+    border: 2px solid black;
+    box-shadow: 0px 5px 0px black;
+
+    transition: 0.2s;
+    font-size: 20px;
+}
+div.newbtn.disabled {
+    font-size: 18px;
+    filter:contrast(50%);
+}
+div.newbtn.disabled:hover {
+    cursor: unset;
+    color: unset;
+    font-size: 18px;
+}
+div.newbtn.disabled:hover .fill {
+    animation-name: none;
+}
+div.newbtn:active {
+    font-size: 18px;
+}
+div.newbtn:hover {
+    cursor: pointer;
+    color: white;
+    transition: 0.2s;
+    font-size: 22px;
+}
+div.newbtn:hover .fill {
+    animation-duration: 0.2s;
+    animation-name: fillbtn;
+    animation-fill-mode: forwards;
+}
+div.newbtn * {
+    display: table-row;
+    grid-row-start: 1;
+  grid-column-start: 1;
+    width: 100%;
+    height: 100%;
+}
+div.newbtn .fill {
+    width: 100%;
+    background: var(--menu-bg);
+    height: 100%;
+    transition: 0.2s;
+}
+.newbtn-content {
+    padding-right: 20px;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+}
+.newbtn-content img {
+    width: 30px;
+    height: 30px;
+    transform: translateY(10%);
+    animation-name: spinner;
+    animation-duration: 0.8s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    margin: 5px -2px
+}
+
+@keyframes fillbtn {
+    0% {
+        width: 0%;
+        background: var(--accent);
+    }
+    100% {
+        width: 100%;
+        background: var(--accent);
+    }
+}
+
+.introANIM {
+    animation-name: introANIM;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    height: 0%;
+    background-color: red;
+    display: block;
+}
+
+@keyframes introANIM {
+    0% {
+        height: 0%;
+    }
+    100% {
+        height: 100%;
     }
 }
