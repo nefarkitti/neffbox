@@ -1295,7 +1295,7 @@ button.gofundme {
     padding: 5px;
     border: var(--border) 1px solid;
     box-shadow: 0px 2px 2px black;
-    min-width: 30vw;
+    min-width: 15vw;
     text-align: center;
     padding-bottom: 15px;
     max-width: 90%;
