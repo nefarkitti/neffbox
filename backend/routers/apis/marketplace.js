@@ -138,7 +138,7 @@ export function router(db) {
         removeItem(req, res, "cosmetics", name, true)
     })
     eRouter.get('', (req, res) => {
-        if (!req.user) return res.sendStatus(401);
+        //if (!req.user) return res.sendStatus(401);
         // seed, min, max
         // change the 0 to whatever you want, like if its the 1st item, 2nd item, etc, you can put it in a for loop!
         let itemsAvailable = [];
