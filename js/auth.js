@@ -3,7 +3,7 @@ async function aTimer(page) {
     const menu = document.getElementById("menu");
     try {
         await axios({
-            url: `${URL}/verify`,
+            url: `${apiURL}/verify`,
             method: "POST",
             headers: {
                 "authorization": session
@@ -19,7 +19,7 @@ async function aTimer(page) {
                 userIcon.id = "whyisthisnotworking12345132451"
                 userIcon.style.backgroundColor = "white";
                 axios({
-                    url: `${URL}/user/@me?inventory=1`,
+                    url: `${apiURL}/user/@me?inventory=1`,
                     method: "GET",
                     headers: {
                         "authorization": session
@@ -86,7 +86,7 @@ async function aTimer(page) {
                             if ([username.length,password.length].includes(0)) return createPopup(createErrorDiv("One of the values is not provided!"))
                             if (!checkValid("username", username)) return;
                             try {
-                                const verifyAuth = await axios.post(`${URL}/auth`, {
+                                const verifyAuth = await axios.post(`${apiURL}/auth`, {
                                     username,
                                     password
                                 });
@@ -133,7 +133,7 @@ async function aTimer(page) {
                             if (!checkValid("username", username)) return;
                             if (password != confirmPass) return createPopup(createErrorDiv("Password and Confirm Password don't share the same value!"));
                             try {
-                                const verifyAuth = await axios.post(`${URL}/register`, {
+                                const verifyAuth = await axios.post(`${apiURL}/register`, {
                                     username,
                                     password
                                 });

@@ -1,7 +1,7 @@
-let URL = "https://neffbox.firee.dev"
+let apiURL = "https://neffbox.firee.dev"
 console.log(window.location.host)
 if (window.location.host.startsWith("localhost")) {
-    URL = "http://localhost:3000"
+    apiURL = "http://localhost:3000"
 }
 const session = localStorage.getItem("osuliterallysucks"); // i completely forgot about this
 
@@ -86,7 +86,7 @@ let currentSetting = 0;
 function showDebug() {
     if (localStorage.getItem("admin") == null) return;
     axios({
-        url: `${URL}/admin`,
+        url: `${apiURL}/admin`,
         method: "GET",
         headers: {
             "authorization": session
@@ -124,7 +124,7 @@ function showDebug() {
                 case 0: { // stats
                     statsItem.classList.add("highlighted")
                     return axios({
-                        url: `${URL}/admin/stats`,
+                        url: `${apiURL}/admin/stats`,
                         method: "GET",
                         headers: {
                             "authorization": session
@@ -160,7 +160,7 @@ function showDebug() {
                     joinBtn.onclick = function() {
                         const roomPass = document.getElementById("popup-e77ec23e5a01055fca14c8ddcb655b2e")
                         axios({
-                            url: `${URL}/user/${encodeURI(roomPass.value)}`,
+                            url: `${apiURL}/user/${encodeURI(roomPass.value)}`,
                             method: "GET",
                             headers: {
                                 "authorization": session
@@ -217,7 +217,7 @@ function showDebug() {
                                     if (password != confirmPass) return createPopup(createErrorDiv("Password and Confirm Password don't share the same value!"));
                                     try {
                                         await axios({
-                                            url: `${URL}/admin/user/${userID}/password`,
+                                            url: `${apiURL}/admin/user/${userID}/password`,
                                             method: "POST",
                                             headers: {
                                                 "authorization": session
@@ -259,7 +259,7 @@ function showDebug() {
                                 yesBtn.onclick = async function() {
                                     try {
                                         await axios({
-                                            url: `${URL}/admin/user/${userID}/delete`,
+                                            url: `${apiURL}/admin/user/${userID}/delete`,
                                             method: "POST",
                                             headers: {
                                                 "authorization": session
@@ -296,7 +296,7 @@ function showDebug() {
                                 if (!checkValid("username", username)) return;
                                 try {
                                     await axios({
-                                        url: `${URL}/admin/user/${userID}/username`,
+                                        url: `${apiURL}/admin/user/${userID}/username`,
                                         method: "POST",
                                         headers: {
                                             "authorization": session
@@ -400,7 +400,7 @@ function showDebug() {
                             const query = document.getElementById("dev-query").value;
 
                             axios({
-                                url: `${URL}/admin/dev/${uri}`,
+                                url: `${apiURL}/admin/dev/${uri}`,
                                 method: "POST",
                                 headers: {
                                     "authorization": session
@@ -447,7 +447,7 @@ function showDebug() {
                 /*
                 case 2: { // ROOM
                     axios({
-                        url: `${URL}/rooms/${roomData.id}?IClaimHost=1`,
+                        url: `${apiURL}/rooms/${roomData.id}?IClaimHost=1`,
                         method: "GET",
                         headers: {
                             "authorization": session
@@ -492,7 +492,7 @@ function showDebug() {
                         saveBtn.onclick = async function() {
                             try {
                                 await axios({
-                                    url: `${URL}/rooms/${roomData.id}/settings`,
+                                    url: `${apiURL}/rooms/${roomData.id}/settings`,
                                     method: "PATCH",
                                     headers: {
                                         "authorization": session
@@ -631,7 +631,7 @@ function showSettings() {
             }
             case 2: { // ROOM
                 axios({
-                    url: `${URL}/rooms/${roomData.id}?IClaimHost=1`,
+                    url: `${apiURL}/rooms/${roomData.id}?IClaimHost=1`,
                     method: "GET",
                     headers: {
                         "authorization": session
@@ -676,7 +676,7 @@ function showSettings() {
                     saveBtn.onclick = async function() {
                         try {
                             await axios({
-                                url: `${URL}/rooms/${roomData.id}/settings`,
+                                url: `${apiURL}/rooms/${roomData.id}/settings`,
                                 method: "PATCH",
                                 headers: {
                                     "authorization": session
@@ -764,7 +764,7 @@ function showSettings() {
                         if (password != confirmPass) return createPopup(createErrorDiv("Password and Confirm Password don't share the same value!"));
                         try {
                             await axios({
-                                url: `${URL}/user/@me/password`,
+                                url: `${apiURL}/user/@me/password`,
                                 method: "POST",
                                 headers: {
                                     "authorization": session
@@ -812,7 +812,7 @@ function showSettings() {
                     yesBtn.onclick = async function() {
                         try {
                             await axios({
-                                url: `${URL}/user/@me`,
+                                url: `${apiURL}/user/@me`,
                                 method: "DELETE",
                                 headers: {
                                     "authorization": session
@@ -852,7 +852,7 @@ function showSettings() {
                     if (!checkValid("username", username)) return;
                     try {
                         await axios({
-                            url: `${URL}/user/@me/username`,
+                            url: `${apiURL}/user/@me/username`,
                             method: "POST",
                             headers: {
                                 "authorization": session
@@ -1229,7 +1229,7 @@ async function purchaseItem(item) {
         purchaseBtn.innerText = "PURCHASE";
         purchaseBtn.onclick = function() {
             axios({
-                url: `${URL}/marketplace/buy/${item.filename}`,
+                url: `${apiURL}/marketplace/buy/${item.filename}`,
                 method: "POST",
                 headers: {
                     "authorization": session
@@ -1275,7 +1275,7 @@ let timeWEFLOPWFLloop;
 function showCustomiseAvatar(dontDoPopup, contentDiv) {
     return new Promise((resolve, reject) => {
         axios({
-            url: `${URL}/user/@me?inventory=1`,
+            url: `${apiURL}/user/@me?inventory=1`,
             method: "GET",
             headers: {
                 "authorization": session
@@ -1353,7 +1353,7 @@ function showCustomiseAvatar(dontDoPopup, contentDiv) {
                 shapeDiv.onclick = function() {
                     userData.shape = shapes.indexOf(shape);
                     axios({
-                        url: `${URL}/marketplace/shape`,
+                        url: `${apiURL}/marketplace/shape`,
                         method: "POST",
                         headers: {
                             "authorization": session
@@ -1391,7 +1391,7 @@ function showCustomiseAvatar(dontDoPopup, contentDiv) {
                         return item;
                     })
                     axios({
-                        url: `${URL}/marketplace/colour`,
+                        url: `${apiURL}/marketplace/colour`,
                         method: "POST",
                         headers: {
                             "authorization": session
@@ -1427,7 +1427,7 @@ function showCustomiseAvatar(dontDoPopup, contentDiv) {
                         return item2;
                     })
                     axios({
-                        url: `${URL}/marketplace/colour`,
+                        url: `${apiURL}/marketplace/colour`,
                         method: "POST",
                         headers: {
                             "authorization": session
@@ -1542,7 +1542,7 @@ function showCustomiseAvatar(dontDoPopup, contentDiv) {
                                     return item2;
                                 })
                                 axios({
-                                    url: `${URL}/marketplace/wear/mouth`,
+                                    url: `${apiURL}/marketplace/wear/mouth`,
                                     method: "POST",
                                     headers: {
                                         "authorization": session
@@ -1582,7 +1582,7 @@ function showCustomiseAvatar(dontDoPopup, contentDiv) {
                                     return item2;
                                 })
                                 axios({
-                                    url: `${URL}/marketplace/wear/eye`,
+                                    url: `${apiURL}/marketplace/wear/eye`,
                                     method: "POST",
                                     headers: {
                                         "authorization": session
@@ -1618,7 +1618,7 @@ function showCustomiseAvatar(dontDoPopup, contentDiv) {
                                     return item2;
                                 })
                                 axios({
-                                    url: `${URL}/marketplace/wear/cosmetic`,
+                                    url: `${apiURL}/marketplace/wear/cosmetic`,
                                     method: "POST",
                                     headers: {
                                         "authorization": session
@@ -1716,7 +1716,7 @@ function showCustomiseAvatar(dontDoPopup, contentDiv) {
                                     return item2;
                                 })
                                 axios({
-                                    url: `${URL}/marketplace/removefromskin/${item.type}`,
+                                    url: `${apiURL}/marketplace/removefromskin/${item.type}`,
                                     method: "POST",
                                     headers: {
                                         "authorization": session
@@ -1915,7 +1915,7 @@ async function showMarketPlace() {
     
 
     axios({
-        url: `${URL}/marketplace`,
+        url: `${apiURL}/marketplace`,
         method: "GET",
         headers: {
             "authorization": session
@@ -1923,7 +1923,7 @@ async function showMarketPlace() {
         timeout: 5000
     }).then(res => {
         axios({
-            url: `${URL}/user/@me?inventory=1`,
+            url: `${apiURL}/user/@me?inventory=1`,
             method: "GET",
             headers: {
                 "authorization": session

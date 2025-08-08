@@ -20,16 +20,16 @@ async function onJoinRoom(roomIDActual) {
     const roomID = (typeof roomIDActual != "undefined") ? roomIDActual : document.getElementById("roomidjoin").value;
     if (!roomID) return console.error("Could not find roomID");
     if (!errorText) return console.error("Could not find errorText");
-    axios.get(`${URL}/rooms/${roomID}`).then(async res => {
+    axios.get(`${apiURL}/rooms/${roomID}`).then(async res => {
         async function actuallyJoin(roomID, password) {
             try {
                 /*
-                const response = await axios.post(`${URL}/rooms/${roomID}/join`, {
+                const response = await axios.post(`${apiURL}/rooms/${roomID}/join`, {
                     username: localStorage.getItem("username"),
                     password
                 })*/ 
                 const response = await axios({
-                    url: `${URL}/rooms/${roomID}/join`,
+                    url: `${apiURL}/rooms/${roomID}/join`,
                     method: "POST",
                     headers: {
                         "authorization": session
@@ -47,7 +47,7 @@ async function onJoinRoom(roomIDActual) {
                     console.error(e)
                     errorText.innerText = "a network problem occured"
                     axios({
-                        url: `${URL}/crash`,
+                        url: `${apiURL}/crash`,
                         method: "POST",
                         headers: {
                             "authorization": session
@@ -87,7 +87,7 @@ async function onJoinRoom(roomIDActual) {
             console.error(e)
             errorText.innerText = "a network problem occured"
             axios({
-                url: `${URL}/crash`,
+                url: `${apiURL}/crash`,
                 method: "POST",
                 headers: {
                     "authorization": session
@@ -111,7 +111,7 @@ async function onJoinRoom(roomIDActual) {
 let maximumPagesList = 1;
 
 async function renderRoomsList(roomsTable, pageLabel, page) {
-    axios.get(`${URL}/rooms?page=${page}`).then(async res => {
+    axios.get(`${apiURL}/rooms?page=${page}`).then(async res => {
         const data = res.data;
         roomsTable.innerHTML = `<th>Host</th>
         <th>Room ID</th>
@@ -309,7 +309,7 @@ async function onCreateRoom(password) {
     if (!errorText) return console.error("Could not find errorText");
     try {
         const response = await axios({
-            url: `${URL}/rooms/create`,
+            url: `${apiURL}/rooms/create`,
             method: "POST",
             headers: {
                 "authorization": session
@@ -319,7 +319,7 @@ async function onCreateRoom(password) {
             },
             timeout: 5000
         });
-        /*const response = await axios.post(`${URL}/rooms/create`, {
+        /*const response = await axios.post(`${apiURL}/rooms/create`, {
             username: localStorage.getItem("username")
         })*/
         localStorage.setItem("host", 1)

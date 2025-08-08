@@ -137,7 +137,7 @@ function loadMessage(username, content, equipped, isImage) {
     if (isImage) {
         const img = document.createElement("img");
         img.alt = "Image Loading...";
-        img.src = `${URL}/rooms/${roomData.id}/imgs/${content}`
+        img.src = `${apiURL}/rooms/${roomData.id}/imgs/${content}`
         contentSpan.appendChild(img);
     } else {
         contentSpan.innerText = `: ${content}`;
@@ -247,11 +247,11 @@ if (roomID) {
         } else {
             (async function() {
                 if (localStorage.getItem("username") != null && localStorage.getItem("secret") == null) {
-                    axios.get(`${URL}/rooms/${roomID}`).then(async res => {
+                    axios.get(`${apiURL}/rooms/${roomID}`).then(async res => {
                         async function actuallyJoin(roomID, password) {
                             try {
                                 const response = await axios({
-                                    url: `${URL}/rooms/${roomID}/join`,
+                                    url: `${apiURL}/rooms/${roomID}/join`,
                                     method: "POST",
                                     headers: {
                                         "authorization": session
@@ -300,7 +300,7 @@ if (roomID) {
                     /*
                     try {
                         const response = await axios({
-                            url: `${URL}/rooms/${roomID}/join`,
+                            url: `${apiURL}/rooms/${roomID}/join`,
                             method: "POST",
                             headers: {
                                 "authorization": session
@@ -418,7 +418,7 @@ if (roomID) {
                 }
             }
         }
-        socket = io.connect(URL, {
+        socket = io.connect(apiURL, {
             reconnection: true,
             reconnectionDelay: 1000,
             reconnectionDelayMax: 5000,
@@ -553,7 +553,7 @@ if (roomID) {
                             const reader = new FileReader();
                             reader.onload = function(event) {
                                 const imageData = event.target.result;
-                                axios.post(`${URL}/rooms/${roomData.id}/upload`, {
+                                axios.post(`${apiURL}/rooms/${roomData.id}/upload`, {
                                     file: imageData,
                                     ext: input.files[0].type,
                                     username: localStorage.getItem("username")
@@ -569,7 +569,7 @@ if (roomID) {
                                         hiddenUploading.innerText = "Error, please check console for info."
                                     }
                                     axios({
-                                        url: `${URL}/crash`,
+                                        url: `${apiURL}/crash`,
                                         method: "POST",
                                         headers: {
                                             "authorization": session
@@ -1357,7 +1357,7 @@ if (roomID) {
                                 titleDiv.classList.add("title");
                                 const img = document.createElement("img");
                                 img.alt = "Image Loading...";
-                                img.src = `${URL}/rooms/${roomData.id}/imgs/${submission.file}`
+                                img.src = `${apiURL}/rooms/${roomData.id}/imgs/${submission.file}`
                                 const usernameSpan = document.createElement("span");
                                 usernameSpan.classList.add("username");
                                 usernameSpan.innerText = submission.username
@@ -1390,7 +1390,7 @@ if (roomID) {
                             promptScreen.appendChild(createTopic(submission, false, roundname))
                             domtoimage.toPng(document.getElementById("promptBox-screenshot")).then(imageData => {
                                 promptScreen.style.display = "none"
-                                axios.post(`${URL}/rooms/${roomData.id}/capture`, {
+                                axios.post(`${apiURL}/rooms/${roomData.id}/capture`, {
                                     file: imageData,
                                     username: localStorage.getItem("username")
                                 }).then(() => {
